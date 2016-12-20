@@ -12,9 +12,9 @@ import matplotlib.pyplot as plt
 
 # Define path names
 
-COLLAB_PATH = '/home/robin/INM6/Projects/NEST_SpiNNaker_comparison_INM6'
-COLLAB_PATH_NEST = COLLAB_PATH + "/results/NEST_data"
-COLLAB_PATH_SPINNAKER = COLLAB_PATH + "/results/SpiNNaker_data"
+COLLAB_PATH = '/home/robin/NeuroSim-Comparison-Tools'
+COLLAB_PATH_NEST = COLLAB_PATH + "/sim_data/NEST_data"
+COLLAB_PATH_SPINNAKER = COLLAB_PATH + "/sim_data/SpiNNaker_data"
 
 plotting_path = './plotting_functions.py'
 plotting = imp.load_source('*', plotting_path)
@@ -83,8 +83,8 @@ ax = fig.add_subplot(1, 2, 2)
 plotting.plot_raster_pophist_rate(ax,
                                   sts_SPINNAKER, pophist_SPINNAKER, mean_rate_SPINNAKER, binsize, N, \
                                   layers, 'SpiNNaker', ['g', 'y'], 14)
-# plt.show()
-plt.close(fig)
+plt.draw()
+# plt.close(fig)
 
 # Calculate CV and ISI
 
@@ -115,10 +115,15 @@ hist_data = plotting.plot_distribution_comparison(cv_NEST, cv_Spinnaker, np.lins
 plt.draw()
 # plt.close(fig)
 
-# KS Test
-print cv_NEST[0][0]
-print cv_Spinnaker[0][0]
-print stat.ks_test(cv_NEST[0][0], cv_Spinnaker[0][0])
+# KS Test:
+stat.KS_test(cv_NEST[0][0], cv_Spinnaker[0][0])
+
+# KL Test:
+stat.KL_test(cv_NEST[0][0], cv_Spinnaker[0][0], bins=np.linspace(0, 1.5, 30), excl_zeros=True)
+stat.KL_test(hist_data[0][0][0], hist_data[1][0][0], excl_zeros=True)
+
+# MWW Test:
+stat.MWW_test(cv_NEST[0][0], cv_Spinnaker[0][0], excl_nan=True)
 
 # Calculate the pearson correlation coefficient
 

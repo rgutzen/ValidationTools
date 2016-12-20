@@ -4,5 +4,5 @@ Development of statistical tests and tools for comparison of neural activity dat
 Based on Elephant and neo.
 Uses data from NEST and SpiNNaker simulations.
 
-The reguired packages comply with the infrastructure of the HBP collaboratory.
+The required packages comply with the infrastructure of the HBP collaboratory.
 
