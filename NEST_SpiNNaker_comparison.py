@@ -19,7 +19,7 @@ COLLAB_PATH_SPINNAKER = COLLAB_PATH + "/sim_data/SpiNNaker_data"
 plotting_path = './plotting_functions.py'
 plotting = imp.load_source('*', plotting_path)
 
-statistics_path = './statistical_testing.py'
+statistics_path = './validation_statistics/distribution_comparison.py'
 stat = imp.load_source('*', statistics_path)
 
 def load_data(path, file_name_list, N):
@@ -115,15 +115,17 @@ hist_data = plotting.plot_distribution_comparison(cv_NEST, cv_Spinnaker, np.lins
 plt.draw()
 # plt.close(fig)
 
-# KS Test:
-stat.KS_test(cv_NEST[0][0], cv_Spinnaker[0][0])
+def statistical_testing(sample1,sample2):
+    # KS Test:
+    stat.KS_test(cv_NEST[0][0], cv_Spinnaker[0][0])
 
-# KL Test:
-stat.KL_test(cv_NEST[0][0], cv_Spinnaker[0][0], bins=np.linspace(0, 1.5, 30), excl_zeros=True)
-stat.KL_test(hist_data[0][0][0], hist_data[1][0][0], excl_zeros=True)
+    # KL Test:
+    stat.KL_test(cv_NEST[0][0], cv_Spinnaker[0][0], bins=np.linspace(0, 1.5, 30), excl_zeros=True)
+    stat.KL_test(hist_data[0][0][0], hist_data[1][0][0], excl_zeros=True)
 
-# MWW Test:
-stat.MWW_test(cv_NEST[0][0], cv_Spinnaker[0][0], excl_nan=True)
+    # MWW Test:
+    stat.MWW_test(cv_NEST[0][0], cv_Spinnaker[0][0], excl_nan=True)
+    return None
 
 # Calculate the pearson correlation coefficient
 
