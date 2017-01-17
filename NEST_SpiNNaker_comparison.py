@@ -19,7 +19,7 @@ COLLAB_PATH_SPINNAKER = COLLAB_PATH + "/sim_data/SpiNNaker_data"
 plotting_path = './plotting_functions.py'
 plotting = imp.load_source('*', plotting_path)
 
-statistics_path = './validation_statistics/distribution_comparison.py'
+statistics_path = './validation/dist.py'
 stat = imp.load_source('*', statistics_path)
 
 def load_data(path, file_name_list, N):

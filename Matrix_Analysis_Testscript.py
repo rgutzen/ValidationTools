@@ -9,10 +9,10 @@ COLLAB_PATH_SPINNAKER = COLLAB_PATH + "/sim_data/SpiNNaker_data"
 plotting_path = './plotting_functions.py'
 plotting = imp.load_source('*', plotting_path)
 
-statistics_path = './validation_statistics/distribution_comparison.py'
+statistics_path = './validation/dist.py'
 stat = imp.load_source('*', statistics_path)
 
-matrix_analysis_path = './validation_statistics/matrix_analysis.py'
+matrix_analysis_path = './validation/matrix.py'
 matstat = imp.load_source('*', matrix_analysis_path)
 
 N = 10
@@ -20,12 +20,12 @@ N = 10
 rand_matrix = np.random.normal(size=(N,N))
 corr_matrix = (rand_matrix + rand_matrix.T)/2.
 
-fig = plt.figure('Heatmap', figsize=(10,20))
+fig = plt.figure('Heatmap', figsize=(4,8))
 ax1 = fig.add_subplot(211)
 matstat.plot_matrix(corr_matrix, ax1)
 ax2 = fig.add_subplot(212)
-matstat.eigenvalue_spectra(corr_matrix, ax2)
+EWs, EVs = np.linalg.eig(corr_matrix)
+matstat.eigenvalue_spectra(EWs, ax2)
+matstat.pc_trafo(corr_matrix, EWs, EVs)
 
-
-
-# plt.show()
+plt.show()
