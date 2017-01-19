@@ -107,13 +107,20 @@ def nbr_of_pcs(EWs, method='proportion', alpha=.05, ax=plt.gca(), show_dist=True
         mask = 0
         PCs = 0
 
+    elif method == 'broken-stick':
+        N = len(EWs)
+        series = [1. / (i+1) for i in range(N)]
+        predictor = np.array([1. / N * np.sum(series[k:]) for k in range(N)])
+
+        mask = np.ones(N, np.bool)
+        res_idx = np.where(abs(EWs))
     if show_dist:
         ax.plot(np.arange(len(EWs)), abs(EWs)/total_v, color='r')
         ax.fill_between(np.arange(len(EWs)), abs(EWs) / total_v, 0,
                         where=mask, color='r', alpha=.4)
         ax.fill_between(np.arange(len(EWs)), abs(EWs) / total_v, 0,
                         where=np.logical_not(mask), color='r', alpha=.15)
-        ax.axhline(min(abs(PCs)) / total_v, 0, len(EWs), color='k', linestyle='--')
+        # ax.axhline(min(abs(PCs)) / total_v, 0, len(EWs), color='k', linestyle='--')
         ax.set_ylabel('|EW|/V')
 
     print "Significance Test: \n Method: {0} \n {1} of {2} are significant"\

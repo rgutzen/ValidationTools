@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import imp
+import elephant as ep
+import quantities as qt
 
 COLLAB_PATH = '/home/robin/NeuroSim-Comparison-Tools'
 COLLAB_PATH_NEST = COLLAB_PATH + "/sim_data/NEST_data"
@@ -15,10 +17,17 @@ stat = imp.load_source('*', statistics_path)
 matrix_analysis_path = './validation/matrix.py'
 matstat = imp.load_source('*', matrix_analysis_path)
 
+test_data_analysis_path = './validation/test_data.py'
+testdata = imp.load_source('*', matrix_analysis_path)
+
+
+
 N = 100
 
-rand_matrix = np.random.rand(N,N) * 2. - 1
+rand_matrix = np.random.rand(N, N) * 2. - 1
 corr_matrix = (rand_matrix + rand_matrix.T) / 2.
+for i in range(N):
+    corr_matrix[i,i] = 1.
 
 fig = plt.figure('Heatmap', figsize=(8,8))
 ax1 = fig.add_subplot(221)
