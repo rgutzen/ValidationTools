@@ -7,6 +7,11 @@ import matplotlib.pyplot as plt
 from scipy import stats as st
 import contextlib
 import pandas as pd
+import math
+from quantities import Hz, ms
+from elephant.conversion import BinnedSpikeTrain
+from elephant.spike_train_correlation import corrcoef
+import neo
 # Seaborn is not included in the HBP environment
 import seaborn as sns
 sns.set(style='ticks', palette='Set2')
@@ -22,9 +27,16 @@ def printoptions(*args, **kwargs):
     np.set_printoptions(**original)
 
 
-def corr_matrix(data1, data2, corr_type='pearson', sorted=True):
+def corr_matrix(spiketrains, binsize=2*ms, corr_type='pearson'):
     # ToDo: Implement Correlation (pearson, spearman, ...?)
-    return matrix
+    t_lims = [(st.t_start, st.t_stop) for st in spiketrains]
+    tmin = min(t_lims, key=lambda f: f[0])[0]
+    tmax = max(t_lims, key=lambda f: f[1])[1]
+    if corr_type=='pearson':
+        binned_sts = BinnedSpikeTrain(spiketrains, binsize,
+                                      t_start=tmin, t_stop=tmax)
+        return corrcoef(binned_sts)
+    return None
 
 
 def pc_trafo(matrix, EWs=[], EVs=[]):
@@ -45,12 +57,12 @@ def plot_matrix(matrix, ax=plt.gca()):
     labelnum = matrix.shape[0]/10
     if labelnum == 1:
         labelnum = 2
-    sns.heatmap(matrix, ax=ax, cbar=True, xticklabels=labelnum,yticklabels=labelnum)
+    sns.heatmap(matrix, ax=ax, cbar=True, xticklabels=labelnum, yticklabels=labelnum)
     # ToDo: offer 'sorted' option for estimated assemblies presentation
     return None
 
 
-def eigenvalue_spectra(EWs, ax=plt.gca(), binnum=10):
+def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=10, surrogate_EWs=None):
     lmin = min(EWs)
     lmax = max(EWs)
     print "\lambda_max = {max}\n\lambda_min = {min}"\
@@ -60,17 +72,31 @@ def eigenvalue_spectra(EWs, ax=plt.gca(), binnum=10):
     EW_hist, edges = np.histogram(EWs, bins=edges, density=True)
     ax.bar(left=edges[:-1], height=EW_hist, width=edges[1]-edges[0])
 
-    # Reference to Random Correlation Matrix
-    N = len(EWs)
-    rand_matrix = np.random.rand(N, N) * 2. - 1
-    corr_matrix = (rand_matrix + rand_matrix.T) / 2.
-    rand_EWs, __ = np.linalg.eig(corr_matrix)
-    maxl = max([abs(min(rand_EWs)), abs(max(rand_EWs))])
-    wigner_dist = lambda x: 2. / (np.pi*maxl**2) * np.sqrt(maxl**2-x**2)
-    wigner_x = np.linspace(-maxl, maxl, 100, dtype=float)
-    wigner_y = [wigner_dist(x) for x in wigner_x]
-    ax.plot(wigner_x, wigner_y, color='r')
-    # ToDo: Use custom surrogates as reference
+    if surrogate_EWs != None:
+        # ToDo: Use custom surrogates as reference
+        sEW_hist, __ = np.histogram(surrogate_EWs, bins=edges, density=True)
+        ax.bar(left=edges[:-1], height=sEW_hist, width=edges[1] - edges[0],
+               alpha=.3, color='b')
+        y = 1
+        a = (1 - np.sqrt(y)) ** 2
+        b = (1 + np.sqrt(y)) ** 2
+        marchenko_pastur = lambda x: np.sqrt((x - a) * (b - x)) / (2 * np.pi * x * y)
+        # marchenko_pastur = lambda x: np.sqrt(4*x - x**2) / (2*np.pi*x)
+        xaxis = np.linspace(0, int(math.ceil(edges[-1])), 50)
+        ax.plot(xaxis, [marchenko_pastur(x) for x in xaxis], color='r')
+    else:
+         # Reference to Random Correlation Matrix
+        N = len(EWs)
+        rand_matrix = np.random.rand(N, N) * 2. - 1
+        corr_matrix = (rand_matrix + rand_matrix.T) / 2.
+        rand_EWs, __ = np.linalg.eig(corr_matrix)
+        # for i in range(N):
+        #     corr_matrix[i,i] = 1.
+        maxl = max([abs(min(rand_EWs)), abs(max(rand_EWs))])
+        wigner_dist = lambda x: 2. / (np.pi*maxl**2) * np.sqrt(maxl**2-x**2)
+        wigner_x = np.linspace(-maxl, maxl, 100, dtype=float)
+        wigner_y = [wigner_dist(x) for x in wigner_x]
+        ax.plot(wigner_x, wigner_y, color='r')
     return None
 
 
