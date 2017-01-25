@@ -62,28 +62,30 @@ def plot_matrix(matrix, ax=plt.gca()):
     return None
 
 
-def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=10, surrogate_EWs=None):
+def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=15, surrogate_EWs=None):
     lmin = min(EWs)
     lmax = max(EWs)
     print "\lambda_max = {max}\n\lambda_min = {min}"\
           .format(max=lmax, min=lmin)
 
     edges = np.array([lmin + i*(lmax-lmin)/binnum for i in range(binnum+1)])
-    EW_hist, edges = np.histogram(EWs, bins=edges, density=True)
-    ax.bar(left=edges[:-1], height=EW_hist, width=edges[1]-edges[0])
+    EW_hist, edges = np.histogram(EWs, bins=edges, density=False)
+    ax.bar(left=edges[:-1], height=EW_hist, width=edges[1]-edges[0], color='g')
 
     if surrogate_EWs != None:
         # ToDo: Use custom surrogates as reference
-        sEW_hist, __ = np.histogram(surrogate_EWs, bins=edges, density=True)
-        ax.bar(left=edges[:-1], height=sEW_hist, width=edges[1] - edges[0],
-               alpha=.3, color='b')
-        y = 1
-        a = (1 - np.sqrt(y)) ** 2
-        b = (1 + np.sqrt(y)) ** 2
-        marchenko_pastur = lambda x: np.sqrt((x - a) * (b - x)) / (2 * np.pi * x * y)
+        sEW_hist, __ = np.histogram(surrogate_EWs, bins=edges, density=False)
+        ax.plot(edges[:-1] + (edges[1]-edges[0])/2., sEW_hist, color='r',
+                alpha=.5)
+        # ax.bar(left=edges[:-1], height=sEW_hist, width=edges[1]-edges[0],
+        #        alpha=.3, color='r')
+        # y = 1
+        # a = (1 - np.sqrt(y)) ** 2
+        # b = (1 + np.sqrt(y)) ** 2
+        # marchenko_pastur = lambda x: np.sqrt((x - a) * (b - x)) / (2 * np.pi * x * y)
         # marchenko_pastur = lambda x: np.sqrt(4*x - x**2) / (2*np.pi*x)
-        xaxis = np.linspace(0, int(math.ceil(edges[-1])), 50)
-        ax.plot(xaxis, [marchenko_pastur(x) for x in xaxis], color='r')
+        # xaxis = np.linspace(0, int(math.ceil(edges[-1])), 50)
+        # ax.plot(xaxis, [marchenko_pastur(x) for x in xaxis], color='r')
     else:
          # Reference to Random Correlation Matrix
         N = len(EWs)
@@ -112,35 +114,56 @@ def total_variance(matrix):
     # Do something
     return Det, Tr, Tsq
 
-def nbr_of_pcs(EWs, method='proportion', alpha=.05, ax=plt.gca(), show_dist=True):
+def nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True):
     EWs = np.sort(EWs)[::-1]
     total_v = np.sum(abs(EWs))
 
     if method == 'proportion':
-        absEWs = np.sort(abs(EWs))[::-1]
-        i = 0
+        pc_count = 0
         cum_var = 0
         while cum_var <= (1-alpha) * total_v:
-            cum_var += absEWs[i]
-            i += 1
-        mask = np.ones(len(EWs), np.bool)
-        res_idx = np.where(abs(EWs)<=absEWs[i-1])[0]
-        mask[res_idx] = 0
-        PCs = EWs[mask]
+            cum_var += EWs[pc_count]
+            pc_count += 1
 
     elif method == 'res-variance':
         # ToDo: Can a reasonable residual variance be estimated from sample size?
-        mask = 0
-        PCs = 0
+        pc_count = 0
 
     elif method == 'broken-stick':
         N = len(EWs)
         series = [1. / (i+1) for i in range(N)]
-        predictor = np.array([1. / N * np.sum(series[k:]) for k in range(N)])
+        predictor = np.array([total_v / N * np.sum(series[k:])
+                              for k in range(N)])
+        pc_count = np.where(EWs < predictor)[0][0]
 
-        mask = np.ones(N, np.bool)
-        res_idx = np.where(abs(EWs))
+    elif method == "average-root":
+        pc_count = np.where(EWs < 1)[0][0]
+
+    elif method == "SCREE":
+        # line from first to last EW
+        # y = a*x + b
+        a = - EWs[0] / len(EWs)
+        b = EWs[0]
+        # orthonogal connection from current EW to line
+        # y_s = a_s*x_s + b_s
+        a_s = - 1. / a
+        def cut(pc_count):
+            b_s = EWs[pc_count] - a_s*pc_count
+            x_s = (b_s-b) / (a-a_s)
+            y_s = (a*b_s - a_s*b) / (a-a_s)
+            # distance from EW to line
+            return np.sqrt((pc_count-x_s)**2 + (EWs[pc_count]-y_s)**2)
+        pc_count = 0
+        prev_distance = 0
+        current_distance = cut(pc_count)
+        while current_distance >= prev_distance:
+            pc_count += 1
+            prev_distance = current_distance
+            current_distance = cut(pc_count)
+
     if show_dist:
+        mask = np.ones(len(EWs), np.bool)
+        mask[pc_count:] = 0
         ax.plot(np.arange(len(EWs)), abs(EWs)/total_v, color='r')
         ax.fill_between(np.arange(len(EWs)), abs(EWs) / total_v, 0,
                         where=mask, color='r', alpha=.4)
@@ -150,9 +173,8 @@ def nbr_of_pcs(EWs, method='proportion', alpha=.05, ax=plt.gca(), show_dist=True
         ax.set_ylabel('|EW|/V')
 
     print "Significance Test: \n Method: {0} \n {1} of {2} are significant"\
-          .format(method, len(PCs), len(EWs))
-    # ToDo: Besseres Verstaendnis fuer die Rolle negativer Korrelationen
-    return PCs
+          .format(method, pc_count-1, len(EWs))
+    return EWs[:pc_count]
 
 def EV_angles(EVs):
     # Do something

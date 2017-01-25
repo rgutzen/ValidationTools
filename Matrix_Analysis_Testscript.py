@@ -24,16 +24,18 @@ viziphant_path = '../INM6/Tasks/viziphant/plots/generic.py'
 vizi = imp.load_source('*', viziphant_path)
 
 
-#ToDo: Implement background correlation
-#ToDo: Complete matrix analysis methods
-#ToDo: What relative size of assemblies can still be detected?
-#ToDo: What differences in background and assembly correlation can be detected?
+# ToDo: Implement background correlation
+# ToDo: method takes also list of method strings
+# ToDo: Complete matrix analysis methods
+# ToDo: What relative size of assemblies can still be detected?
+# ToDo: What differences in background and assembly correlation can be detected?
+# ToDo: Write Annotations
 
 # Generate Spiketrains
-N = 100
+N = 30
 spiketrain_list = testdata.test_data(size=N, corr=.5, t_stop=100*ms,
-                                     rate=100*Hz, assembly_sizes=[],
-                                     method="CPP")
+                                     rate=100*Hz, assembly_sizes=[5],
+                                     method="CPP", bkgr_corr=.2)
 for i, st in enumerate(spiketrain_list):
     st.annotations['id'] = i
 
@@ -62,12 +64,12 @@ matstat.plot_matrix(corr_matrix, ax2)
 ax3 = fig.add_subplot(223)
 EWs, EVs = np.linalg.eig(corr_matrix)
 sEWs, sEVs = np.linalg.eig(surrogate_corr_matrix)
-matstat.eigenvalue_distribution(EWs, ax3, surrogate_EWs=sEWs)
+matstat.eigenvalue_distribution(EWs, ax3, surrogate_EWs=sEWs, binnum=40)
 matstat.pc_trafo(corr_matrix)
 
 # EW significance
 ax4 = fig.add_subplot(224)
-matstat.nbr_of_pcs(EWs, method='proportion', alpha=.05, ax=ax4)
+matstat.nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=ax4)
 matstat.redundancy(EWs)
 
 plt.show()
