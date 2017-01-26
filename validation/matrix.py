@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Toolbox for analyzing a correlation matrix.
 """
@@ -32,7 +33,7 @@ def corr_matrix(spiketrains, binsize=2*ms, corr_type='pearson'):
     t_lims = [(st.t_start, st.t_stop) for st in spiketrains]
     tmin = min(t_lims, key=lambda f: f[0])[0]
     tmax = max(t_lims, key=lambda f: f[1])[1]
-    if corr_type=='pearson':
+    if corr_type == 'pearson':
         binned_sts = BinnedSpikeTrain(spiketrains, binsize,
                                       t_start=tmin, t_stop=tmax)
         return corrcoef(binned_sts)
@@ -62,23 +63,23 @@ def plot_matrix(matrix, ax=plt.gca()):
     return None
 
 
-def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=15, surrogate_EWs=None):
+def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, surrogate_EWs=None):
     lmin = min(EWs)
     lmax = max(EWs)
-    print "\lambda_max = {max}\n\lambda_min = {min}"\
-          .format(max=lmax, min=lmin)
+    print "\n Eigenvalue distribution:" \
+          "\n\t EW_max = {:.2f}" \
+          "\n\t EW_min = {:.2f}"\
+          .format(lmax, lmin)
 
     edges = np.array([lmin + i*(lmax-lmin)/binnum for i in range(binnum+1)])
     EW_hist, edges = np.histogram(EWs, bins=edges, density=False)
     ax.bar(left=edges[:-1], height=EW_hist, width=edges[1]-edges[0], color='g')
 
     if surrogate_EWs != None:
-        # ToDo: Use custom surrogates as reference
         sEW_hist, __ = np.histogram(surrogate_EWs, bins=edges, density=False)
         ax.plot(edges[:-1] + (edges[1]-edges[0])/2., sEW_hist, color='r',
                 alpha=.5)
-        # ax.bar(left=edges[:-1], height=sEW_hist, width=edges[1]-edges[0],
-        #        alpha=.3, color='r')
+
         # y = 1
         # a = (1 - np.sqrt(y)) ** 2
         # b = (1 + np.sqrt(y)) ** 2
@@ -87,38 +88,42 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=15, surrogate_EWs=None):
         # xaxis = np.linspace(0, int(math.ceil(edges[-1])), 50)
         # ax.plot(xaxis, [marchenko_pastur(x) for x in xaxis], color='r')
     else:
-         # Reference to Random Correlation Matrix
+        # Reference to Random Correlation Matrix
         N = len(EWs)
         rand_matrix = np.random.rand(N, N) * 2. - 1
         corr_matrix = (rand_matrix + rand_matrix.T) / 2.
-        rand_EWs, __ = np.linalg.eig(corr_matrix)
+        surrogate_EWs, __ = np.linalg.eig(corr_matrix)
         # for i in range(N):
         #     corr_matrix[i,i] = 1.
-        maxl = max([abs(min(rand_EWs)), abs(max(rand_EWs))])
+        maxl = max([abs(min(surrogate_EWs)), abs(max(surrogate_EWs))])
         wigner_dist = lambda x: 2. / (np.pi*maxl**2) * np.sqrt(maxl**2-x**2)
         wigner_x = np.linspace(-maxl, maxl, 100, dtype=float)
         wigner_y = [wigner_dist(x) for x in wigner_x]
         ax.plot(wigner_x, wigner_y, color='r')
+
+    ax.set_xlabel('EW')
+    ax.set_ylabel('rel. occurence')
+    print "\t{} eigenvalues are larger than the reference distribution \n"\
+          .format(len(np.where(EWs > max(surrogate_EWs))[0]))
     return None
 
 
 def redundancy(EWs):
+    ### Measure of correlation of the matrix entries
+    ### For 0 correlation sum(EW^2)=N -> phi=0
+    ### For perfect correlation EW_1=N -> sum(EW^2)=N^2 -> phi=1
     N = len(EWs)
     phi = np.sqrt((np.sum(EWs**2)-N) / (N*(N-1)))
-    # sum(EW**2) ranges between N for no correlation to N^2 for perfect correlation
-    # For uniform random phi ~ 0.4
-    print "sum(EW^2) = {0} \n Redundancy = {1}".format(np.sum(EWs**2), phi)
+    print "\n Redundancy = {:.2f} \n".format(phi)
     return phi
 
-def total_variance(matrix):
-    # Do something
-    return Det, Tr, Tsq
 
 def nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True):
     EWs = np.sort(EWs)[::-1]
     total_v = np.sum(abs(EWs))
 
     if method == 'proportion':
+        ### How many EWs can explain (1-alpha)% of the total variance
         pc_count = 0
         cum_var = 0
         while cum_var <= (1-alpha) * total_v:
@@ -130,6 +135,7 @@ def nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True):
         pc_count = 0
 
     elif method == 'broken-stick':
+        ### Are EWs larger than the expected values of sorted random values
         N = len(EWs)
         series = [1. / (i+1) for i in range(N)]
         predictor = np.array([total_v / N * np.sum(series[k:])
@@ -137,9 +143,11 @@ def nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True):
         pc_count = np.where(EWs < predictor)[0][0]
 
     elif method == "average-root":
+        ### Are EWs larger than Tr(C)/N=1
         pc_count = np.where(EWs < 1)[0][0]
 
     elif method == "SCREE":
+        ### Which EWs are above a dent in the EW spectra
         # line from first to last EW
         # y = a*x + b
         a = - EWs[0] / len(EWs)
@@ -162,23 +170,50 @@ def nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True):
             current_distance = cut(pc_count)
 
     if show_dist:
-        mask = np.ones(len(EWs), np.bool)
-        mask[pc_count:] = 0
+        mask = np.zeros(len(EWs), np.bool)
+        mask[:pc_count] = 1
         ax.plot(np.arange(len(EWs)), abs(EWs)/total_v, color='r')
         ax.fill_between(np.arange(len(EWs)), abs(EWs) / total_v, 0,
                         where=mask, color='r', alpha=.4)
         ax.fill_between(np.arange(len(EWs)), abs(EWs) / total_v, 0,
                         where=np.logical_not(mask), color='r', alpha=.15)
         # ax.axhline(min(abs(PCs)) / total_v, 0, len(EWs), color='k', linestyle='--')
-        ax.set_ylabel('|EW|/V')
+        ax.set_xlabel('EW#')
+        ax.set_ylabel('rel. EW')
 
-    print "Significance Test: \n Method: {0} \n {1} of {2} are significant"\
-          .format(method, pc_count-1, len(EWs))
+    print "\n Significance Test: " \
+          "\n\t Method: {0} " \
+          "\n\t {1} of {2} eigenvalues are significant"\
+          .format(method, pc_count, len(EWs))
+
+    print "\n Princial components:"
+    print "\t"+"\n\t".join('{}: {:.2f}'
+                           .format(*pc) for pc in enumerate(EWs[:pc_count])) \
+          + "\n"
     return EWs[:pc_count]
 
-def EV_angles(EVs):
-    # Do something
+
+def EV_angles(EVs1, EVs2, deg=True):
+    ### K = U1' U2 U2' U1
+    ### EVs must be sorted; the angles are symetric in the EVs
+    # assert len(EVs1) == len(EVs2)
+    # UAUB = lambda A,B: np.dot(np.array(A), np.transpose(np.array(B)))
+    # K = np.dot(UAUB(EVs1,EVs2), UAUB(EVs2,EVs2))
+    # EWs, __ = np.linalg.eig(K)
+    # angles = np.arccos(np.sqrt(EWs))
+
+    angles = np.array([np.arccos(np.dot(ev1, ev2))
+                       for (ev1,ev2) in zip(EVs1, EVs2)])
+    if deg:
+        angles = angles * 180 / np.pi
+        unit = "°"
+    else:
+        unit = " rad"
+    print "\n Angles between the eigenspaces:" \
+          "\n\t" + "\n\t".join('{:.2f}{}'.format(a, unit) for a in angles)\
+          + "\n"
     return angles
+
 
 def eigenvectors(matrix, ax=plt.gca()):
     EWs, EVs = np.linalg.eig(matrix)

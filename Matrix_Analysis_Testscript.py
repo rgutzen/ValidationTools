@@ -23,19 +23,17 @@ testdata = imp.load_source('*', test_data_path)
 viziphant_path = '../INM6/Tasks/viziphant/plots/generic.py'
 vizi = imp.load_source('*', viziphant_path)
 
-
-# ToDo: Implement background correlation
 # ToDo: method takes also list of method strings
 # ToDo: Complete matrix analysis methods
 # ToDo: What relative size of assemblies can still be detected?
-# ToDo: What differences in background and assembly correlation can be detected?
+# ToDo: Background vs Assembly correlation
 # ToDo: Write Annotations
 
 # Generate Spiketrains
 N = 30
-spiketrain_list = testdata.test_data(size=N, corr=.5, t_stop=100*ms,
+spiketrain_list = testdata.test_data(size=N, corr=.2, t_stop=100*ms,
                                      rate=100*Hz, assembly_sizes=[5],
-                                     method="CPP", bkgr_corr=.2)
+                                     method="CPP", bkgr_corr=.05)
 for i, st in enumerate(spiketrain_list):
     st.annotations['id'] = i
 
@@ -50,28 +48,42 @@ corr_matrix = matstat.corr_matrix(spiketrain_list)
 # Generate Surrogate Correlation Matrix
 surrogate_corr_matrix = matstat.corr_matrix(surrogate_spiketrain_list)
 
-fig = plt.figure('Spiketrains', figsize=(8,8))
+
+fig, ax = plt.subplots(nrows=2, ncols=2)
+fig.tight_layout()
 
 # Rasterplot
-ax1 = fig.add_subplot(221)
-vizi.rasterplot(ax1, spiketrain_list)
+vizi.rasterplot(ax[0,0], spiketrain_list)
 
 # Heatmap
-ax2 = fig.add_subplot(222)
-matstat.plot_matrix(corr_matrix, ax2)
+matstat.plot_matrix(corr_matrix, ax[0,1])
 
 # EW Spectra
-ax3 = fig.add_subplot(223)
 EWs, EVs = np.linalg.eig(corr_matrix)
 sEWs, sEVs = np.linalg.eig(surrogate_corr_matrix)
-matstat.eigenvalue_distribution(EWs, ax3, surrogate_EWs=sEWs, binnum=40)
+matstat.eigenvalue_distribution(EWs, ax[1,0], surrogate_EWs=sEWs, binnum=40)
 matstat.pc_trafo(corr_matrix)
 
-# EW significance
-ax4 = fig.add_subplot(224)
-matstat.nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=ax4)
+# EW redundancy
 matstat.redundancy(EWs)
 
-plt.show()
+# EW significance
+PCs = matstat.nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=ax[1,1])
+pc_count = len(PCs)
 
+# Generate second dataset
+spiketrain_list = testdata.test_data(size=N, corr=.2, t_stop=100*ms,
+                                     rate=100*Hz, assembly_sizes=[5],
+                                     method="CPP", bkgr_corr=.05)
+corr_matrix = matstat.corr_matrix(spiketrain_list)
+EWs2, EVs2 = np.linalg.eig(corr_matrix)
 
+# Sort both sets of EVs
+EVs = np.array([ev for (ew,ev) in sorted(zip(EWs,EVs))[::-1]])
+EVs2 = np.array([ev for (ew,ev) in sorted(zip(EWs2,EVs2))[::-1]])
+
+# Angles between eigenspaces
+print sorted(EWs2)[::-1]
+matstat.EV_angles(EVs[:pc_count], EVs2[:pc_count])
+
+# plt.show()
