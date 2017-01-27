@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2e472702-85e4-422c-bc22-2b0cafeaf73a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Matrix_Analysis_Testscript.py" afterPath="$PROJECT_DIR$/Matrix_Analysis_Testscript.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/validation/matrix.py" afterPath="$PROJECT_DIR$/validation/matrix.py" />
     </list>
@@ -39,8 +38,8 @@
           <file leaf-file-name="matrix.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/validation/matrix.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="422">
-                  <caret line="205" column="50" lean-forward="false" selection-start-line="205" selection-start-column="50" selection-end-line="205" selection-end-column="50" />
+                <state relative-caret-position="468">
+                  <caret line="215" column="14" lean-forward="false" selection-start-line="215" selection-start-column="14" selection-end-line="215" selection-end-column="14" />
                   <folding>
                     <element signature="e#77#95#0" expanded="true" />
                   </folding>
@@ -69,8 +68,8 @@
               <file leaf-file-name="test_data.py" pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/validation/test_data.py">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="755">
-                      <caret line="58" column="53" lean-forward="true" selection-start-line="58" selection-start-column="53" selection-end-line="58" selection-end-column="53" />
+                    <state relative-caret-position="709">
+                      <caret line="55" column="55" lean-forward="true" selection-start-line="55" selection-start-column="55" selection-end-line="55" selection-end-column="55" />
                       <folding>
                         <element signature="e#9#27#0" expanded="true" />
                       </folding>
@@ -107,8 +106,8 @@
               <file leaf-file-name="Matrix_Analysis_Testscript.py" pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/Matrix_Analysis_Testscript.py">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="564">
-                      <caret line="84" column="24" lean-forward="true" selection-start-line="84" selection-start-column="24" selection-end-line="84" selection-end-column="24" />
+                    <state relative-caret-position="661">
+                      <caret line="86" column="0" lean-forward="false" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
                       <folding>
                         <element signature="e#0#18#0" expanded="true" />
                       </folding>
@@ -919,8 +918,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/validation/test_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="755">
-          <caret line="58" column="53" lean-forward="true" selection-start-line="58" selection-start-column="53" selection-end-line="58" selection-end-column="53" />
+        <state relative-caret-position="709">
+          <caret line="55" column="55" lean-forward="true" selection-start-line="55" selection-start-column="55" selection-end-line="55" selection-end-column="55" />
           <folding>
             <element signature="e#9#27#0" expanded="true" />
           </folding>
@@ -929,8 +928,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Matrix_Analysis_Testscript.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="564">
-          <caret line="84" column="24" lean-forward="true" selection-start-line="84" selection-start-column="24" selection-end-line="84" selection-end-column="24" />
+        <state relative-caret-position="661">
+          <caret line="86" column="0" lean-forward="false" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
@@ -939,8 +938,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/validation/matrix.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="422">
-          <caret line="205" column="50" lean-forward="false" selection-start-line="205" selection-start-column="50" selection-end-line="205" selection-end-column="50" />
+        <state relative-caret-position="468">
+          <caret line="215" column="14" lean-forward="false" selection-start-line="215" selection-start-column="14" selection-end-line="215" selection-end-column="14" />
           <folding>
             <element signature="e#77#95#0" expanded="true" />
           </folding>

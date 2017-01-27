@@ -83,7 +83,8 @@ EVs = np.array([ev for (ew,ev) in sorted(zip(EWs,EVs))[::-1]])
 EVs2 = np.array([ev for (ew,ev) in sorted(zip(EWs2,EVs2))[::-1]])
 
 # Angles between eigenspaces
-print sorted(EWs2)[::-1]
+# print sorted(EWs2)[::-1]
 matstat.EV_angles(EVs[:pc_count], EVs2[:pc_count])
+matstat.EV_angles(EVs2[:pc_count], EVs[:pc_count])
 
 # plt.show()
