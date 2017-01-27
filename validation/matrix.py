@@ -194,20 +194,15 @@ def nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True):
 
 
 def EV_angles(EVs1, EVs2, deg=True):
-    ### EVs must be sorted; the angles are symetric in the EVs
+    ### EVs must be sorted
     assert len(EVs1) == len(EVs2)
 
     N = len(EVs1)
     EV_angles = np.array([np.arccos(np.dot(ev1, ev2))
                           for (ev1, ev2) in zip(EVs1, EVs2)])
 
-    M = np.ones((N, N))
-    triu = np.triu_indices(N, 0)
-    M[triu] = np.array([np.dot(EVs1[u1], EVs2[u2])
-                        for (u1, u2) in zip(triu[0], triu[1])])
-    triu = np.triu_indices(N, 1)
-    M[triu[::-1]] = M[triu]
-    space_angle = np.arccos(np.sqrt(np.linalg.det(np.dot(M, M))))
+    M = np.dot(EVs1, np.transpose(EVs2))
+    space_angle = np.arccos(np.sqrt(np.linalg.det(np.dot(M, np.transpose(M)))))
 
     if deg:
         EV_angles *= 180 / np.pi
@@ -220,7 +215,7 @@ def EV_angles(EVs1, EVs2, deg=True):
           + "\n\t" + "\n\t".join('{:.2f}{}'.format(a, unit) for a in EV_angles)\
           + "\n" \
           + "Angle between eigenspaces:" \
-          + "\n\t {:.2f}{}".format(space_angle, unit)
+          + "\n\t{:.2f}{}".format(space_angle, unit)
     # ToDo: Understand the angle between spaces
     return EV_angles
 

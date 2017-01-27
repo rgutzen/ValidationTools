@@ -32,7 +32,7 @@ vizi = imp.load_source('*', viziphant_path)
 # Generate Spiketrains
 N = 30
 spiketrain_list = testdata.test_data(size=N, corr=.2, t_stop=100*ms,
-                                     rate=100*Hz, assembly_sizes=[5],
+                                     rate=100*Hz, assembly_sizes=[15],
                                      method="CPP", bkgr_corr=.05)
 for i, st in enumerate(spiketrain_list):
     st.annotations['id'] = i
@@ -71,9 +71,11 @@ matstat.redundancy(EWs)
 PCs = matstat.nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=ax[1,1])
 pc_count = len(PCs)
 
+
+
 # Generate second dataset
 spiketrain_list = testdata.test_data(size=N, corr=.2, t_stop=100*ms,
-                                     rate=100*Hz, assembly_sizes=[5],
+                                     rate=100*Hz, assembly_sizes=[15],
                                      method="CPP", bkgr_corr=.05)
 corr_matrix = matstat.corr_matrix(spiketrain_list)
 EWs2, EVs2 = np.linalg.eig(corr_matrix)
@@ -83,8 +85,6 @@ EVs = np.array([ev for (ew,ev) in sorted(zip(EWs,EVs))[::-1]])
 EVs2 = np.array([ev for (ew,ev) in sorted(zip(EWs2,EVs2))[::-1]])
 
 # Angles between eigenspaces
-# print sorted(EWs2)[::-1]
 matstat.EV_angles(EVs[:pc_count], EVs2[:pc_count])
-matstat.EV_angles(EVs2[:pc_count], EVs[:pc_count])
 
 # plt.show()
