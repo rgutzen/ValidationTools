@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import imp
 from elephant.spike_train_surrogates import *
 from quantities import Hz, ms
+from termcolor import colored, cprint
 
 COLLAB_PATH = '/home/robin/NeuroSim-Comparison-Tools'
 COLLAB_PATH_NEST = COLLAB_PATH + "/sim_data/NEST_data"
@@ -31,9 +32,9 @@ vizi = imp.load_source('*', viziphant_path)
 
 # Generate Spiketrains
 N = 30
-spiketrain_list = testdata.test_data(size=N, corr=.2, t_stop=100*ms,
-                                     rate=100*Hz, assembly_sizes=[15],
-                                     method="CPP", bkgr_corr=.05)
+spiketrain_list = testdata.test_data(size=N, corr=1, t_stop=100*ms,
+                                     rate=100*Hz, assembly_sizes=[15,5],
+                                     method="CPP", bkgr_corr=0)
 for i, st in enumerate(spiketrain_list):
     st.annotations['id'] = i
 
@@ -59,8 +60,8 @@ vizi.rasterplot(ax[0,0], spiketrain_list)
 matstat.plot_matrix(corr_matrix, ax[0,1])
 
 # EW Spectra
-EWs, EVs = np.linalg.eig(corr_matrix)
-sEWs, sEVs = np.linalg.eig(surrogate_corr_matrix)
+EWs, EVs = np.linalg.eigh(corr_matrix)
+sEWs, sEVs = np.linalg.eigh(surrogate_corr_matrix)
 matstat.eigenvalue_distribution(EWs, ax[1,0], surrogate_EWs=sEWs, binnum=40)
 matstat.pc_trafo(corr_matrix)
 
@@ -74,15 +75,25 @@ pc_count = len(PCs)
 
 
 # Generate second dataset
-spiketrain_list = testdata.test_data(size=N, corr=.2, t_stop=100*ms,
-                                     rate=100*Hz, assembly_sizes=[15],
-                                     method="CPP", bkgr_corr=.05)
+spiketrain_list = testdata.test_data(size=N, corr=.3, t_stop=100*ms,
+                                     rate=100*Hz, assembly_sizes=[15,5],
+                                     method="CPP", bkgr_corr=.01)
 corr_matrix = matstat.corr_matrix(spiketrain_list)
-EWs2, EVs2 = np.linalg.eig(corr_matrix)
+EWs2, EVs2 = np.linalg.eigh(corr_matrix)
 
 # Sort both sets of EVs
 EVs = np.array([ev for (ew,ev) in sorted(zip(EWs,EVs))[::-1]])
 EVs2 = np.array([ev for (ew,ev) in sorted(zip(EWs2,EVs2))[::-1]])
+
+def colorcode(v, min=0, max=1.):
+    colormap = ['grey','blue','cyan','magenta','red','yellow','white']
+    return colormap[int(np.ceil(abs(v)/max * (len(colormap)-1)))]
+
+print "\nPrinciple component vectors:"
+for i, ev in enumerate(EVs):
+    for e in ev:
+        cprint("{:+.2f}".format(e), colorcode(e), end=' ')
+    print " "
 
 # Angles between eigenspaces
 matstat.EV_angles(EVs[:pc_count], EVs2[:pc_count])

@@ -74,6 +74,7 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, surrogate_EWs=None):
     edges = np.array([lmin + i*(lmax-lmin)/binnum for i in range(binnum+1)])
     EW_hist, edges = np.histogram(EWs, bins=edges, density=False)
     ax.bar(left=edges[:-1], height=EW_hist, width=edges[1]-edges[0], color='g')
+    # ToDo: Fix -0.0 EW values to +0.0 in order to surpress complex outcomes?!
 
     if surrogate_EWs != None:
         sEW_hist, __ = np.histogram(surrogate_EWs, bins=edges, density=False)
@@ -102,7 +103,7 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, surrogate_EWs=None):
         ax.plot(wigner_x, wigner_y, color='r')
 
     ax.set_xlabel('EW')
-    ax.set_ylabel('rel. occurence')
+    ax.set_ylabel('Occurrence')
     print "\t{} eigenvalues are larger than the reference distribution \n"\
           .format(len(np.where(EWs > max(surrogate_EWs))[0]))
     return None
@@ -155,12 +156,14 @@ def nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True):
         # orthonogal connection from current EW to line
         # y_s = a_s*x_s + b_s
         a_s = - 1. / a
+
         def cut(pc_count):
             b_s = EWs[pc_count] - a_s*pc_count
             x_s = (b_s-b) / (a-a_s)
             y_s = (a*b_s - a_s*b) / (a-a_s)
             # distance from EW to line
             return np.sqrt((pc_count-x_s)**2 + (EWs[pc_count]-y_s)**2)
+
         pc_count = 0
         prev_distance = 0
         current_distance = cut(pc_count)
@@ -177,7 +180,6 @@ def nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True):
                         where=mask, color='r', alpha=.4)
         ax.fill_between(np.arange(len(EWs)), abs(EWs) / total_v, 0,
                         where=np.logical_not(mask), color='r', alpha=.15)
-        # ax.axhline(min(abs(PCs)) / total_v, 0, len(EWs), color='k', linestyle='--')
         ax.set_xlabel('EW#')
         ax.set_ylabel('rel. EW')
 
@@ -196,6 +198,9 @@ def nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True):
 def EV_angles(EVs1, EVs2, deg=True):
     ### EVs must be sorted
     assert len(EVs1) == len(EVs2)
+    for EV in [EVs1, EVs2]:
+        assert np.all(np.array([np.linalg.norm(ev) for ev in EV])) == 1.,\
+               "The eigenvectors are not normalized!"
 
     N = len(EVs1)
     EV_angles = np.array([np.arccos(np.dot(ev1, ev2))
@@ -226,4 +231,4 @@ def eigenvectors(matrix, ax=plt.gca()):
     # ToDo: by mapping the neurons along the largest eigenvectors
     return None
 
-# ToDo: Write annotations for functions
+# ToDo: Write annotations
