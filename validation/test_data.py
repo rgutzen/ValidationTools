@@ -24,8 +24,9 @@ def generate_assembly(size, corr, method, rate, t_stop):
 
     elif method == 'CPP':
         # "$corr of the neurons are pairwise correlated"
-        amp_dist = poisson(1).pmf(np.arange(size+1))
-        # amp_dist = np.zeros(size+1)
+        # amp_dist = poisson(1).pmf(np.arange(size+1))
+        amp_dist = np.zeros(size+1)
+        amp_dist[1] = 1 - corr
         amp_dist[size] = corr
         # amp_dist[:size] = [1./(m.e*m.factorial(k)) for k in range(size)]
         norm_factor = (1. - corr) / np.sum(amp_dist[:size])

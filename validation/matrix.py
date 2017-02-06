@@ -13,6 +13,7 @@ from quantities import Hz, ms
 from elephant.conversion import BinnedSpikeTrain
 from elephant.spike_train_correlation import corrcoef
 import neo
+from termcolor import colored, cprint
 # Seaborn is not included in the HBP environment
 import seaborn as sns
 sns.set(style='ticks', palette='Set2')
@@ -66,7 +67,7 @@ def plot_matrix(matrix, ax=plt.gca()):
 def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, surrogate_EWs=None):
     lmin = min(EWs)
     lmax = max(EWs)
-    print "\n Eigenvalue distribution:" \
+    print "\n\033[4mEigenvalue distribution:\033[0m" \
           "\n\t EW_max = {:.2f}" \
           "\n\t EW_min = {:.2f}"\
           .format(lmax, lmin)
@@ -115,7 +116,7 @@ def redundancy(EWs):
     ### For perfect correlation EW_1=N -> sum(EW^2)=N^2 -> phi=1
     N = len(EWs)
     phi = np.sqrt((np.sum(EWs**2)-N) / (N*(N-1)))
-    print "\n Redundancy = {:.2f} \n".format(phi)
+    print "\nRedundancy = {:.2f} \n".format(phi)
     return phi
 
 
@@ -183,16 +184,36 @@ def nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True):
         ax.set_xlabel('EW#')
         ax.set_ylabel('rel. EW')
 
-    print "\n Significance Test: " \
+    print "\n\033[4mSignificance Test:\033[0m" \
           "\n\t Method: {0} " \
           "\n\t {1} of {2} eigenvalues are significant"\
           .format(method, pc_count, len(EWs))
 
-    print "\n Princial components:"
+    print "\n\033[4mPrincial components:\033[0m"
     print "\t"+"\n\t".join('{}: {:.2f}'
                            .format(*pc) for pc in enumerate(EWs[:pc_count])) \
           + "\n"
     return EWs[:pc_count]
+
+
+def print_eigenvectors(EVs, EWs=[], min=0, max=1.,
+                       colormap=[90,90,94,92,93,91,96,95,97]):
+    colorcode = lambda v: int(np.ceil(abs(v) / max * (len(colormap) - 1)))
+
+    print "\n\033[4mEW:\033[0m   \033[4mEigenvectors:\033[0m ",
+    for c in colormap[1:]:
+        print "\033[{}m ".format(c+10),
+    print "\033[0m"
+
+    if len(EWs) == 0:
+        EWs = np.arange(len(EVs))
+
+    for i, ev in enumerate(EVs):
+        print "\033[47m\033[30m{:2.0f}:\033[0m ".format(EWs[i]),
+        for e in ev:
+            print "\033[{}m {:+.2f}".format(colormap[colorcode(e)], e),
+        print " "
+    return None
 
 
 def EV_angles(EVs1, EVs2, deg=True):
@@ -216,10 +237,10 @@ def EV_angles(EVs1, EVs2, deg=True):
     else:
         unit = " rad"
 
-    print "\nAngles between the eigenvectors:" \
+    print "\n\033[4mAngles between the eigenvectors:\033[0m" \
           + "\n\t" + "\n\t".join('{:.2f}{}'.format(a, unit) for a in EV_angles)\
-          + "\n" \
-          + "Angle between eigenspaces:" \
+          + "\n\n" \
+          + "\033[4mAngle between eigenspaces:\033[0m" \
           + "\n\t{:.2f}{}".format(space_angle, unit)
     # ToDo: Understand the angle between spaces
     return EV_angles
