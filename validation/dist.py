@@ -7,30 +7,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats as st
 # # Seaborn is not included in the HBP environment
-# import seaborn as sns
-# sns.set(style='ticks', palette='Set2')
-# sns.despine()
-
-# def add_subplot_axes(ax,rect,axisbg='w'):
-#     fig = plt.gcf()
-#     box = ax.get_position()
-#     width = box.width
-#     height = box.height
-#     inax_position = ax.transAxes.transform(rect[0:2])
-#     transFigure = fig.transFigure.inverted()
-#     infig_position = transFigure.transform(inax_position)
-#     x = infig_position[0]
-#     y = infig_position[1]
-#     width *= rect[2]
-#     height *= rect[3]  # <= Typo was here
-#     subax = fig.add_axes([x,y,width,height],axisbg=axisbg)
-#     x_labelsize = subax.get_xticklabels()[0].get_size()
-#     y_labelsize = subax.get_yticklabels()[0].get_size()
-#     x_labelsize *= rect[2]**0.5
-#     y_labelsize *= rect[3]**0.5
-#     subax.xaxis.set_tick_params(labelsize=x_labelsize)
-#     subax.yaxis.set_tick_params(labelsize=y_labelsize)
-#     return subax
+import seaborn as sns
+sns.set(style='ticks', palette='Set2')
+sns.despine()
+sns.set_color_codes('colorblind')
 
 def plot_comparison(dist1,dist2):
     binnum = len(dist1)
@@ -71,7 +51,7 @@ def KS_test(sample1, sample2,  show=True, xlabel='Measured Parameter'):
         ax = np.empty((2),dtype=object)
         ax[0] = fig.add_subplot(111)
         ax[1] = ax[0].twiny()
-        color = ['g', 'r']
+        color = ['r', 'g']
         for i, A in enumerate([sample1, sample2]):
             A_sorted = np.sort(A)
             A_sorted = A_sorted[np.isfinite(A_sorted)]
@@ -116,8 +96,10 @@ def KL_test(sample1, sample2, bins=10, excl_zeros=False, show=True, xlabel='a.u.
         sample1 = np.array(sample1)[np.isfinite(sample1)]
         sample2 = np.array(sample2)[np.isfinite(sample2)]
 
-        P, edges = np.histogram(sample1, bins=bins, normed=1)
-        Q, ____  = np.histogram(sample2, bins=edges, normed=1)
+        P, edges = np.histogram(sample1, bins=bins, density=True)
+        Q, ____  = np.histogram(sample2, bins=edges, density=True)
+        P *= np.diff(bins)[0]
+        Q *= np.diff(bins)[0]
 
     if excl_zeros:
         _init_len = len(P)
@@ -141,21 +123,21 @@ def KL_test(sample1, sample2, bins=10, excl_zeros=False, show=True, xlabel='a.u.
 
     if show:
         fig = plt.figure('KL-Test')
-        plt.ylabel('Probability Difference')
+        plt.ylabel('Probability Density')
         plt.xlabel(xlabel)
         ax = fig.add_subplot(111)
         xvalues = edges[:-1] + (edges[1]-edges[0])/2.
-        ax.plot(xvalues, P, lw=2, label='P')
-        ax.plot(xvalues, Q, lw=2, label='Q')
         diffy = P * np.log(P / Q.astype(float))
         fillx = np.append(np.append(xvalues[0],xvalues),xvalues[-1])
         filly = np.append(np.append(0.,diffy),0.)
         plt.fill(fillx, filly, color='LightGrey')
+        ax.plot(xvalues, P, lw=2, label='P', color='r')
+        ax.plot(xvalues, Q, lw=2, label='Q', color='g')
         plt.draw()
     return D_KL, D_KL_as
 
 
-def MWW_test(sample1, sample2, excl_nan=True):
+def MWW_test(sample1, sample2, excl_nan=True, show=True):
     """Mann-Whitney-Wilcoxon test
 
         Takes two sets of sample variables.
@@ -178,5 +160,22 @@ def MWW_test(sample1, sample2, excl_nan=True):
     print 'MWW-Test: \n', \
           'length 1 = {len1}; length 2 = {len2}; U = {U}; p value = {p}' \
           .format(len1=len(sample1), len2=len(sample2), U=U, p=pvalue)
+
+    if show:
+        ranks1 = [[sample, 1] for sample in sample1]
+        ranks2 = [[sample, 2] for sample in sample2]
+        ranks = ranks1 + ranks2
+        ranks = sorted(ranks, key=lambda e: e[0])
+        ranks = [[i, ranks[i][1]] for i in range(len(ranks))]
+        ranks1 = [rank[0] if rank[1]==1 else np.nan for rank in ranks]
+        ranks2 = [rank[0] if rank[1] == 2 else np.nan for rank in ranks]
+        fig = plt.figure('MWW-Test')
+        plt.ylabel('Rank')
+        ax = fig.add_subplot(111)
+        color = ['r', 'g']
+        for i, ranklist in enumerate([ranks1, ranks2]):
+            for rank in ranklist:
+                ax.axhline(rank, xmin=-1, xmax=1, lw=4, color=color[i])
+        plt.draw()
 
     return U, pvalue

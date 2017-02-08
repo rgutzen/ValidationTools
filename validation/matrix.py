@@ -75,7 +75,6 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, surrogate_EWs=None):
     edges = np.array([lmin + i*(lmax-lmin)/binnum for i in range(binnum+1)])
     EW_hist, edges = np.histogram(EWs, bins=edges, density=False)
     ax.bar(left=edges[:-1], height=EW_hist, width=edges[1]-edges[0], color='g')
-    # ToDo: Fix -0.0 EW values to +0.0 in order to surpress complex outcomes?!
 
     if surrogate_EWs != None:
         sEW_hist, __ = np.histogram(surrogate_EWs, bins=edges, density=False)

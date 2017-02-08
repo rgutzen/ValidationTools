@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 # Define path names
 
-COLLAB_PATH = '/home/robin/NeuroSim-Comparison-Tools'
+COLLAB_PATH = '/home/robin/Projects/ValidationTools'
 COLLAB_PATH_NEST = COLLAB_PATH + "/sim_data/NEST_data"
 COLLAB_PATH_SPINNAKER = COLLAB_PATH + "/sim_data/SpiNNaker_data"
 
@@ -74,16 +74,16 @@ for sts_SPINNAKER_layer in sts_SPINNAKER:
                                 [mean_firing_rate(st).rescale('Hz') for st in sts_SPINNAKER_layer[1]]))
 
 layers = ['L6', 'L5', 'L4', 'L2/3']
-fig = plt.figure('Rasterplot', figsize=(14, 8))
-ax = fig.add_subplot(1, 2, 1)
-plotting.plot_raster_pophist_rate(ax,
-                                  sts_NEST, pophist_NEST, mean_rate_NEST, binsize, N, \
-                                  layers, 'NEST', ['b', 'r'], 14)
-ax = fig.add_subplot(1, 2, 2)
-plotting.plot_raster_pophist_rate(ax,
-                                  sts_SPINNAKER, pophist_SPINNAKER, mean_rate_SPINNAKER, binsize, N, \
-                                  layers, 'SpiNNaker', ['g', 'y'], 14)
-plt.draw()
+# fig = plt.figure('Rasterplot', figsize=(14, 8))
+# ax = fig.add_subplot(1, 2, 1)
+# plotting.plot_raster_pophist_rate(ax,
+#                                   sts_NEST, pophist_NEST, mean_rate_NEST, binsize, N, \
+#                                   layers, 'NEST', ['b', 'r'], 14)
+# ax = fig.add_subplot(1, 2, 2)
+# plotting.plot_raster_pophist_rate(ax,
+#                                   sts_SPINNAKER, pophist_SPINNAKER, mean_rate_SPINNAKER, binsize, N, \
+#                                   layers, 'SpiNNaker', ['g', 'y'], 14)
+# plt.draw()
 # plt.close(fig)
 
 # Calculate CV and ISI
@@ -106,49 +106,28 @@ for idx_layer, (n_layer, s_layer) in enumerate(zip(cv_NEST, cv_Spinnaker)):
             if isinstance(si, np.ndarray):
                 cv_Spinnaker[idx_layer][idx][ii] = np.nan
 
-fig = plt.figure('ISI CV', figsize=(14, 10))
-hist_data = plotting.plot_distribution_comparison(cv_NEST, cv_Spinnaker, np.linspace(0, 1.5, 30),
-                                                 layers[::-1], ['NEST', 'SpiNNaker'], ['b', 'r'],
-                                                 ['g', 'y'], 20, (0, 1.5), (0, 0.25),
-                                                 'coefficient of variation (CV)'
-                                                 )
-plt.draw()
+# fig = plt.figure('ISI CV', figsize=(14, 10))
+# hist_data = plotting.plot_distribution_comparison(cv_NEST, cv_Spinnaker, np.linspace(0, 1.5, 30),
+#                                                  layers[::-1], ['NEST', 'SpiNNaker'], ['b', 'r'],
+#                                                  ['g', 'y'], 20, (0, 1.5), (0, 0.25),
+#                                                  'coefficient of variation (CV)'
+#                                                  )
+
+# plt.draw()
 # plt.close(fig)
 
 def statistical_testing(sample1,sample2):
     # KS Test:
-    stat.KS_test(cv_NEST[0][0], cv_Spinnaker[0][0])
+    stat.KS_test(sample1, sample2)
 
     # KL Test:
-    stat.KL_test(cv_NEST[0][0], cv_Spinnaker[0][0], bins=np.linspace(0, 1.5, 30), excl_zeros=True)
-    stat.KL_test(hist_data[0][0][0], hist_data[1][0][0], excl_zeros=True)
+    stat.KL_test(sample1, sample2, bins=np.linspace(0, 1.5, 30), excl_zeros=True)
 
     # MWW Test:
-    stat.MWW_test(cv_NEST[0][0], cv_Spinnaker[0][0], excl_nan=True)
+    stat.MWW_test(sample1, sample2, excl_nan=True)
     return None
 
-# Calculate the pearson correlation coefficient
 
-# corr_NEST = []
-# corr_Spinnaker = []
-# binsize = 2 * pq.ms
-# bins_histogram = np.linspace(-0.03, 0.03, 100)
-#
-# for sts_NEST_layer in sts_NEST:
-#     binned_st = (BinnedSpikeTrain(sts_NEST_layer[0], binsize),
-#                  BinnedSpikeTrain(sts_NEST_layer[1], binsize))
-#     corr_mat = (corrcoef(binned_st[0]), corrcoef(binned_st[1]))
-#     corr_NEST.append((corr_mat[0][np.triu_indices(len(corr_mat[0]), 1)],
-#                       corr_mat[1][np.triu_indices(len(corr_mat[1]), 1)]))
-#
-# for sts_spinnaker_layer in sts_SPINNAKER:
-#     binned_st = (BinnedSpikeTrain(sts_spinnaker_layer[0], binsize),
-#                  BinnedSpikeTrain(sts_spinnaker_layer[1], binsize))
-#     corr_mat = (corrcoef(binned_st[0]), corrcoef(binned_st[1]))
-#     corr_Spinnaker.append((corr_mat[0][np.triu_indices(len(corr_mat[0]), 1)],
-#                            corr_mat[1][np.triu_indices(len(corr_mat[1]), 1)]))
-#
-# fig = plt.figure('Correlation', figsize = (14,10))
-# plotting.plot_distribution_comparison(corr_NEST,corr_Spinnaker,bins_histogram,layers[::-1],['NEST','SpiNNaker'],
-#                  ['b','r'],['g','y'],20,(-0.05,0.05),(0,0.1),'Pearson corr. coef.')
+
+statistical_testing(cv_NEST[1][0],cv_Spinnaker[1][0])
 plt.show()

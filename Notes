@@ -1,0 +1,63 @@
+
+### ToDo ###
+
++ Improve dist code (graphs)
++ Debug/Understand eigenvectors
++ Implement CuBIC
++ Implement Oszillations analysis
++ Write function annotations
++ Create test case with Brunel network
++ Run test validation for different network parameters
+> Develop useful to_file function
+> Create Jupyter Interface
+> Adapt code for collab packages
+
+### ORGANIZATIONAL CONSTRUCT ###
+
+* METHODS
+
+    Distribution Comparisons
+    Correlation Matrix
+    Oszillations
+    Graphs
+
+* IMPLEMENTATION
+
+    Toolbox
+        validation  -> dist
+                    -> matrix
+                    -> test_data
+    Jupyter Interface
+    => Collab
+    => Elephant
+
+* WORKFLOW
+
+    Determine the focus of usage
+        z.B:        Neuroscience
+                    Deep Learning
+                    Simulation
+                    Experiment Data
+
+    Test against    Neuron model
+                    Spike Loss
+                    Time steps
+                    Numerical Integration
+                    Network Model
+                    Reference (given by different architecture/hardware)
+                    ...
+
+    Specifiy Test by giving reference/precision/parameters
+
+    Reference:     Brainscales Modelle Comparison
+                    Universalreference exact NEST?
+                    Create reference by regarding distribution of test results
+
+    Additional measures by user
+
+* USE CASES
+
+    NEST vs SpiNNaker
+    Brunel network with different solver/ time step/ precsise
+        > Nest website
+    SpiNNaker Izhekevich exact vs inexact
