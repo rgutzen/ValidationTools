@@ -63,7 +63,6 @@ def KS_test(sample1, sample2,  show=True, xlabel='Measured Parameter'):
             plt.draw()
     return D_KS, pvalue
 
-
 def KL_test(sample1, sample2, bins=10, excl_zeros=False, show=True, xlabel='a.u.'):
     """Kullback-Leibner Divergence D_KL(P||Q)
 

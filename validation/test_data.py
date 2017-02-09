@@ -43,11 +43,15 @@ def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[1],
               bkgr_corr=0., sorted=False):
 
     spiketrains = [None] * size
+    if not type(corr) == list:
+        corr = [corr] * len(assembly_sizes)
+    elif len(corr) == 1:
+        corr *= len(assembly_sizes)
 
     for i, a_size in enumerate(assembly_sizes):
         generated_sts = int(np.sum(assembly_sizes[:i]))
         spiketrains[generated_sts:generated_sts+a_size]\
-            = generate_assembly(a_size, corr, method, rate, t_stop)
+            = generate_assembly(a_size, corr[i], method, rate, t_stop)
 
     if bkgr_corr > 0:
         bkgr_size = size-sum(assembly_sizes)+1
@@ -59,7 +63,6 @@ def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[1],
         spiketrains[np.sum(assembly_sizes):] \
             = np.array([HPP(rate=rate, t_stop=t_stop)
                         for x in range(size-sum(assembly_sizes))])
-    # Background Correlation
     return spiketrains
 
 

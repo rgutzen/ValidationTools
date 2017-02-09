@@ -128,6 +128,5 @@ def statistical_testing(sample1,sample2):
     return None
 
 
-
 statistical_testing(cv_NEST[1][0],cv_Spinnaker[1][0])
 plt.show()

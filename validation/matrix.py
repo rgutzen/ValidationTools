@@ -102,11 +102,12 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, surrogate_EWs=None):
         wigner_y = [wigner_dist(x) for x in wigner_x]
         ax.plot(wigner_x, wigner_y, color='r')
 
+    nbr_of_significant_ew = len(np.where(EWs > max(surrogate_EWs))[0])
     ax.set_xlabel('EW')
     ax.set_ylabel('Occurrence')
     print "\t{} eigenvalues are larger than the reference distribution \n"\
-          .format(len(np.where(EWs > max(surrogate_EWs))[0]))
-    return None
+          .format(nbr_of_significant_ew)
+    return nbr_of_significant_ew
 
 
 def redundancy(EWs):
@@ -207,27 +208,29 @@ def print_eigenvectors(EVs, EWs=[], min=0, max=1.,
     if len(EWs) == 0:
         EWs = np.arange(len(EVs))
 
-    for i, ev in enumerate(EVs):
-        print "\033[47m\033[30m{:2.0f}:\033[0m ".format(EWs[i]),
-        for e in ev:
-            print "\033[{}m {:+.2f}".format(colormap[colorcode(e)], e),
+    for i, EV in enumerate(EVs.T[::-1]):
+        print "\033[47m\033[30m{:3.1f}:\033[0m\t".format(EWs[-(i+1)]),
+        np.testing.assert_almost_equal(np.linalg.norm(EV), 1., decimal=7)
+        for n_coord in EV:
+            print "\033[{}m {:+.2f}"\
+                .format(colormap[colorcode(n_coord)], n_coord),
         print " "
     return None
 
 
 def EV_angles(EVs1, EVs2, deg=True):
-    ### EVs must be sorted
+    ### EVs must be sorted in ascending order as returned by scipy.linalg.eigh()
     assert len(EVs1) == len(EVs2)
-    for EV in [EVs1, EVs2]:
-        assert np.all(np.array([np.linalg.norm(ev) for ev in EV])) == 1.,\
-               "The eigenvectors are not normalized!"
+    # Transform into descending array of the eigenvector arrays
+    EVs1 = np.absolute(EVs1.T[::-1])
+    EVs2 = np.absolute(EVs2.T[::-1])
+    for EVs in [EVs1, EVs2]:
+        for EV in EVs:
+            np.testing.assert_almost_equal(np.linalg.norm(EV), 1., decimal=7)
 
-    N = len(EVs1)
-    EV_angles = np.array([np.arccos(np.dot(ev1, ev2))
-                          for (ev1, ev2) in zip(EVs1, EVs2)])
-
-    M = np.dot(EVs1, np.transpose(EVs2))
-    space_angle = np.arccos(np.sqrt(np.linalg.det(np.dot(M, np.transpose(M)))))
+    M = np.dot(EVs1, EVs2.T)
+    EV_angles = np.arccos(np.diag(M))
+    space_angle = np.arccos(np.sqrt(np.linalg.det(np.dot(M, M.T))))
 
     if deg:
         EV_angles *= 180 / np.pi

@@ -2,10 +2,17 @@
 ### ToDo ###
 
 + Improve dist code (graphs)
-+ Debug/Understand eigenvectors
++ Add Cramer-von-Mises-Test
++ Calculate corrcoef distribution
+  and run test down to which mean corrcoef
+  assemblies can be identified
++ Shuffle spiketrains before analysis and
+  and try to resort them in reasonable groups
+  (i.e) in groups whereto the largest eigenvectors point
 + Implement CuBIC
-+ Implement Oszillations analysis
++ Implement oszillations analysis
 + Write function annotations
++ Install and run NEST
 + Create test case with Brunel network
 + Run test validation for different network parameters
 > Develop useful to_file function
