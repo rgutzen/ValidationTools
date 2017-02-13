@@ -4,7 +4,7 @@
     <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredPackages">
         <value>
-          <list size="51">
+          <list size="52">
             <item index="0" class="java.lang.String" itemvalue="bbp-services" />
             <item index="1" class="java.lang.String" itemvalue="PyNEST" />
             <item index="2" class="java.lang.String" itemvalue="bbp-client" />
@@ -56,6 +56,7 @@
             <item index="48" class="java.lang.String" itemvalue="matplotlib" />
             <item index="49" class="java.lang.String" itemvalue="pytz" />
             <item index="50" class="java.lang.String" itemvalue="numexpr" />
+            <item index="51" class="java.lang.String" itemvalue="enum34" />
           </list>
         </value>
       </option>

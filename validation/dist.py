@@ -18,12 +18,11 @@ def plot_comparison(dist1,dist2):
     fig = plt.figure('Distribution Comparison')
     plt.plot(bins[:-1], dist1, color='g', lw=2, label='dist1')
     plt.plot(bins[:-1], dist2, color='y', lw=2, label='dist2')
-    D_KS, p_value = st.ks_2samp(dist1, dist2)
     plt.draw()
-    # do sth.
     return None
 
-def KS_test(sample1, sample2,  show=True, xlabel='Measured Parameter'):
+
+def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter'):
     """Kolmogorov-Smirnov two-sample test
 
        Takes two sets of sample variables of possibly different size.
@@ -40,30 +39,29 @@ def KS_test(sample1, sample2,  show=True, xlabel='Measured Parameter'):
     sample2 = np.array(sample2)[np.isfinite(sample2)]
 
     D_KS, pvalue = st.ks_2samp(sample1, sample2)
-    print 'KS-Test: \n', \
-          'length 1 = {len1}; length 2 = {len2}; D_KS = {Dks}; p value = {p}' \
-          .format(len1=len(sample1), len2=len(sample2), Dks=D_KS, p=pvalue)
+    print "\n\033[4mKolmogorov-Smirnov-Distance\033[0m" \
+        + "\n\tlength 1 = {} \t length 2 = {}" \
+          .format(len(sample1), len(sample2)) \
+        + "\n\tD_KS = {:.2f} \t p value = {:.2f}\n" \
+          .format(D_KS, pvalue)
 
-    if show:
-        fig = plt.figure('KS-Test')
-        plt.ylabel('CDF')
-        plt.xlabel(xlabel)
-        ax = np.empty((2),dtype=object)
-        ax[0] = fig.add_subplot(111)
-        ax[1] = ax[0].twiny()
+    if ax:
+        ax.set_ylabel('CDF')
+        ax.set_xlabel(xlabel)
+        ax = [ax, ax.twiny()]
         color = ['r', 'g']
         for i, A in enumerate([sample1, sample2]):
             A_sorted = np.sort(A)
             A_sorted = A_sorted[np.isfinite(A_sorted)]
-            CDF = np.array(range(len(A))) / float(len(A))
+            CDF = np.arange(len(A)) / float(len(A)-1)
             ax[i].plot(A_sorted, CDF, color=color[i])
             ax[i].set_xticks(A_sorted)
             ax[i].set_xticklabels([''] * len(A_sorted))
-            ax[i].tick_params(axis='x', length=15, color=color[i])
-            plt.draw()
+            ax[i].tick_params(axis='x', length=10, color=color[i])
     return D_KS, pvalue
 
-def KL_test(sample1, sample2, bins=10, excl_zeros=False, show=True, xlabel='a.u.'):
+
+def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None, xlabel='a.u.'):
     """Kullback-Leibner Divergence D_KL(P||Q)
 
        Takes two normed discrete distributions. Or two data sets from which
@@ -82,23 +80,23 @@ def KL_test(sample1, sample2, bins=10, excl_zeros=False, show=True, xlabel='a.u.
             return True
         return False
 
-    print 'KL-Test:'
+    print '\n\033[4mKullback-Leidler-Divergence\033[0m'
     if isdist(sample1) and isdist(sample2):
-        print 'Interpreting input as distribution...'
+        print '\tInterpreting input as distribution...'
         P = sample1
         Q = sample2
         edges = np.linspace(0, len(P), len(P)+1)
         edges -= len(P)/2.
     else:
-        print 'Interpreting input as data sample...'
+        print '\tInterpreting input as data sample...'
         # filtering out nans
         sample1 = np.array(sample1)[np.isfinite(sample1)]
         sample2 = np.array(sample2)[np.isfinite(sample2)]
 
         P, edges = np.histogram(sample1, bins=bins, density=True)
-        Q, ____  = np.histogram(sample2, bins=edges, density=True)
-        P *= np.diff(bins)[0]
-        Q *= np.diff(bins)[0]
+        Q, _____ = np.histogram(sample2, bins=edges, density=True)
+        P *= np.diff(edges)[0]
+        Q *= np.diff(edges)[0]
 
     if excl_zeros:
         _init_len = len(P)
@@ -109,34 +107,35 @@ def KL_test(sample1, sample2, bins=10, excl_zeros=False, show=True, xlabel='a.u.
         edges = np.linspace(0, len(P), len(P)+1)
         edges -= len(P)/2.
         _final_len = len(P)
-        print '{0} zero values have been discarded.'\
-              .format(_init_len - _final_len)
+        discard = _init_len - _final_len
+        print '\t{} zero value{} have been discarded.'\
+              .format(discard, "s" if discard-1 else "")
     else:
         if np.where(Q == 0.)[0].size:
             raise ValueError('Q must not have zero values!')
     D_KL = st.entropy(P, Q)
     D_KL_as = st.entropy(Q, P)
 
-    print 'D_KL(P||Q) = {Dkl}; D_KL(Q||P) = {Dkla}' \
-          .format(Dkl=D_KL, Dkla=D_KL_as)
+    print '\tD_KL(P||Q) = {:.2f}\n\tD_KL(Q||P) = {:.2f}\n' \
+          .format(D_KL, D_KL_as)
 
-    if show:
-        fig = plt.figure('KL-Test')
-        plt.ylabel('Probability Density')
-        plt.xlabel(xlabel)
-        ax = fig.add_subplot(111)
-        xvalues = edges[:-1] + (edges[1]-edges[0])/2.
+    if ax:
+        ax.set_ylabel('Probability Density')
+        ax.set_xlabel(xlabel)
+        dx = edges[1]-edges[0]
+        xvalues = edges + dx/2.
+        xvalues = np.append(edges[0]-dx, xvalues)
         diffy = P * np.log(P / Q.astype(float))
-        fillx = np.append(np.append(xvalues[0],xvalues),xvalues[-1])
-        filly = np.append(np.append(0.,diffy),0.)
-        plt.fill(fillx, filly, color='LightGrey')
+        P = np.append(np.append(0, P), 0)
+        Q = np.append(np.append(0, Q), 0)
+        filly = np.append(np.append(0., diffy), 0.)
+        ax.fill_between(xvalues, filly, 0,  color='LightGrey')
         ax.plot(xvalues, P, lw=2, label='P', color='r')
         ax.plot(xvalues, Q, lw=2, label='Q', color='g')
-        plt.draw()
     return D_KL, D_KL_as
 
 
-def MWW_test(sample1, sample2, excl_nan=True, show=True):
+def MWU_test(sample1, sample2, excl_nan=True, ax=None):
     """Mann-Whitney-Wilcoxon test
 
         Takes two sets of sample variables.
@@ -156,11 +155,13 @@ def MWW_test(sample1, sample2, excl_nan=True, show=True):
 
     U, pvalue = st.mannwhitneyu(sample1, sample2, alternative='two-sided')
 
-    print 'MWW-Test: \n', \
-          'length 1 = {len1}; length 2 = {len2}; U = {U}; p value = {p}' \
-          .format(len1=len(sample1), len2=len(sample2), U=U, p=pvalue)
+    print "\n\033[4mMann-Whitney-U-Test\033[0m" \
+        + "\n\tlength 1 = {} \t length 2 = {}" \
+          .format(len(sample1), len(sample2)) \
+        + "\n\tU = {:.2f} \t\t p value = {:.2f}" \
+          .format(U, pvalue)
 
-    if show:
+    if ax:
         ranks1 = [[sample, 1] for sample in sample1]
         ranks2 = [[sample, 2] for sample in sample2]
         ranks = ranks1 + ranks2
@@ -168,13 +169,11 @@ def MWW_test(sample1, sample2, excl_nan=True, show=True):
         ranks = [[i, ranks[i][1]] for i in range(len(ranks))]
         ranks1 = [rank[0] if rank[1]==1 else np.nan for rank in ranks]
         ranks2 = [rank[0] if rank[1] == 2 else np.nan for rank in ranks]
-        fig = plt.figure('MWW-Test')
-        plt.ylabel('Rank')
-        ax = fig.add_subplot(111)
+        ax.set_ylabel('Rank')
+        ax.tick_params(axis='x', which='both', bottom='off', top='off',
+                       labelbottom='off')
         color = ['r', 'g']
         for i, ranklist in enumerate([ranks1, ranks2]):
             for rank in ranklist:
                 ax.axhline(rank, xmin=-1, xmax=1, lw=4, color=color[i])
-        plt.draw()
-
     return U, pvalue

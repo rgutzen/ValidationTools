@@ -7,13 +7,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats as st
 import contextlib
-import pandas as pd
-import math
 from quantities import Hz, ms
 from elephant.conversion import BinnedSpikeTrain
 from elephant.spike_train_correlation import corrcoef
 import neo
-from termcolor import colored, cprint
 # Seaborn is not included in the HBP environment
 import seaborn as sns
 sns.set(style='ticks', palette='Set2')
@@ -68,8 +65,8 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, surrogate_EWs=None):
     lmin = min(EWs)
     lmax = max(EWs)
     print "\n\033[4mEigenvalue distribution:\033[0m" \
-          "\n\t EW_max = {:.2f}" \
-          "\n\t EW_min = {:.2f}"\
+          "\n\tEW_max = {:.2f}" \
+          "\n\tEW_min = {:.2f}"\
           .format(lmax, lmin)
 
     edges = np.array([lmin + i*(lmax-lmin)/binnum for i in range(binnum+1)])
@@ -120,7 +117,7 @@ def redundancy(EWs):
     return phi
 
 
-def nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True):
+def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True):
     EWs = np.sort(EWs)[::-1]
     total_v = np.sum(abs(EWs))
 
@@ -168,7 +165,8 @@ def nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True):
         pc_count = 0
         prev_distance = 0
         current_distance = cut(pc_count)
-        while current_distance >= prev_distance:
+        while current_distance >= prev_distance \
+          and pc_count < len(EWs)-1:
             pc_count += 1
             prev_distance = current_distance
             current_distance = cut(pc_count)
@@ -193,7 +191,7 @@ def nbr_of_pcs(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True):
     print "\t"+"\n\t".join('{}: {:.2f}'
                            .format(*pc) for pc in enumerate(EWs[:pc_count])) \
           + "\n"
-    return EWs[:pc_count]
+    return pc_count
 
 
 def print_eigenvectors(EVs, EWs=[], min=0, max=1.,
@@ -205,7 +203,7 @@ def print_eigenvectors(EVs, EWs=[], min=0, max=1.,
         print "\033[{}m ".format(c+10),
     print "\033[0m"
 
-    if len(EWs) == 0:
+    if not len(EWs):
         EWs = np.arange(len(EVs))
 
     for i, EV in enumerate(EVs.T[::-1]):
@@ -239,19 +237,44 @@ def EV_angles(EVs1, EVs2, deg=True):
     else:
         unit = " rad"
 
-    print "\n\033[4mAngles between the eigenvectors:\033[0m" \
+    print "\n\033[4mAngles between the eigenvectors\033[0m" \
           + "\n\t" + "\n\t".join('{:.2f}{}'.format(a, unit) for a in EV_angles)\
           + "\n\n" \
-          + "\033[4mAngle between eigenspaces:\033[0m" \
+          + "\033[4mAngle between eigenspaces\033[0m" \
           + "\n\t{:.2f}{}".format(space_angle, unit)
     # ToDo: Understand the angle between spaces
     return EV_angles
 
 
-def eigenvectors(matrix, ax=plt.gca()):
-    EWs, EVs = np.linalg.eig(matrix)
-    # ToDo: Sort the Correlation Matrix according to pairwise correlation strength
-    # ToDo: by mapping the neurons along the largest eigenvectors
+def detect_assemblies(EVs, EWs, detect_by='eigenvalue'):
+    EVs = np.absolute(EVs.T[::-1])
+    EWs = EWs[::-1]
+    if type(detect_by)==int:
+        th = detect_by
+    else:
+        th = 0
+    i = 0
+    while EWs[i] > 2:
+        if th:
+            n_ids = np.where(EVs[i] > th)[0]
+            size = len(n_ids)
+        else:
+            size = int(np.ceil(EWs[i]))
+            n_ids = np.argpartition(EVs[i], -size)[-size:]
+
+        n_ids = n_ids[np.argsort(EVs[i][n_ids])][::-1]
+
+        print "\033[4mAssembly {}, eigenvalue {:.2f}, size {}\033[0m"\
+              .format(i+1, EWs[i], size)
+        print "Neuron ID:\t",
+        for n in n_ids:
+            print "{:2.0f}\t\t".format(n),
+        print "\tNorm"
+        print "Portion:\t",
+        for n in n_ids:
+            print "{:.2f}\t".format(EVs[i][n]),
+        print "\t{:.2f}".format(np.linalg.norm(EVs[i][n_ids]))
+        i += 1
     return None
 
 # ToDo: Write annotations

@@ -11,6 +11,28 @@ from scipy.stats import poisson
 import neo
 import math as m
 
+def load_data(path, file_name_list, N):
+    # Load NEST or SpiNNaker data using NeoHdf5IO
+    spike_train_list = []
+    for file_name in file_name_list:
+        # exc. and inh. as tuples, layerwise
+        nest_data_path_exc = '/' + file_name + 'E.h5'
+        nest_data_path_inh = '/' + file_name + 'I.h5'
+        data = (neo.io.NeoHdf5IO(path + nest_data_path_exc),
+                neo.io.NeoHdf5IO(path + nest_data_path_inh))
+        spiketrains = (data[0].read_block().list_children_by_class(neo.SpikeTrain),
+                       data[1].read_block().list_children_by_class(neo.SpikeTrain))
+        tstart = spiketrains[0][0].t_start
+        tstop = spiketrains[0][0].t_stop
+        unit = spiketrains[0][0].units
+        # if the recorded spiketrains are less than number of samples
+        for spiketrain in spiketrains:
+            while len(spiketrain) < N:
+                spiketrain.append(neo.SpikeTrain([] * unit, t_start=tstart, t_stop=tstop))
+            del spiketrain[N:]
+        spike_train_list.append(spiketrains)
+    return spike_train_list
+
 
 def generate_assembly(size, corr, method, rate, t_stop):
     if method == 'SIP':
