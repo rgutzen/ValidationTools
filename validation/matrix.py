@@ -61,7 +61,8 @@ def plot_matrix(matrix, ax=plt.gca()):
     return None
 
 
-def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, surrogate_EWs=None):
+def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, surrogate_EWs=[],
+                            color='g'):
     lmin = min(EWs)
     lmax = max(EWs)
     print "\n\033[4mEigenvalue distribution:\033[0m" \
@@ -71,11 +72,12 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, surrogate_EWs=None):
 
     edges = np.array([lmin + i*(lmax-lmin)/binnum for i in range(binnum+1)])
     EW_hist, edges = np.histogram(EWs, bins=edges, density=False)
-    ax.bar(left=edges[:-1], height=EW_hist, width=edges[1]-edges[0], color='g')
+    ax.bar(left=edges[:-1], height=EW_hist, width=edges[1]-edges[0],
+           color=color)
 
-    if surrogate_EWs != None:
+    if len(surrogate_EWs):
         sEW_hist, __ = np.histogram(surrogate_EWs, bins=edges, density=False)
-        ax.plot(edges[:-1] + (edges[1]-edges[0])/2., sEW_hist, color='r',
+        ax.plot(edges[:-1] + (edges[1]-edges[0])/2., sEW_hist, color='k',
                 alpha=.5)
 
         # y = 1
@@ -183,8 +185,8 @@ def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=T
         ax.set_ylabel('rel. EW')
 
     print "\n\033[4mSignificance Test:\033[0m" \
-          "\n\t Method: {0} " \
-          "\n\t {1} of {2} eigenvalues are significant"\
+          "\n\tMethod: {0} " \
+          "\n\t{1} of {2} eigenvalues are significant"\
           .format(method, pc_count, len(EWs))
 
     print "\n\033[4mPrincial components:\033[0m"
@@ -194,25 +196,27 @@ def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=T
     return pc_count
 
 
-def print_eigenvectors(EVs, EWs=[], min=0, max=1.,
-                       colormap=[90,90,94,92,93,91,96,95,97]):
-    colorcode = lambda v: int(np.ceil(abs(v) / max * (len(colormap) - 1)))
+def print_eigenvectors(EVs, EWs=[], pc_count=0, colormap=[90,90,94,92,93,91,96,95,97]):
+    colorcode = lambda v: int(abs(v) * len(colormap))
 
     print "\n\033[4mEW:\033[0m   \033[4mEigenvectors:\033[0m ",
     for c in colormap[1:]:
-        print "\033[{}m ".format(c+10),
+        print "\033[{}m \033[0m".format(c+10),
     print "\033[0m"
+
+    if not pc_count:
+        pc_count = len(EVs)
 
     if not len(EWs):
         EWs = np.arange(len(EVs))
 
-    for i, EV in enumerate(EVs.T[::-1]):
-        print "\033[47m\033[30m{:3.1f}:\033[0m\t".format(EWs[-(i+1)]),
+    for i, EV in enumerate(EVs.T[:-pc_count:-1]):
+        print "\033[47m{:3.1f}:\033[0m\t".format(EWs[-(i+1)]),
         np.testing.assert_almost_equal(np.linalg.norm(EV), 1., decimal=7)
         for n_coord in EV:
-            print "\033[{}m {:+.2f}"\
+            print "\033[{}m {:+.2f}\033[0m"\
                 .format(colormap[colorcode(n_coord)], n_coord),
-        print " "
+        print "\033[0m"
     return None
 
 
@@ -246,10 +250,10 @@ def EV_angles(EVs1, EVs2, deg=True):
     return EV_angles
 
 
-def detect_assemblies(EVs, EWs, detect_by='eigenvalue'):
+def detect_assemblies(EVs, EWs, detect_by='eigenvalue', jupyter=False):
     EVs = np.absolute(EVs.T[::-1])
     EWs = EWs[::-1]
-    if type(detect_by)==int:
+    if type(detect_by) == float:
         th = detect_by
     else:
         th = 0
@@ -268,12 +272,12 @@ def detect_assemblies(EVs, EWs, detect_by='eigenvalue'):
               .format(i+1, EWs[i], size)
         print "Neuron ID:\t",
         for n in n_ids:
-            print "{:2.0f}\t\t".format(n),
+            print "{:2.0f}{}\t".format(n, "" if jupyter else "\t"),
         print "\tNorm"
         print "Portion:\t",
         for n in n_ids:
             print "{:.2f}\t".format(EVs[i][n]),
-        print "\t{:.2f}".format(np.linalg.norm(EVs[i][n_ids]))
+        print "\t{:.2f}\n".format(np.linalg.norm(EVs[i][n_ids]))
         i += 1
     return None
 

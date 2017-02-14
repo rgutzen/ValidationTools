@@ -6,6 +6,7 @@ Input is respectively two data arrays of arbitrary length.
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats as st
+import math as m
 # # Seaborn is not included in the HBP environment
 import seaborn as sns
 sns.set(style='ticks', palette='Set2')
@@ -113,8 +114,8 @@ def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None, xlabel='a.u.'):
     else:
         if np.where(Q == 0.)[0].size:
             raise ValueError('Q must not have zero values!')
-    D_KL = st.entropy(P, Q)
-    D_KL_as = st.entropy(Q, P)
+    D_KL = st.entropy(P, Q, base=2)
+    D_KL_as = st.entropy(Q, P, base=2)
 
     print '\tD_KL(P||Q) = {:.2f}\n\tD_KL(Q||P) = {:.2f}\n' \
           .format(D_KL, D_KL_as)
@@ -158,22 +159,32 @@ def MWU_test(sample1, sample2, excl_nan=True, ax=None):
     print "\n\033[4mMann-Whitney-U-Test\033[0m" \
         + "\n\tlength 1 = {} \t length 2 = {}" \
           .format(len(sample1), len(sample2)) \
-        + "\n\tU = {:.2f} \t\t p value = {:.2f}" \
+        + "\n\tU = {:.2f}   \t p value = {:.2f}" \
           .format(U, pvalue)
 
     if ax:
-        ranks1 = [[sample, 1] for sample in sample1]
-        ranks2 = [[sample, 2] for sample in sample2]
-        ranks = ranks1 + ranks2
-        ranks = sorted(ranks, key=lambda e: e[0])
-        ranks = [[i, ranks[i][1]] for i in range(len(ranks))]
-        ranks1 = [rank[0] if rank[1]==1 else np.nan for rank in ranks]
-        ranks2 = [rank[0] if rank[1] == 2 else np.nan for rank in ranks]
+        ranks = np.empty((2, len(sample1)+len(sample2)))
+        ranks[0, :len(sample1)] = sample1
+        ranks[1, :len(sample1)] = 1
+        ranks[0, len(sample1):] = sample2
+        ranks[1, len(sample1):] = 2
+        ranks[0] = sts.rankdata(ranks[0])
+
+
+        # ranks1 = [[sample, 1] for sample in sample1]
+        # ranks2 = [[sample, 2] for sample in sample2]
+        # ranks = ranks1 + ranks2
+        # ranks = sorted(ranks, key=lambda e: e[0])
+        # ranks = [[i, ranks[i][1]] for i in range(len(ranks))]
+        # ranks1 = [rank[0] if rank[1] == 1 else np.nan for rank in ranks]
+        # ranks2 = [rank[0] if rank[1] == 2 else np.nan for rank in ranks]
         ax.set_ylabel('Rank')
         ax.tick_params(axis='x', which='both', bottom='off', top='off',
                        labelbottom='off')
         color = ['r', 'g']
+        bbox = ax.get_window_extent()
+        linewidth = bbox.height/220
         for i, ranklist in enumerate([ranks1, ranks2]):
             for rank in ranklist:
-                ax.axhline(rank, xmin=-1, xmax=1, lw=4, color=color[i])
+                ax.axhline(rank, xmin=-1, xmax=1, lw=linewidth, color=color[i])
     return U, pvalue

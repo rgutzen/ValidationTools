@@ -110,7 +110,7 @@ def analyze_correlations(spiketrain_list, filename='testfile'):
     matstat.detect_assemblies(EVs, EWs)
 
     # Print eigenvectors
-    # matstat.print_eigenvectors(EVs, EWs)
+    matstat.print_eigenvectors(EVs, EWs, pc_count)
 
     return EWs, EVs, pc_count
 
@@ -118,8 +118,8 @@ N = 100
 
 # Generate Spiketrains
 spiketrain_list1 = testdata.test_data(size=N, corr=[.5,.5,.5], t_stop=500*ms,
-                                     rate=100*Hz, assembly_sizes=[8,8,8],
-                                     method="CPP", bkgr_corr=0.0)
+                                      rate=100*Hz, assembly_sizes=[8,8,8],
+                                      method="CPP", bkgr_corr=0.0)
 for i, st in enumerate(spiketrain_list1):
     st.annotations['id'] = i
 
