@@ -23,45 +23,6 @@ def plot_comparison(dist1,dist2):
     return None
 
 
-def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter'):
-    """Kolmogorov-Smirnov two-sample test
-
-       Takes two sets of sample variables of possibly different size.
-
-       Returns: D_KS, pvalue
-                D_KS is the maximal distance between the two cumulative
-                distribution functions. The pvalue describes the probability
-                of finding D_KS value as larger or larger as observed under
-                the assumption of the null hypothesis, which is the
-                probability of the two underlying distributions are equal.
-    """
-    # filtering out nans
-    sample1 = np.array(sample1)[np.isfinite(sample1)]
-    sample2 = np.array(sample2)[np.isfinite(sample2)]
-
-    D_KS, pvalue = st.ks_2samp(sample1, sample2)
-    print "\n\033[4mKolmogorov-Smirnov-Distance\033[0m" \
-        + "\n\tlength 1 = {} \t length 2 = {}" \
-          .format(len(sample1), len(sample2)) \
-        + "\n\tD_KS = {:.2f} \t p value = {:.2f}\n" \
-          .format(D_KS, pvalue)
-
-    if ax:
-        ax.set_ylabel('CDF')
-        ax.set_xlabel(xlabel)
-        ax = [ax, ax.twiny()]
-        color = ['r', 'g']
-        for i, A in enumerate([sample1, sample2]):
-            A_sorted = np.sort(A)
-            A_sorted = A_sorted[np.isfinite(A_sorted)]
-            CDF = np.arange(len(A)) / float(len(A)-1)
-            ax[i].plot(A_sorted, CDF, color=color[i])
-            ax[i].set_xticks(A_sorted)
-            ax[i].set_xticklabels([''] * len(A_sorted))
-            ax[i].tick_params(axis='x', length=10, color=color[i])
-    return D_KS, pvalue
-
-
 def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None, xlabel='a.u.'):
     """Kullback-Leibner Divergence D_KL(P||Q)
 
@@ -133,7 +94,51 @@ def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None, xlabel='a.u.'):
         ax.fill_between(xvalues, filly, 0,  color='LightGrey')
         ax.plot(xvalues, P, lw=2, label='P', color='r')
         ax.plot(xvalues, Q, lw=2, label='Q', color='g')
+        ax.set_xlim(xvalues[0], xvalues[-1])
     return D_KL, D_KL_as
+
+
+def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter'):
+    """Kolmogorov-Smirnov two-sample test
+
+       Takes two sets of sample variables of possibly different size.
+
+       Returns: D_KS, pvalue
+                D_KS is the maximal distance between the two cumulative
+                distribution functions. The pvalue describes the probability
+                of finding D_KS value as larger or larger as observed under
+                the assumption of the null hypothesis, which is the
+                probability of the two underlying distributions are equal.
+    """
+    # filtering out nans
+    sample1 = np.array(sample1)[np.isfinite(sample1)]
+    sample2 = np.array(sample2)[np.isfinite(sample2)]
+
+    D_KS, pvalue = st.ks_2samp(sample1, sample2)
+    print "\n\033[4mKolmogorov-Smirnov-Distance\033[0m" \
+        + "\n\tlength 1 = {} \t length 2 = {}" \
+          .format(len(sample1), len(sample2)) \
+        + "\n\tD_KS = {:.2f} \t p value = {:.2f}\n" \
+          .format(D_KS, pvalue)
+
+    if ax:
+        ax.set_ylabel('CDF')
+        ax.set_xlabel(xlabel)
+        color = ['r', 'g']
+        for i, A in enumerate([sample1, sample2]):
+            A_sorted = np.sort(A)
+            A_sorted = np.append(A_sorted[0], A_sorted)
+            CDF = (np.arange(len(A)+1)) / float(len(A))
+            ax.step(A_sorted, CDF, where='post', color=color[i])
+            ax.scatter(A_sorted, [i+.01-i*.02]*len(A_sorted),
+                       color=color[i], marker='D')
+        xlim_lower = min(min(sample1), min(sample2))
+        xlim_upper = max(max(sample1), max(sample2))
+        xlim_lower -= .03*(xlim_upper-xlim_lower)
+        xlim_upper += .03*(xlim_upper-xlim_lower)
+        ax.set_xlim(xlim_lower, xlim_upper)
+        ax.set_ylim(0, 1)
+    return D_KS, pvalue
 
 
 def MWU_test(sample1, sample2, excl_nan=True, ax=None):
@@ -150,9 +155,9 @@ def MWU_test(sample1, sample2, excl_nan=True, ax=None):
         sample1 = np.array(sample1)[np.isfinite(sample1)]
         sample2 = np.array(sample2)[np.isfinite(sample2)]
 
-    if len(sample1) < 20 or len(sample2) < 20:
-        raise Warning('The sample size is too small. '
-                      'The test might lose its validity!')
+    # if len(sample1) < 20 or len(sample2) < 20:
+    #     raise Warning('The sample size is too small. '
+    #                   'The test might lose its validity!')
 
     U, pvalue = st.mannwhitneyu(sample1, sample2, alternative='two-sided')
 
@@ -165,26 +170,22 @@ def MWU_test(sample1, sample2, excl_nan=True, ax=None):
     if ax:
         ranks = np.empty((2, len(sample1)+len(sample2)))
         ranks[0, :len(sample1)] = sample1
-        ranks[1, :len(sample1)] = 1
+        ranks[1, :len(sample1)] = 0
         ranks[0, len(sample1):] = sample2
-        ranks[1, len(sample1):] = 2
-        ranks[0] = sts.rankdata(ranks[0])
+        ranks[1, len(sample1):] = 1
+        ranks[0] = st.rankdata(ranks[0])
+        ranks_1 = ranks[0][np.where(np.logical_not(ranks[1]))[0]]
+        ranks_2 = ranks[0][np.where(ranks[1])[0]]
 
-
-        # ranks1 = [[sample, 1] for sample in sample1]
-        # ranks2 = [[sample, 2] for sample in sample2]
-        # ranks = ranks1 + ranks2
-        # ranks = sorted(ranks, key=lambda e: e[0])
-        # ranks = [[i, ranks[i][1]] for i in range(len(ranks))]
-        # ranks1 = [rank[0] if rank[1] == 1 else np.nan for rank in ranks]
-        # ranks2 = [rank[0] if rank[1] == 2 else np.nan for rank in ranks]
         ax.set_ylabel('Rank')
         ax.tick_params(axis='x', which='both', bottom='off', top='off',
                        labelbottom='off')
         color = ['r', 'g']
         bbox = ax.get_window_extent()
-        linewidth = bbox.height/220
-        for i, ranklist in enumerate([ranks1, ranks2]):
-            for rank in ranklist:
-                ax.axhline(rank, xmin=-1, xmax=1, lw=linewidth, color=color[i])
+        linewidth = bbox.height/200
+
+        for i in range(len(ranks[0])):
+            ax.axhline(ranks[0, i], xmin=-1, xmax=1, lw=linewidth,
+                       color=color[int(ranks[1, i])])
+
     return U, pvalue

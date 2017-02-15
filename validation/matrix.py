@@ -61,7 +61,7 @@ def plot_matrix(matrix, ax=plt.gca()):
     return None
 
 
-def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, surrogate_EWs=[],
+def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, reference_EWs=[],
                             color='g'):
     lmin = min(EWs)
     lmax = max(EWs)
@@ -74,11 +74,17 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, surrogate_EWs=[],
     EW_hist, edges = np.histogram(EWs, bins=edges, density=False)
     ax.bar(left=edges[:-1], height=EW_hist, width=edges[1]-edges[0],
            color=color)
+    ax.set_xlabel('EW')
+    ax.set_ylabel('Occurrence')
+    ax.set_xlim(0, max(edges))
 
-    if len(surrogate_EWs):
-        sEW_hist, __ = np.histogram(surrogate_EWs, bins=edges, density=False)
-        ax.plot(edges[:-1] + (edges[1]-edges[0])/2., sEW_hist, color='k',
-                alpha=.5)
+    if len(reference_EWs):
+        ref_EW_hist, __ = np.histogram(reference_EWs, bins=edges, density=False)
+        dx = edges[1]-edges[0]
+        ref_x = np.append(edges[0] - dx, edges) + dx / 2.
+        ref_y = np.zeros_like(ref_x)
+        ref_y[1:-1] = ref_EW_hist
+        ax.plot(ref_x, ref_y, color='k')
 
         # y = 1
         # a = (1 - np.sqrt(y)) ** 2
@@ -101,12 +107,10 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, surrogate_EWs=[],
         wigner_y = [wigner_dist(x) for x in wigner_x]
         ax.plot(wigner_x, wigner_y, color='r')
 
-    nbr_of_significant_ew = len(np.where(EWs > max(surrogate_EWs))[0])
-    ax.set_xlabel('EW')
-    ax.set_ylabel('Occurrence')
-    print "\t{} eigenvalues are larger than the reference distribution \n"\
-          .format(nbr_of_significant_ew)
-    return nbr_of_significant_ew
+    nbr_of_sig_ew = len(np.where(EWs > ref_x[-1])[0])
+    print "\t{} eigenvalue{} are larger than the reference distribution \n"\
+          .format(nbr_of_sig_ew, "" if nbr_of_sig_ew-1 else "s")
+    return nbr_of_sig_ew
 
 
 def redundancy(EWs):

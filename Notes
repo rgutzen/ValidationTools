@@ -1,8 +1,6 @@
 
 ### ToDo ###
 
-+ Improve dist code (graphs)
-+ Add Cramer-von-Mises-Test
 + Calculate corrcoef distribution
   and run test down to which mean corrcoef
   assemblies can be identified
@@ -12,11 +10,10 @@
 + Implement CuBIC
 + Implement oszillations analysis
 + Write function annotations
-+ Install and run NEST
 + Create test case with Brunel network
++ Test methods for SR, SI, AR, AI
 + Run test validation for different network parameters
 > Develop useful to_file function
-> Create Jupyter Interface
 > Adapt code for collab packages
 
 ### ORGANIZATIONAL CONSTRUCT ###

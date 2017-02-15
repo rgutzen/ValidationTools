@@ -98,7 +98,7 @@ def analyze_correlations(spiketrain_list, filename='testfile'):
     # EW Spectra
     EWs, EVs = eigh(corr_matrix)
     sEWs, sEVs = eigh(surrogate_corr_matrix)
-    pc_count = matstat.eigenvalue_distribution(EWs, ax[1,0], surrogate_EWs=sEWs,
+    pc_count = matstat.eigenvalue_distribution(EWs, ax[1,0], reference_EWs=sEWs,
                                                binnum=int(max(EWs))*5)
 
     # EW Redundancy
@@ -112,19 +112,22 @@ def analyze_correlations(spiketrain_list, filename='testfile'):
     # Print eigenvectors
     matstat.print_eigenvectors(EVs, EWs, pc_count)
 
+    # Detect assemblies
+    matstat.detect_assemblies(EVs, EWs, detect_by='eigenvalue')
+
     return EWs, EVs, pc_count
 
-N = 100
+N = 50
 
 # Generate Spiketrains
-spiketrain_list1 = testdata.test_data(size=N, corr=[.5,.5,.5], t_stop=500*ms,
-                                      rate=100*Hz, assembly_sizes=[8,8,8],
+spiketrain_list1 = testdata.test_data(size=N, corr=.5, t_stop=500*ms,
+                                      rate=100*Hz, assembly_sizes=[2],
                                       method="CPP", bkgr_corr=0.0)
 for i, st in enumerate(spiketrain_list1):
     st.annotations['id'] = i
 
 # Load NEST L4 exh Spiktrains
-# spiketrain_list1 = load_data(COLLAB_PATH_NEST, ['spikes_L4'], N)[0][0]
+spiketrain_list1 = load_data(COLLAB_PATH_NEST, ['spikes_L4'], N)[0][0]
 
 # Calculate CVs
 CV_sample1 = [cv(isi(st)) for st in spiketrain_list1]
@@ -133,12 +136,12 @@ CV_sample1 = [cv(isi(st)) for st in spiketrain_list1]
 EWs1, EVs1, pc_count1 = analyze_correlations(spiketrain_list1)
 
 # Generate second dataset
-spiketrain_list2 = testdata.test_data(size=N, corr=[.5,.5,.5], t_stop=500*ms,
-                                     rate=100*Hz, assembly_sizes=[8,8,8],
-                                     method="CPP", bkgr_corr=0.0)
+spiketrain_list2 = testdata.test_data(size=N, corr=.5, t_stop=500*ms,
+                                      rate=100*Hz, assembly_sizes=[2],
+                                      method="CPP", bkgr_corr=0.0)
 
 # Load SpiNNaker L4 exh Spiketrains
-# spiketrain_list2 = load_data(COLLAB_PATH_SPINNAKER, ['spikes_L4'], N)[0][0]
+spiketrain_list2 = load_data(COLLAB_PATH_SPINNAKER, ['spikes_L4'], N)[0][0]
 
 # Calculate CVs
 CV_sample2 = [cv(isi(st)) for st in spiketrain_list2]
