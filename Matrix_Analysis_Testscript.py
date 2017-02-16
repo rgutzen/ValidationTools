@@ -50,6 +50,9 @@ testdata = imp.load_source('*', test_data_path)
 viziphant_path = '../INM6/Tasks/viziphant/plots/generic.py'
 vizi = imp.load_source('*', viziphant_path)
 
+gdfio_path = '../INM6/Tasks/UP-Tasks/Elephant/gdf2NeoH5_task/gdfio.py'
+gdfio = imp.load_source('*', gdfio_path)
+
 # ToDo: method takes also list of method strings
 # ToDo: What relative size of assemblies can still be detected?
 # ToDo: Background vs Assembly correlation
@@ -128,6 +131,12 @@ for i, st in enumerate(spiketrain_list1):
 
 # Load NEST L4 exh Spiktrains
 spiketrain_list1 = load_data(COLLAB_PATH_NEST, ['spikes_L4'], N)[0][0]
+
+# Load Brunel Network spiketrains (gdf)
+filename = "./sim_data/brunel_exp/J0.1_D1.5_g3.0_v2.0_T1000.0%0.1_ex-12502-0.gdf"
+r = gdfio.GdfIO(filename=filename)
+spiketrain_list1 = r.read_spiketrain(gdf_id_list=[], id_column=1,
+                                     t_start=0.*ms, t_stop=1000.*ms)
 
 # Calculate CVs
 CV_sample1 = [cv(isi(st)) for st in spiketrain_list1]

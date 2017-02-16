@@ -55,6 +55,7 @@ import time
 from numpy import exp
 
 import pylab
+import numpy as np
 
 nest.ResetKernel()
 
@@ -78,8 +79,8 @@ Definition of the parameters crucial for asynchronous irregular firing
 of the neurons.
 '''
 
-g = 2.0  # ratio inhibitory weight/excitatory weight
-eta = 2.0  # external rate relative to threshold rate
+g = 3.0  # ratio inhibitory weight/excitatory weight
+eta = 4.0  # external rate relative to threshold rate
 epsilon = 0.1  # connection probability
 
 '''
@@ -91,7 +92,7 @@ order = 2500
 NE = 4 * order  # number of excitatory neurons
 NI = 1 * order  # number of inhibitory neurons
 N_neurons = NE + NI  # number of neurons in total
-N_rec = 50  # record from 50 neurons
+N_rec = 100  # record from 50 neurons
 
 '''
 Definition of connectivity parameter
@@ -180,12 +181,16 @@ and "withgid" to True ensures that each spike is saved to file by
 stating the gid of the spiking neuron and the spike time in one line.
 '''
 
-nest.SetStatus(espikes, [{"label": "brunel-py-ex",
+nest.SetStatus(espikes, [{"label": "sim_data/brunel_exp/"
+                                 + "J{}_D{:.1f}_g{}_v{}_T{}%{:.1f}_ex"
+                                   .format(J, delay, g, eta, simtime, dt),
                           "withtime": True,
                           "withgid": True,
                           "to_file": True}])
 
-nest.SetStatus(ispikes, [{"label": "brunel-py-in",
+nest.SetStatus(ispikes, [{"label": "sim_data/brunel_exp/"
+                                 + "J{}_D{:.1f}_g{}_v{}_T{}%{:.1f}_in"
+                                   .format(J, delay, g, eta, simtime, dt),
                           "withtime": True,
                           "withgid": True,
                           "to_file": True}])
@@ -318,7 +323,7 @@ the total number of synapses.
 '''
 
 num_synapses = nest.GetDefaults("excitatory")["num_connections"] \
-               + nest.GetDefaults("inhibitory")["num_connections"]
+             + nest.GetDefaults("inhibitory")["num_connections"]
 
 '''
 Establishing the time it took to build and simulate the network by
@@ -347,5 +352,14 @@ Plot a raster of the excitatory neurons and a histogram.
 '''
 
 nest.raster_plot.from_device(espikes, hist=True)
+
+
+# printfile = open("sim_data/brunel_exp/J{}_D{:.1f}_g{}_v{}_T{}%{:.1f}"
+#                  .format(J, delay, g, eta, simtime, dt), "w")
+# printfile.write("Spiketrains excitatory:\n")
+# print >> printfile, spiketrains_ex
+# printfile.write("\nSpiketrains inhibitory:\n")
+# print >> printfile, spiketrains_in
+# printfile.close()
 
 pylab.show()
