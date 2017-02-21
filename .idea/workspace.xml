@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2e472702-85e4-422c-bc22-2b0cafeaf73a" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Notes" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/brunel-py-ex-12502-0.gdf" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Matrix_Analysis_Testscript.py" afterPath="$PROJECT_DIR$/Matrix_Analysis_Testscript.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MinErrorScript.py" afterPath="$PROJECT_DIR$/MinErrorScript.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/brunel-py-in-12503-0.gdf" afterPath="$PROJECT_DIR$/brunel-py-in-12503-0.gdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/brunel_network_sim.py" afterPath="$PROJECT_DIR$/brunel_network_sim.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Validation_Book.ipynb" afterPath="$PROJECT_DIR$/Validation_Book.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/validation/matrix.py" afterPath="$PROJECT_DIR$/validation/matrix.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -25,14 +24,14 @@
     <favorites_list name="ValidationTools" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.47870427">
+    <splitter split-orientation="horizontal" split-proportion="0.45958167">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="matrix.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="matrix.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/validation/matrix.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1895">
-                  <caret line="241" column="32" lean-forward="true" selection-start-line="241" selection-start-column="32" selection-end-line="241" selection-end-column="32" />
+                <state relative-caret-position="235">
+                  <caret line="232" column="22" lean-forward="false" selection-start-line="232" selection-start-column="22" selection-end-line="232" selection-end-column="22" />
                   <folding>
                     <element signature="e#77#95#0" expanded="true" />
                   </folding>
@@ -40,11 +39,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="brunel_network_sim.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="brunel_network_sim.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/brunel_network_sim.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="464">
-                  <caret line="143" column="21" lean-forward="true" selection-start-line="143" selection-start-column="21" selection-end-line="143" selection-end-column="21" />
+                  <caret line="29" column="32" lean-forward="false" selection-start-line="29" selection-start-column="32" selection-end-line="29" selection-end-column="32" />
                   <folding>
                     <element signature="e#1880#1891#0" expanded="true" />
                   </folding>
@@ -55,7 +54,7 @@
           <file leaf-file-name="plotting_functions.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/plotting_functions.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2112">
+                <state relative-caret-position="2128">
                   <caret line="133" column="36" lean-forward="false" selection-start-line="133" selection-start-column="36" selection-end-line="133" selection-end-column="36" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
@@ -67,7 +66,7 @@
           <file leaf-file-name="test_data.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/validation/test_data.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="416">
+                <state relative-caret-position="544">
                   <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
                   <folding>
                     <element signature="e#9#27#0" expanded="true" />
@@ -79,7 +78,7 @@
           <file leaf-file-name="dist.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/validation/dist.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2976">
+                <state relative-caret-position="3056">
                   <caret line="191" column="0" lean-forward="false" selection-start-line="191" selection-start-column="0" selection-end-line="191" selection-end-column="0" />
                   <folding>
                     <element signature="e#135#153#0" expanded="true" />
@@ -92,13 +91,25 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="Matrix_Analysis_Testscript.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Matrix_Analysis_Testscript.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Matrix_Analysis_Testscript.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="443">
-                  <caret line="137" column="50" lean-forward="false" selection-start-line="137" selection-start-column="50" selection-end-line="137" selection-end-column="50" />
+                <state relative-caret-position="601">
+                  <caret line="148" column="72" lean-forward="false" selection-start-line="148" selection-start-column="72" selection-end-line="148" selection-end-column="72" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="MinErrorScript.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/MinErrorScript.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="320">
+                  <caret line="20" column="62" lean-forward="true" selection-start-line="20" selection-start-column="62" selection-end-line="20" selection-end-column="62" />
+                  <folding>
+                    <element signature="e#1#19#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -119,7 +130,7 @@
               <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
                 <state split_layout="FIRST">
                   <first_editor relative-caret-position="128">
-                    <caret line="8" column="56" lean-forward="false" selection-start-line="8" selection-start-column="56" selection-end-line="8" selection-end-column="56" />
+                    <caret line="8" column="21" lean-forward="false" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
                     <folding />
                   </first_editor>
                   <second_editor />
@@ -172,20 +183,20 @@
         <option value="$PROJECT_DIR$/Matrix_Analysis_Testscript" />
         <option value="$PROJECT_DIR$/validation_statistics/matrix_analysis.py" />
         <option value="$PROJECT_DIR$/ErrorTest.py" />
-        <option value="$PROJECT_DIR$/MinErrorScript.py" />
         <option value="$PROJECT_DIR$/testfile" />
         <option value="$PROJECT_DIR$/../INM6/Tasks/viziphant/plots/generic.py" />
         <option value="$PROJECT_DIR$/NEST_SpiNNaker_comparison.py" />
         <option value="$PROJECT_DIR$/Interface.ipynb" />
         <option value="$PROJECT_DIR$/testbook.ipynb" />
         <option value="$PROJECT_DIR$/validation/test_data.py" />
-        <option value="$PROJECT_DIR$/Validation_Book.ipynb" />
         <option value="$PROJECT_DIR$/validation/dist.py" />
-        <option value="$PROJECT_DIR$/validation/matrix.py" />
         <option value="$PROJECT_DIR$/Notes" />
         <option value="$PROJECT_DIR$/brunel_network_sim.py" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/Validation_Book.ipynb" />
         <option value="$PROJECT_DIR$/Matrix_Analysis_Testscript.py" />
+        <option value="$PROJECT_DIR$/validation/matrix.py" />
+        <option value="$PROJECT_DIR$/MinErrorScript.py" />
       </list>
     </option>
   </component>
@@ -211,6 +222,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -271,7 +283,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -287,7 +298,7 @@
       <recent name="$PROJECT_DIR$/validation_statistics" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.Matrix_Analysis_Testscript (1)">
+  <component name="RunManager" selected="Python.ErrorTest">
     <configuration default="false" name="NEST_SpiNNaker_comparison" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -516,10 +527,10 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.Matrix_Analysis_Testscript (1)" />
-        <item index="1" class="java.lang.String" itemvalue="Python.brunel_network_sim" />
-        <item index="2" class="java.lang.String" itemvalue="Python.NEST_SpiNNaker_comparison" />
-        <item index="3" class="java.lang.String" itemvalue="Python.ErrorTest" />
+        <item index="0" class="java.lang.String" itemvalue="Python.ErrorTest" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Matrix_Analysis_Testscript (1)" />
+        <item index="2" class="java.lang.String" itemvalue="Python.brunel_network_sim" />
+        <item index="3" class="java.lang.String" itemvalue="Python.NEST_SpiNNaker_comparison" />
         <item index="4" class="java.lang.String" itemvalue="Python.Matrix_Analysis_Testscript" />
       </list>
     </recent_temporary>
@@ -553,16 +564,16 @@
     <frame x="-5" y="-18" width="1930" height="1202" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21507643" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13811281" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32885906" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40556088" sideWeight="0.24986821" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3271202" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24741298" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3441258" sideWeight="0.7501318" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24699353" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.386679" sideWeight="0.7501318" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24986821" sideWeight="0.4935484" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33395004" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24986821" sideWeight="0.5064516" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36861652" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36817762" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -609,7 +620,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="35" />
+      <option name="time" value="38" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -767,13 +778,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MinErrorScript.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/lib/python2.7/dist-packages/elephant/spike_train_generation.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-998">
@@ -793,7 +797,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/plotting_functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2112">
+        <state relative-caret-position="2128">
           <caret line="133" column="36" lean-forward="false" selection-start-line="133" selection-start-column="36" selection-end-line="133" selection-end-column="36" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
@@ -824,38 +828,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/validation/test_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-          <folding>
-            <element signature="e#9#27#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testfile" />
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
           <caret line="1597" column="29" lean-forward="true" selection-start-line="1597" selection-start-column="29" selection-end-line="1597" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/validation/dist.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2976">
-          <caret line="191" column="0" lean-forward="false" selection-start-line="191" selection-start-column="0" selection-end-line="191" selection-end-column="0" />
-          <folding>
-            <element signature="e#135#153#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Validation_Book.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="1" />
         </state>
       </provider>
     </entry>
@@ -866,14 +843,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Notes">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="34" column="21" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="67" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Notes" />
     <entry file="file://$PROJECT_DIR$/sim_data/brunel_exp/AI_D1.5_g5_v2.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -895,60 +865,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sim_data/brunel_exp/J0.1_D1.5_g5.0_v2.0_T1000.0%0.1">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1840">
-          <caret line="115" column="2" lean-forward="false" selection-start-line="115" selection-start-column="2" selection-end-line="115" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/brunel-py-ex-12502-0.gdf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/sim_data/brunel_exp/J0.1_D1.5_g5.0_v2.0_T1000.0%0.1" />
+    <entry file="file://$PROJECT_DIR$/brunel-py-ex-12502-0.gdf" />
     <entry file="file://$PROJECT_DIR$/sim_data/brunel_exp/J0.1_D1.5_g5.0_v2.0_T1000.0%0.1_ex-12502-0.gdf">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-9312">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/validation/matrix.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1895">
-          <caret line="241" column="32" lean-forward="true" selection-start-line="241" selection-start-column="32" selection-end-line="241" selection-end-column="32" />
-          <folding>
-            <element signature="e#77#95#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="128">
-            <caret line="8" column="56" lean-forward="false" selection-start-line="8" selection-start-column="56" selection-end-line="8" selection-end-column="56" />
-            <folding />
-          </first_editor>
-          <second_editor />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/brunel_network_sim.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="464">
-          <caret line="143" column="21" lean-forward="true" selection-start-line="143" selection-start-column="21" selection-end-line="143" selection-end-column="21" />
+          <caret line="29" column="32" lean-forward="false" selection-start-line="29" selection-start-column="32" selection-end-line="29" selection-end-column="32" />
           <folding>
             <element signature="e#1880#1891#0" expanded="true" />
           </folding>
@@ -959,16 +888,78 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-13680">
           <caret line="282" column="12" lean-forward="true" selection-start-line="282" selection-start-column="12" selection-end-line="282" selection-end-column="12" />
-          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="128">
+            <caret line="8" column="21" lean-forward="false" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Validation_Book.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/validation/dist.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3056">
+          <caret line="191" column="0" lean-forward="false" selection-start-line="191" selection-start-column="0" selection-end-line="191" selection-end-column="0" />
+          <folding>
+            <element signature="e#135#153#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/validation/test_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding>
+            <element signature="e#9#27#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Matrix_Analysis_Testscript.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="443">
-          <caret line="137" column="50" lean-forward="false" selection-start-line="137" selection-start-column="50" selection-end-line="137" selection-end-column="50" />
+        <state relative-caret-position="601">
+          <caret line="148" column="72" lean-forward="false" selection-start-line="148" selection-start-column="72" selection-end-line="148" selection-end-column="72" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/validation/matrix.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="232" column="22" lean-forward="false" selection-start-line="232" selection-start-column="22" selection-end-line="232" selection-end-column="22" />
+          <folding>
+            <element signature="e#77#95#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MinErrorScript.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="20" column="62" lean-forward="true" selection-start-line="20" selection-start-column="62" selection-end-line="20" selection-end-column="62" />
+          <folding>
+            <element signature="e#1#19#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -4,6 +4,7 @@ Toolbox for analyzing a correlation matrix.
 """
 
 import numpy as np
+import scipy.integrate as integrate
 import matplotlib.pyplot as plt
 from scipy import stats as st
 import contextlib
@@ -108,8 +109,8 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, reference_EWs=[],
         ax.plot(wigner_x, wigner_y, color='r')
 
     nbr_of_sig_ew = len(np.where(EWs > ref_x[-1])[0])
-    print "\t{} eigenvalue{} are larger than the reference distribution \n"\
-          .format(nbr_of_sig_ew, "" if nbr_of_sig_ew-1 else "s")
+    # print "\t{} eigenvalue{} are larger than the reference distribution \n"\
+    #       .format(nbr_of_sig_ew, "" if nbr_of_sig_ew-1 else "s")
     return nbr_of_sig_ew
 
 
@@ -235,23 +236,36 @@ def EV_angles(EVs1, EVs2, deg=True):
             np.testing.assert_almost_equal(np.linalg.norm(EV), 1., decimal=7)
 
     M = np.dot(EVs1, EVs2.T)
-    EV_angles = np.arccos(np.diag(M))
+    vector_angles = np.arccos(np.diag(M))
     space_angle = np.arccos(np.sqrt(np.linalg.det(np.dot(M, M.T))))
 
     if deg:
-        EV_angles *= 180 / np.pi
+        vector_angles *= 180 / np.pi
         space_angle *= 180 / np.pi
         unit = "°"
     else:
         unit = " rad"
 
     print "\n\033[4mAngles between the eigenvectors\033[0m" \
-          + "\n\t" + "\n\t".join('{:.2f}{}'.format(a, unit) for a in EV_angles)\
+          + "\n\t" + "\n\t".join('{:.2f}{}'.format(a, unit) for a in vector_angles)\
           + "\n\n" \
           + "\033[4mAngle between eigenspaces\033[0m" \
           + "\n\t{:.2f}{}".format(space_angle, unit)
     # ToDo: Understand the angle between spaces
-    return EV_angles
+
+    plt.figure()
+    # Angle histogram
+    rad_angles = vector_angles * np.pi / 180
+    hist, edges = np.histogram(rad_angles, bins=10, density=True)
+    plt.bar(edges[:-1], hist, np.diff(edges))
+    # Random angel distribution for n dimensions
+    n = len(EVs1[0])
+    res = 100
+    phi = [np.pi/res * i for i in range(res)]
+    norm = integrate.quad(lambda a: np.sin(a)**(n-2), 0, np.pi)[0]
+    f = [np.sin(p)**(n-2) / norm for p in phi]
+    plt.plot(phi, f, color='r')
+    return vector_angles, space_angle
 
 
 def detect_assemblies(EVs, EWs, detect_by='eigenvalue', jupyter=False):

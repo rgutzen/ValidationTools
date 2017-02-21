@@ -93,7 +93,7 @@ def analyze_correlations(spiketrain_list, filename='testfile'):
     fig.tight_layout()
 
     # Rasterplot
-    vizi.rasterplot(ax[0,0], spiketrain_list)
+    vizi.rasterplot(spiketrain_list, ax=ax[0,0])
 
     # Heatmap
     matstat.plot_matrix(corr_matrix, ax[0,1])
@@ -124,19 +124,19 @@ N = 50
 
 # Generate Spiketrains
 spiketrain_list1 = testdata.test_data(size=N, corr=.5, t_stop=500*ms,
-                                      rate=100*Hz, assembly_sizes=[2],
+                                      rate=100*Hz, assembly_sizes=[10,15],
                                       method="CPP", bkgr_corr=0.0)
 for i, st in enumerate(spiketrain_list1):
     st.annotations['id'] = i
 
 # Load NEST L4 exh Spiktrains
-spiketrain_list1 = load_data(COLLAB_PATH_NEST, ['spikes_L4'], N)[0][0]
+# spiketrain_list1 = load_data(COLLAB_PATH_NEST, ['spikes_L4'], N)[0][0]
 
 # Load Brunel Network spiketrains (gdf)
-filename = "./sim_data/brunel_exp/J0.1_D1.5_g3.0_v2.0_T1000.0%0.1_ex-12502-0.gdf"
-r = gdfio.GdfIO(filename=filename)
-spiketrain_list1 = r.read_spiketrain(gdf_id_list=[], id_column=1,
-                                     t_start=0.*ms, t_stop=1000.*ms)
+# filename = "./sim_data/brunel_exp/J0.1_D1.5_g3.0_v2.0_T1000.0%0.1_ex-12502-0.gdf"
+# r = gdfio.GdfIO(filename=filename)
+# spiketrain_list1 = r.read_spiketrain(gdf_id_list=[], id_column=1,
+#                                      t_start=0.*ms, t_stop=1000.*ms)
 
 # Calculate CVs
 CV_sample1 = [cv(isi(st)) for st in spiketrain_list1]
@@ -146,11 +146,11 @@ EWs1, EVs1, pc_count1 = analyze_correlations(spiketrain_list1)
 
 # Generate second dataset
 spiketrain_list2 = testdata.test_data(size=N, corr=.5, t_stop=500*ms,
-                                      rate=100*Hz, assembly_sizes=[2],
+                                      rate=100*Hz, assembly_sizes=[10,15],
                                       method="CPP", bkgr_corr=0.0)
 
 # Load SpiNNaker L4 exh Spiketrains
-spiketrain_list2 = load_data(COLLAB_PATH_SPINNAKER, ['spikes_L4'], N)[0][0]
+# spiketrain_list2 = load_data(COLLAB_PATH_SPINNAKER, ['spikes_L4'], N)[0][0]
 
 # Calculate CVs
 CV_sample2 = [cv(isi(st)) for st in spiketrain_list2]
@@ -161,7 +161,7 @@ EWs2, EVs2, pc_count2 = analyze_correlations(spiketrain_list2)
 # Compare Spiketrain Correlations
 ## Angles between eigenspaces
 assemblysize = pc_count1
-matstat.EV_angles(EVs1[:, -assemblysize:], EVs2[:, -assemblysize:])
+matstat.EV_angles(EVs1[:, :], EVs2[:, :])
 
 # Compare CV(ISI) Distributions
 analyze_distributions(CV_sample1, CV_sample2)

@@ -6,6 +6,7 @@ Based on Elephant and neo.
 
 #### ToDo
 
++ luczak harris, gpfa
 + Load Spiketrains form NEST sim into Notebook via gdfio
 + calculate angles between subspace relative to chance distribution f(N)
 + Calculate corrcoef distribution
