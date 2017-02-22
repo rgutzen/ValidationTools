@@ -239,6 +239,37 @@ def EV_angles(EVs1, EVs2, deg=True):
     vector_angles = np.arccos(np.diag(M))
     space_angle = np.arccos(np.sqrt(np.linalg.det(np.dot(M, M.T))))
 
+    # plt.figure()
+    # # Angle histogram
+    # hist, edges = np.histogram(vector_angles, bins=20, density=True)
+    # plt.bar(edges[:-1], hist, np.diff(edges), color='g')
+    #
+    # # Sample random vectors
+    # N = len(EVs1[0])
+    # res = 1000
+    # rand_angles = []
+    # for j in range(res):
+    #     vector = np.random.random_sample((2, N))
+    #     for i in range(2):
+    #         vector[i] /= np.linalg.norm(vector[i])
+    #     rand_angles += [np.arccos(np.dot(vector[0], vector[1]))]
+    # hist, __ = np.histogram(rand_angles, bins=edges, density=True)
+    # plt.plot(edges[:-1]+np.diff(edges), hist, color='k')
+    #
+    # # Random angel distribution for n dimensions
+    # res = 1000
+    # phi = [np.pi/(2*res) * i for i in range(res)]
+    # norm = integrate.quad(lambda a: np.sin(a)**(N-2), 0, np.pi/2)[0]
+    # f = [np.sin(2*p)**(N-2) / norm for p in phi]
+    # plt.plot(phi, f, color='r')
+    #
+    # x = np.array([(i + 1) / float(res) for i in range(res)])
+    # Z1 = - np.log(x)
+    # Z = Z1
+    # for N_it in np.arange(N - 1) + 1:
+    #     Z = np.convolve(Z, Z1, mode='full')
+    # plt.plot(np.arccos(x), Z[::N] / (sum(Z[::N]) * np.pi / res), color='b')
+
     if deg:
         vector_angles *= 180 / np.pi
         space_angle *= 180 / np.pi
@@ -253,18 +284,6 @@ def EV_angles(EVs1, EVs2, deg=True):
           + "\n\t{:.2f}{}".format(space_angle, unit)
     # ToDo: Understand the angle between spaces
 
-    plt.figure()
-    # Angle histogram
-    rad_angles = vector_angles * np.pi / 180
-    hist, edges = np.histogram(rad_angles, bins=10, density=True)
-    plt.bar(edges[:-1], hist, np.diff(edges))
-    # Random angel distribution for n dimensions
-    n = len(EVs1[0])
-    res = 100
-    phi = [np.pi/res * i for i in range(res)]
-    norm = integrate.quad(lambda a: np.sin(a)**(n-2), 0, np.pi)[0]
-    f = [np.sin(p)**(n-2) / norm for p in phi]
-    plt.plot(phi, f, color='r')
     return vector_angles, space_angle
 
 

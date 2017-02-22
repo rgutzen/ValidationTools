@@ -124,7 +124,7 @@ N = 50
 
 # Generate Spiketrains
 spiketrain_list1 = testdata.test_data(size=N, corr=.5, t_stop=500*ms,
-                                      rate=100*Hz, assembly_sizes=[10,15],
+                                      rate=100*Hz, assembly_sizes=[2],
                                       method="CPP", bkgr_corr=0.0)
 for i, st in enumerate(spiketrain_list1):
     st.annotations['id'] = i
@@ -146,7 +146,7 @@ EWs1, EVs1, pc_count1 = analyze_correlations(spiketrain_list1)
 
 # Generate second dataset
 spiketrain_list2 = testdata.test_data(size=N, corr=.5, t_stop=500*ms,
-                                      rate=100*Hz, assembly_sizes=[10,15],
+                                      rate=100*Hz, assembly_sizes=[2],
                                       method="CPP", bkgr_corr=0.0)
 
 # Load SpiNNaker L4 exh Spiketrains
