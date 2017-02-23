@@ -124,7 +124,7 @@ def redundancy(EWs):
     return phi
 
 
-def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True):
+def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True, color='r'):
     EWs = np.sort(EWs)[::-1]
     total_v = np.sum(abs(EWs))
 
@@ -181,11 +181,11 @@ def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=T
     if show_dist:
         mask = np.zeros(len(EWs), np.bool)
         mask[:pc_count] = 1
-        ax.plot(np.arange(len(EWs)), abs(EWs)/total_v, color='r')
+        ax.plot(np.arange(len(EWs)), abs(EWs)/total_v, color=color)
         ax.fill_between(np.arange(len(EWs)), abs(EWs) / total_v, 0,
-                        where=mask, color='r', alpha=.4)
+                        where=mask, color=color, alpha=.4)
         ax.fill_between(np.arange(len(EWs)), abs(EWs) / total_v, 0,
-                        where=np.logical_not(mask), color='r', alpha=.15)
+                        where=np.logical_not(mask), color=color, alpha=.15)
         ax.set_xlabel('EW#')
         ax.set_ylabel('rel. EW')
 
@@ -239,22 +239,22 @@ def EV_angles(EVs1, EVs2, deg=True):
     vector_angles = np.arccos(np.diag(M))
     space_angle = np.arccos(np.sqrt(np.linalg.det(np.dot(M, M.T))))
 
-    # plt.figure()
-    # # Angle histogram
-    # hist, edges = np.histogram(vector_angles, bins=20, density=True)
-    # plt.bar(edges[:-1], hist, np.diff(edges), color='g')
-    #
-    # # Sample random vectors
-    # N = len(EVs1[0])
-    # res = 1000
-    # rand_angles = []
-    # for j in range(res):
-    #     vector = np.random.random_sample((2, N))
-    #     for i in range(2):
-    #         vector[i] /= np.linalg.norm(vector[i])
-    #     rand_angles += [np.arccos(np.dot(vector[0], vector[1]))]
-    # hist, __ = np.histogram(rand_angles, bins=edges, density=True)
-    # plt.plot(edges[:-1]+np.diff(edges), hist, color='k')
+    plt.figure()
+    # Angle histogram
+    hist, edges = np.histogram(vector_angles, bins=20, density=True)
+    plt.bar(edges[:-1], hist, np.diff(edges), color='g')
+
+    # Sample random vectors
+    N = len(EVs1[0])
+    res = 1000
+    rand_angles = []
+    for j in range(res):
+        vector = np.random.normal(size=(2, N))
+        for i in range(2):
+            vector[i] /= np.linalg.norm(vector[i])
+        rand_angles += [np.arccos(np.dot(vector[0], vector[1]))]
+    hist, __ = np.histogram(rand_angles, bins=edges, density=True)
+    plt.plot(edges[:-1]+np.diff(edges), hist, color='k')
     #
     # # Random angel distribution for n dimensions
     # res = 1000

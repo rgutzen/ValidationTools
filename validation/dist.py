@@ -182,7 +182,7 @@ def MWU_test(sample1, sample2, excl_nan=True, ax=None):
                        labelbottom='off')
         color = ['r', 'g']
         bbox = ax.get_window_extent()
-        linewidth = bbox.height/200
+        linewidth = bbox.height/190
 
         for i in range(len(ranks[0])):
             ax.axhline(ranks[0, i], xmin=-1, xmax=1, lw=linewidth,

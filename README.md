@@ -6,6 +6,7 @@ Based on Elephant and neo.
 
 #### ToDo
 
++ asset method (carlos)
 + How to evaluate the signficiance of high-dim angles?
 + luczak harris paper, gpfa
 + Load Spiketrains form NEST sim into Notebook via gdfio
@@ -29,6 +30,7 @@ Based on Elephant and neo.
 + Run test validation for different network parameters
 + Develop useful to_file function
 + Adapt code for collab packages
++ Create correct requirements.txt
 
 
 
