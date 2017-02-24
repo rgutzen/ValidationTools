@@ -180,9 +180,10 @@ def MWU_test(sample1, sample2, excl_nan=True, ax=None):
         ax.set_ylabel('Rank')
         ax.tick_params(axis='x', which='both', bottom='off', top='off',
                        labelbottom='off')
+        ax.set_ylim(0, len(sample1)+len(sample2))
         color = ['r', 'g']
         bbox = ax.get_window_extent()
-        linewidth = bbox.height/190
+        linewidth = bbox.height/(len(sample1)+len(sample2))
 
         for i in range(len(ranks[0])):
             ax.axhline(ranks[0, i], xmin=-1, xmax=1, lw=linewidth,

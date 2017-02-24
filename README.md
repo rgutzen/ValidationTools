@@ -6,10 +6,12 @@ Based on Elephant and neo.
 
 #### ToDo
 
++ remove autocorrelation in visualisation
++ estimate minimum data size to detect differences
++ background corr in assemblies
 + asset method (carlos)
 + How to evaluate the signficiance of high-dim angles?
-+ luczak harris paper, gpfa
-+ Load Spiketrains form NEST sim into Notebook via gdfio
++ luczak harris paper, rate vector, gpfa
 + calculate angles between subspace relative to chance distribution f(N)
 + Calculate corrcoef distribution
   and run test down to which mean corrcoef
@@ -17,13 +19,13 @@ Based on Elephant and neo.
 + Shuffle spiketrains before analysis and
   and try to resort them in reasonable groups
   (i.e) in groups whereto the largest eigenvectors point
+  -> show sorted matrix as heatmap
 + Visualisation in -N/ K-space? -> DataHigh
 + PCA directly on binned spiketrains/ inst. firing rate (t)
     + Reduction of spiking variability by trial averaging/ temp. smoothing
     + Activity trace in <=3D k-space
-+ PCA on 
-+ Implement CuBIC
-+ Implement oscillations analysis
++ Implement CuBIC (in elephant)
++ Implement oscillations analysis (fourier analysis)
 + Write function annotations
 + Create test case with Brunel network
     + Test methods for SR, SI, AR, AI

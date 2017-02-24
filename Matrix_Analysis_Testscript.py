@@ -124,21 +124,21 @@ def analyze_correlations(spiketrain_list, filename='testfile'):
 N = 50
 
 # Generate Spiketrains
-# spiketrain_list1 = testdata.test_data(size=N, corr=.5, t_stop=500*ms,
-#                                       rate=100*Hz, assembly_sizes=[2],
-#                                       method="CPP", bkgr_corr=0.0)
-# for i, st in enumerate(spiketrain_list1):
-#     st.annotations['id'] = i
+spiketrain_list1 = testdata.test_data(size=N, corr=.0, t_stop=500*ms,
+                                      rate=100*Hz, assembly_sizes=[2],
+                                      method="CPP", bkgr_corr=0.0)
+for i, st in enumerate(spiketrain_list1):
+    st.annotations['id'] = i
 
 # Load NEST L4 exh Spiktrains
 # spiketrain_list1 = load_data(COLLAB_PATH_NEST, ['spikes_L4'], N)[0][0]
 
 # Load Brunel Network spiketrains (gdf)
-filename = "./sim_data/brunel_exp/J0.1_D1.5_g3.0_v2.0_T1000.0%0.1_ex-12502-0.gdf"
-r = NestIO(filenames=filename)
-segment = r.read_segment(gid_list=[], id_column_gdf=0, time_column_gdf=1,
-                         t_start=0.*ms, t_stop=1000.*ms)
-spiketrain_list1 = segment.spiketrains
+# filename = "./sim_data/brunel_exp/J0.1_D1.5_g3.0_v2.0_T1000.0%0.1_ex-12502-0.gdf"
+# r = NestIO(filenames=filename)
+# segment = r.read_segment(gid_list=[], id_column_gdf=0, time_column_gdf=1,
+#                          t_start=0.*ms, t_stop=1000.*ms)
+# spiketrain_list1 = segment.spiketrains
 
 # Calculate CVs
 dist_sample_1 = [cv(isi(st)) for st in spiketrain_list1]
@@ -148,19 +148,19 @@ dist_sample_1 = [cv(isi(st)) for st in spiketrain_list1]
 EWs1, EVs1, pc_count1 = analyze_correlations(spiketrain_list1)
 
 # Generate second dataset
-# spiketrain_list2 = testdata.test_data(size=N, corr=.5, t_stop=500*ms,
-#                                       rate=100*Hz, assembly_sizes=[2],
-#                                       method="CPP", bkgr_corr=0.0)
+spiketrain_list2 = testdata.test_data(size=N, corr=.0, t_stop=500*ms,
+                                      rate=100*Hz, assembly_sizes=[2],
+                                      method="CPP", bkgr_corr=0.0)
 
 # Load SpiNNaker L4 exh Spiketrains
 # spiketrain_list2 = load_data(COLLAB_PATH_SPINNAKER, ['spikes_L4'], N)[0][0]
 
 # Load Brunel Network spiketrains (gdf)
-filename = "./sim_data/brunel_exp/J0.1_D1.5_g3.0_v4.0_T1000.0%0.1_ex-12502-0.gdf"
-r = NestIO(filenames=filename)
-segment = r.read_segment(gid_list=[], id_column_gdf=0, time_column_gdf=1,
-                         t_start=0.*ms, t_stop=1000.*ms)
-spiketrain_list2 = segment.spiketrains
+# filename = "./sim_data/brunel_exp/J0.1_D1.5_g3.0_v4.0_T1000.0%0.1_ex-12502-0.gdf"
+# r = NestIO(filenames=filename)
+# segment = r.read_segment(gid_list=[], id_column_gdf=0, time_column_gdf=1,
+#                          t_start=0.*ms, t_stop=1000.*ms)
+# spiketrain_list2 = segment.spiketrains
 
 # Calculate CVs
 dist_sample_2 = [cv(isi(st)) for st in spiketrain_list2]

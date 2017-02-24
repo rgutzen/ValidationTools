@@ -188,6 +188,8 @@ def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=T
                         where=np.logical_not(mask), color=color, alpha=.15)
         ax.set_xlabel('EW#')
         ax.set_ylabel('rel. EW')
+        ax.set_xlim(0, len(EWs))
+        ax.set_ylim(0, np.ceil((max(EWs)/total_v)*10)/10.)
 
     print "\n\033[4mSignificance Test:\033[0m" \
           "\n\tMethod: {0} " \
@@ -239,36 +241,23 @@ def EV_angles(EVs1, EVs2, deg=True):
     vector_angles = np.arccos(np.diag(M))
     space_angle = np.arccos(np.sqrt(np.linalg.det(np.dot(M, M.T))))
 
-    plt.figure()
-    # Angle histogram
-    hist, edges = np.histogram(vector_angles, bins=20, density=True)
-    plt.bar(edges[:-1], hist, np.diff(edges), color='g')
-
-    # Sample random vectors
-    N = len(EVs1[0])
-    res = 1000
-    rand_angles = []
-    for j in range(res):
-        vector = np.random.normal(size=(2, N))
-        for i in range(2):
-            vector[i] /= np.linalg.norm(vector[i])
-        rand_angles += [np.arccos(np.dot(vector[0], vector[1]))]
-    hist, __ = np.histogram(rand_angles, bins=edges, density=True)
-    plt.plot(edges[:-1]+np.diff(edges), hist, color='k')
+    # plt.figure()
+    # # Angle histogram
+    # hist, edges = np.histogram(vector_angles, bins=20, density=True)
+    # plt.bar(edges[:-1], hist, np.diff(edges), color='g')
     #
-    # # Random angel distribution for n dimensions
+    # # Sample random vectors
+    # N = 50
     # res = 1000
-    # phi = [np.pi/(2*res) * i for i in range(res)]
-    # norm = integrate.quad(lambda a: np.sin(a)**(N-2), 0, np.pi/2)[0]
-    # f = [np.sin(2*p)**(N-2) / norm for p in phi]
-    # plt.plot(phi, f, color='r')
-    #
-    # x = np.array([(i + 1) / float(res) for i in range(res)])
-    # Z1 = - np.log(x)
-    # Z = Z1
-    # for N_it in np.arange(N - 1) + 1:
-    #     Z = np.convolve(Z, Z1, mode='full')
-    # plt.plot(np.arccos(x), Z[::N] / (sum(Z[::N]) * np.pi / res), color='b')
+    # rand_angles = []
+    # for j in range(res):
+    #     vector = np.random.normal(size=(2, N))
+    #     for i in range(2):
+    #         vector[i] /= np.linalg.norm(vector[i])
+    #     vector = np.absolute(vector)
+    #     rand_angles += [np.arccos(np.dot(vector[0], vector[1]))]
+    # hist, edges = np.histogram(rand_angles, bins=20, density=True)
+    # plt.plot(edges[:-1]+np.diff(edges), hist, color='k')
 
     if deg:
         vector_angles *= 180 / np.pi
