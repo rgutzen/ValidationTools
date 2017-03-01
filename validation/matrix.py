@@ -4,6 +4,7 @@ Toolbox for analyzing a correlation matrix.
 """
 
 import numpy as np
+from scipy.linalg import eigh
 import scipy.integrate as integrate
 import matplotlib.pyplot as plt
 from scipy import stats as st
@@ -53,11 +54,28 @@ def pc_trafo(matrix, EWs=[], EVs=[]):
     return diag_matrix
 
 
-def plot_matrix(matrix, ax=plt.gca()):
-    labelnum = matrix.shape[0]/10
-    if labelnum == 1:
-        labelnum = 2
-    sns.heatmap(matrix, ax=ax, cbar=True, xticklabels=labelnum, yticklabels=labelnum)
+def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None, sorted=False):
+    if sorted:
+        EWs, EVs = eigh(corr_matrix)
+        labels = detect_assemblies(EVs, EWs, detect_by='eigenvalues', sort=True)
+        matrix = matrix[labels, :][:, labels]
+
+    if labels is None:
+        labels = matrix.shape[0]/10
+        if labels == 1:
+            labels = 2
+    else:
+        assert len(labels) == len(matrix)
+
+    if remove_autocorr:
+        for i in range(len(matrix)):
+            matrix[i, i] = 0
+    sns.heatmap(matrix, ax=ax, cbar=True,
+                xticklabels=labels, yticklabels=labels)
+    if remove_autocorr:
+        for i in range(len(matrix)):
+            matrix[i, i] = 1
+
     # ToDo: offer 'sorted' option for estimated assemblies presentation
     return None
 
@@ -82,7 +100,8 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, reference_EWs=[],
     if len(reference_EWs):
         ref_EW_hist, __ = np.histogram(reference_EWs, bins=edges, density=False)
         dx = edges[1]-edges[0]
-        ref_x = np.append(edges[0] - dx, edges) + dx / 2.
+        ref_x = np.append(edges[0] - dx, edges)
+        # ref_x += dx / 2.
         ref_y = np.zeros_like(ref_x)
         ref_y[1:-1] = ref_EW_hist
         ax.plot(ref_x, ref_y, color='k')
@@ -242,7 +261,7 @@ def EV_angles(EVs1, EVs2, deg=True):
     space_angle = np.arccos(np.sqrt(np.linalg.det(np.dot(M, M.T))))
 
     # plt.figure()
-    # # Angle histogram
+    # Angle histogram
     # hist, edges = np.histogram(vector_angles, bins=20, density=True)
     # plt.bar(edges[:-1], hist, np.diff(edges), color='g')
     #
@@ -258,6 +277,15 @@ def EV_angles(EVs1, EVs2, deg=True):
     #     rand_angles += [np.arccos(np.dot(vector[0], vector[1]))]
     # hist, edges = np.histogram(rand_angles, bins=20, density=True)
     # plt.plot(edges[:-1]+np.diff(edges), hist, color='k')
+
+    # N = len(EVs1[0])
+    # res = 500
+    # step = np.pi/(res)
+    # phi = [step * (i+1) for i in range(res)]
+    # norm = integrate.quad(lambda a: np.sin(a) ** (N - 2), 0, np.pi)[0]
+    # f = [(np.sin(p)) ** (N - 2) for p in phi]
+    # f = [f_it / (sum(f)*step) for f_it in f]
+    # plt.plot(phi, f, color='r')
 
     if deg:
         vector_angles *= 180 / np.pi
@@ -276,7 +304,7 @@ def EV_angles(EVs1, EVs2, deg=True):
     return vector_angles, space_angle
 
 
-def detect_assemblies(EVs, EWs, detect_by='eigenvalue', jupyter=False):
+def detect_assemblies(EVs, EWs, detect_by='eigenvalue', show=True, jupyter=False, sort=False):
     EVs = np.absolute(EVs.T[::-1])
     EWs = EWs[::-1]
     if type(detect_by) == float:
@@ -284,27 +312,43 @@ def detect_assemblies(EVs, EWs, detect_by='eigenvalue', jupyter=False):
     else:
         th = 0
     i = 0
+    n_ids = []
     while EWs[i] > 2:
         if th:
-            n_ids = np.where(EVs[i] > th)[0]
-            size = len(n_ids)
+            ids = np.where(EVs[i] > th)[0]
+            size = len(ids)
         else:
             size = int(np.ceil(EWs[i]))
-            n_ids = np.argpartition(EVs[i], -size)[-size:]
+            ids = np.argpartition(EVs[i], -size)[-size:]
 
-        n_ids = n_ids[np.argsort(EVs[i][n_ids])][::-1]
+        n_ids += [ids[np.argsort(EVs[i][ids])][::-1]]
 
-        print "\033[4mAssembly {}, eigenvalue {:.2f}, size {}\033[0m"\
-              .format(i+1, EWs[i], size)
-        print "Neuron ID:\t",
-        for n in n_ids:
-            print "{:2.0f}{}\t".format(n, "" if jupyter else "\t"),
-        print "\tNorm"
-        print "Portion:\t",
-        for n in n_ids:
-            print "{:.2f}\t".format(EVs[i][n]),
-        print "\t{:.2f}\n".format(np.linalg.norm(EVs[i][n_ids]))
+        if show:
+            print "\033[4mAssembly {}, eigenvalue {:.2f}, size {}\033[0m"\
+                  .format(i+1, EWs[i], size)
+            print "Neuron ID:\t",
+            for n in n_ids[i]:
+                print "{:2.0f}{}\t".format(n, "" if jupyter else "\t"),
+            print "\tNorm"
+            print "Portion:\t",
+            for n in n_ids[i]:
+                print "{:.2f}\t".format(EVs[i][n]),
+            print "\t{:.2f}\n".format(np.linalg.norm(EVs[i][n_ids[i]]))
         i += 1
+
+    if sort:
+        st_num_list = []
+        for ids in n_ids:
+            for id in ids:
+                if id not in st_num_list:
+                    st_num_list += [id]
+
+        for id in np.arange(len(EVs[0])):
+            if id not in st_num_list:
+                st_num_list += [id]
+        return st_num_list
+
     return None
+
 
 # ToDo: Write annotations

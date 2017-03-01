@@ -124,9 +124,9 @@ def analyze_correlations(spiketrain_list, filename='testfile'):
 N = 50
 
 # Generate Spiketrains
-spiketrain_list1 = testdata.test_data(size=N, corr=.0, t_stop=500*ms,
-                                      rate=100*Hz, assembly_sizes=[2],
-                                      method="CPP", bkgr_corr=0.0)
+spiketrain_list1 = testdata.test_data(size=N, corr=.3, t_stop=500*ms,
+                                      rate=100*Hz, assembly_sizes=[10,5],
+                                      method="CPP", bkgr_corr=0.1)
 for i, st in enumerate(spiketrain_list1):
     st.annotations['id'] = i
 

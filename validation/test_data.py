@@ -34,7 +34,7 @@ def load_data(path, file_name_list, N):
     return spike_train_list
 
 
-def generate_assembly(size, corr, method, rate, t_stop):
+def generate_assembly(size, corr, bkgr_corr, method, rate, t_stop):
     if method == 'SIP':
         # "$corr of the spikes are correlated"
         return SIP(rate=rate, rate_c=corr*rate, n=size, t_stop=t_stop,
@@ -48,11 +48,13 @@ def generate_assembly(size, corr, method, rate, t_stop):
         # "$corr of the neurons are pairwise correlated"
         # amp_dist = poisson(1).pmf(np.arange(size+1))
         amp_dist = np.zeros(size+1)
-        amp_dist[1] = 1 - corr
+        amp_dist[1] = 1 - corr - bkgr_corr
+        amp_dist[2] = bkgr_corr
         amp_dist[size] = corr
         # amp_dist[:size] = [1./(m.e*m.factorial(k)) for k in range(size)]
-        norm_factor = (1. - corr) / np.sum(amp_dist[:size])
-        amp_dist[:size] *= norm_factor
+        np.testing.assert_almost_equal(sum(amp_dist), 1., decimal=7)
+        # norm_factor = (1. - corr) / np.sum(amp_dist[:size])
+        # amp_dist[:size] *= norm_factor
         return CPP(rate=rate, A=amp_dist, t_stop=t_stop)
 
     else:
@@ -62,7 +64,7 @@ def generate_assembly(size, corr, method, rate, t_stop):
 
 
 def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[1],
-              bkgr_corr=0., sorted=False):
+              bkgr_corr=0., shuffle=True):
 
     spiketrains = [None] * size
     if not type(corr) == list:
@@ -73,7 +75,7 @@ def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[1],
     for i, a_size in enumerate(assembly_sizes):
         generated_sts = int(np.sum(assembly_sizes[:i]))
         spiketrains[generated_sts:generated_sts+a_size]\
-            = generate_assembly(a_size, corr[i], method, rate, t_stop)
+            = generate_assembly(a_size, corr[i], bkgr_corr, method, rate, t_stop)
 
     if bkgr_corr > 0:
         bkgr_size = size-sum(assembly_sizes)+1
@@ -85,6 +87,9 @@ def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[1],
         spiketrains[np.sum(assembly_sizes):] \
             = np.array([HPP(rate=rate, t_stop=t_stop)
                         for x in range(size-sum(assembly_sizes))])
+
+    if shuffle:
+        np.random.shuffle(spiketrains)
     return spiketrains
 
 

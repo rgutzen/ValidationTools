@@ -6,30 +6,24 @@ Based on Elephant and neo.
 
 #### ToDo
 
-+ remove autocorrelation in visualisation
-+ estimate minimum data size to detect differences
-+ background corr in assemblies
-+ asset method (carlos)
++ estimate minimum data size to detect features with a certain resolution
+    + assemblysize; assemblycorr; assemblycorr with backgroundcorr
++ Shuffle spiketrains before analysis
++ Sort spiketrains according to correlations
 + How to evaluate the signficiance of high-dim angles?
-+ luczak harris paper, rate vector, gpfa
-+ calculate angles between subspace relative to chance distribution f(N)
-+ Calculate corrcoef distribution
-  and run test down to which mean corrcoef
-  assemblies can be identified
-+ Shuffle spiketrains before analysis and
-  and try to resort them in reasonable groups
-  (i.e) in groups whereto the largest eigenvectors point
-  -> show sorted matrix as heatmap
+    + Foward problem to mathematician!
 + Visualisation in -N/ K-space? -> DataHigh
 + PCA directly on binned spiketrains/ inst. firing rate (t)
     + Reduction of spiking variability by trial averaging/ temp. smoothing
     + Activity trace in <=3D k-space
-+ Implement CuBIC (in elephant)
-+ Implement oscillations analysis (fourier analysis)
+    + luczak harris paper, rate vector, GPFA
++ Implement oscillations analysis (test with brunel)
+    + spiketrainwise autocorrelation function
+    + population autocorrelation
+    + relation to fourier analysis
 + Write function annotations
-+ Create test case with Brunel network
-    + Test methods for SR, SI, AR, AI
-+ Run test validation for different network parameters
++ Maybe apply method to Networks with asset method (->carlos)
++ Implement CuBIC (in elephant)
 + Develop useful to_file function
 + Adapt code for collab packages
 + Create correct requirements.txt
