@@ -16,6 +16,8 @@ testdata = imp.load_source('*', test_data_path)
 def assembly_detection(traj):
     """"""
 
+    print '\n\t\033[93mRepetition: {}\033[0m\n'.format(traj.repetition)
+
     spiketrain_list = testdata.test_data(size=traj.N,
                                          corr=traj.corr,
                                          t_stop=traj.T * ms,
@@ -50,7 +52,7 @@ def assembly_detection(traj):
 
     traj.f_add_result('Corrcoef', corrcoef,
                       comment='Mean pairwise correlation coefficients within the assembly')
-    traj.f_add_result('EW', EWs[0],
+    traj.f_add_result('EW', EWs[-1],
                       comment='largest eigenvalue, related to assembly')
     traj.f_add_result('Redundancy', redundancy)
     traj.f_add_result('SCREE_count', SCREE_count,
@@ -73,7 +75,7 @@ env = Environment(trajectory='Correlation_vs_Datasize',
                   large_overview_tables=True,
                   git_repository=base_path,
                   overwrite_file=True,
-                  log_folder=base_path + '/pypet/logs/')
+                  log_folder=base_path + '/pet/logs/')
 
 traj = env.trajectory
 
@@ -83,9 +85,11 @@ traj.f_add_parameter('T', 100, comment='Runtime')
 traj.f_add_parameter('rate', 100, comment='Mean spiking rate')
 traj.f_add_parameter('A_size', 10, comment='size of assembly')
 traj.f_add_parameter('bkgr_corr', .0, comment='Background correlation')
+traj.f_add_parameter('repetition', 0, comment='Iterator to produce statistics')
 
-traj.f_explore(cartesian_product({'corr': [.0, .1 ,.2],
-                                  'T'   : [100, 200, 300]}))
+traj.f_explore(cartesian_product({'corr': [.0, .02, .04, .06, .08, .1],
+                                  'T'   : [200, 400, 600, 800, 1000, 2000],
+                                  'repetition': [0, 1, 2, 3]}))
 
 env.run(assembly_detection)
 
