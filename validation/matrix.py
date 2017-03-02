@@ -133,17 +133,18 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, reference_EWs=[],
     return nbr_of_sig_ew
 
 
-def redundancy(EWs):
+def redundancy(EWs, show=True):
     ### Measure of correlation of the matrix entries
     ### For 0 correlation sum(EW^2)=N -> phi=0
     ### For perfect correlation EW_1=N -> sum(EW^2)=N^2 -> phi=1
     N = len(EWs)
     phi = np.sqrt((np.sum(EWs**2)-N) / (N*(N-1)))
-    print "\nRedundancy = {:.2f} \n".format(phi)
+    if show:
+        print "\nRedundancy = {:.2f} \n".format(phi)
     return phi
 
 
-def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=True, color='r'):
+def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=None, show_dist=True, color='r'):
     EWs = np.sort(EWs)[::-1]
     total_v = np.sum(abs(EWs))
 
@@ -197,7 +198,7 @@ def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=plt.gca(), show_dist=T
             prev_distance = current_distance
             current_distance = cut(pc_count)
 
-    if show_dist:
+    if ax:
         mask = np.zeros(len(EWs), np.bool)
         mask[:pc_count] = 1
         ax.plot(np.arange(len(EWs)), abs(EWs)/total_v, color=color)
@@ -304,24 +305,31 @@ def EV_angles(EVs1, EVs2, deg=True):
     return vector_angles, space_angle
 
 
-def detect_assemblies(EVs, EWs, detect_by='eigenvalue', show=True, jupyter=False, sort=False):
+def detect_assemblies(EVs, EWs, detect_by='eigenvalue', show=True, EW_lim=2, jupyter=False, sort=False):
     EVs = np.absolute(EVs.T[::-1])
     EWs = EWs[::-1]
-    if type(detect_by) == float:
+    if type(detect_by) == float or type(detect_by) == int:
         th = detect_by
     else:
         th = 0
     i = 0
     n_ids = []
-    while EWs[i] > 2:
+    relevant_EVs = []
+    while EWs[i] > EW_lim:
         if th:
-            ids = np.where(EVs[i] > th)[0]
-            size = len(ids)
+            if th < 1:
+                ids = np.where(EVs[i] > th)[0]
+                size = len(ids)
+            elif th >= 1:
+                size = int(th)
+                ids = np.argpartition(EVs[i], -size)[-size:]
         else:
             size = int(np.ceil(EWs[i]))
             ids = np.argpartition(EVs[i], -size)[-size:]
 
         n_ids += [ids[np.argsort(EVs[i][ids])][::-1]]
+
+        relevant_EVs += [EVs[i][n_ids[i]]]
 
         if show:
             print "\033[4mAssembly {}, eigenvalue {:.2f}, size {}\033[0m"\
@@ -346,9 +354,9 @@ def detect_assemblies(EVs, EWs, detect_by='eigenvalue', show=True, jupyter=False
         for id in np.arange(len(EVs[0])):
             if id not in st_num_list:
                 st_num_list += [id]
-        return st_num_list
+        return relevant_EVs, st_num_list
 
-    return None
+    return relevant_EVs
 
 
 # ToDo: Write annotations

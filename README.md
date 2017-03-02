@@ -8,11 +8,9 @@ Based on Elephant and neo.
 
 + estimate minimum data size to detect features with a certain resolution
     + assemblysize; assemblycorr; assemblycorr with backgroundcorr
-+ Shuffle spiketrains before analysis
-+ Sort spiketrains according to correlations
 + How to evaluate the signficiance of high-dim angles?
     + Foward problem to mathematician!
-+ Visualisation in -N/ K-space? -> DataHigh
++ Visualisation in -N/ K-space? -> DataHigh (for Win?)
 + PCA directly on binned spiketrains/ inst. firing rate (t)
     + Reduction of spiking variability by trial averaging/ temp. smoothing
     + Activity trace in <=3D k-space

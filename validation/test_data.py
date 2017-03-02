@@ -63,7 +63,7 @@ def generate_assembly(size, corr, bkgr_corr, method, rate, t_stop):
     return None
 
 
-def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[1],
+def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[],
               bkgr_corr=0., shuffle=True):
 
     spiketrains = [None] * size
@@ -73,6 +73,7 @@ def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[1],
         corr *= len(assembly_sizes)
 
     for i, a_size in enumerate(assembly_sizes):
+        assert a_size >= 2
         generated_sts = int(np.sum(assembly_sizes[:i]))
         spiketrains[generated_sts:generated_sts+a_size]\
             = generate_assembly(a_size, corr[i], bkgr_corr, method, rate, t_stop)
@@ -84,7 +85,7 @@ def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[1],
         spiketrains[np.sum(assembly_sizes):]\
             = CPP(rate=rate, A=amp_dist, t_stop=t_stop)
     else:
-        spiketrains[np.sum(assembly_sizes):] \
+        spiketrains[sum(assembly_sizes):] \
             = np.array([HPP(rate=rate, t_stop=t_stop)
                         for x in range(size-sum(assembly_sizes))])
 
