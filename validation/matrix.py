@@ -144,7 +144,7 @@ def redundancy(EWs, show=True):
     return phi
 
 
-def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=None, show_dist=True, color='r'):
+def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=None, color='r'):
     EWs = np.sort(EWs)[::-1]
     total_v = np.sum(abs(EWs))
 

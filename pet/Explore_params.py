@@ -4,10 +4,12 @@ from quantities import ms, Hz
 from scipy.linalg import eigh, norm
 import numpy as np
 
-matrix_analysis_path = './validation/matrix.py'
+base_path = '/home/robin/Projects/ValidationTools'
+
+matrix_analysis_path = base_path + '/validation/matrix.py'
 matstat = imp.load_source('*', matrix_analysis_path)
 
-test_data_path = './validation/test_data.py'
+test_data_path = base_path + '/validation/test_data.py'
 testdata = imp.load_source('*', test_data_path)
 
 
@@ -66,10 +68,10 @@ def assembly_detection(traj):
 
 
 env = Environment(trajectory='Correlation_vs_Datasize',
-                  filename='./pet/assembly/corr_vs_T.hdf5',
+                  filename='./assembly/corr_vs_T.hdf5',
                   file_title='corr_vs_T_01',
                   large_overview_tables=True,
-                  git_repository='../ValidationTools/',
+                  git_repository=base_path,
                   overwrite_file=True)
 
 traj = env.trajectory
@@ -81,7 +83,8 @@ traj.f_add_parameter('rate', 100, comment='Mean spiking rate')
 traj.f_add_parameter('A_size', 10, comment='size of assembly')
 traj.f_add_parameter('bkgr_corr', .0, comment='Background correlation')
 
-traj.f_explore(cartesian_product({'corr':[.0,.1,.2], 'T':[100,200,300]}))
+traj.f_explore(cartesian_product({'corr': [.0, .1 ,.2],
+                                  'T'   : [100, 200, 300]}))
 
 env.run(assembly_detection)
 
