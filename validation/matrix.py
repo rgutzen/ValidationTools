@@ -345,7 +345,7 @@ def detect_assemblies(EVs, EWs, detect_by='eigenvalue', show=True, EW_lim=2, jup
         i += 1
 
     if not len(relevant_EVs):
-        relevant_EVs = [0]
+        relevant_EVs = [[0]]
 
     if sort:
         st_num_list = []
