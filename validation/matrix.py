@@ -344,6 +344,9 @@ def detect_assemblies(EVs, EWs, detect_by='eigenvalue', show=True, EW_lim=2, jup
             print "\t{:.2f}\n".format(np.linalg.norm(EVs[i][n_ids[i]]))
         i += 1
 
+    if not len(relevant_EVs):
+        relevant_EVs = [0]
+
     if sort:
         st_num_list = []
         for ids in n_ids:
