@@ -69,7 +69,8 @@ env = Environment(trajectory='Correlation_vs_Datasize',
                   filename='./pet/assembly/corr_vs_T.hdf5',
                   file_title='corr_vs_T_01',
                   large_overview_tables=True,
-                  git_repository='../ValidationTools/')
+                  git_repository='../ValidationTools/',
+                  overwrite_file=True)
 
 traj = env.trajectory
 
