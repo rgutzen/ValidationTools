@@ -73,7 +73,7 @@ env = Environment(trajectory='Correlation_vs_Datasize',
                   large_overview_tables=True,
                   git_repository=base_path,
                   overwrite_file=True,
-                  log_folder='./logs/')
+                  log_folder=base_path + '/pypet/logs/')
 
 traj = env.trajectory
 
