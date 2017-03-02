@@ -53,8 +53,10 @@ def plot(x, z, y=None, fix_param=[], fix_value=[], lim=(0, False)):
         return x, z
 
 plt.figure()
+print traj.parameters.f_get('repetition')[:]
+print traj.parameters.f_get('T')[:]
 for r in range(max(traj.parameters.f_get('repetition')[:])+1):
     print plot('T', 'Norm_exact',
                fix_param=['corr', 'repetition'],
-               fix_value=[0.1, r])
+               fix_value=[0.2, r])
 plt.show()

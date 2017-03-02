@@ -69,7 +69,7 @@ def assembly_detection(traj):
                       comment='Smallest contribution to the exact relevant subset of the eigenvector')
 
 
-env = Environment(trajectory='Correlation_vs_Datasize',
+env = Environment(trajectory='5corr_6T_4rep',
                   filename='./assembly/corr_vs_T.hdf5',
                   file_title='corr_vs_T_01',
                   large_overview_tables=True,
