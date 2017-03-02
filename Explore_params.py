@@ -75,12 +75,12 @@ traj = env.trajectory
 
 traj.f_add_parameter('N', 100, comment='Number of neurons')
 traj.f_add_parameter('corr', .0, comment='Correlation within assembly')
-traj.f_add_parameter('T', 10, comment='Runtime')
+traj.f_add_parameter('T', 100, comment='Runtime')
 traj.f_add_parameter('rate', 100, comment='Mean spiking rate')
 traj.f_add_parameter('A_size', 10, comment='size of assembly')
 traj.f_add_parameter('bkgr_corr', .0, comment='Background correlation')
 
-traj.f_explore(cartesian_product({'corr':[.0,.1,.2], 'T':[10,50,100,200]}))
+traj.f_explore(cartesian_product({'corr':[.0,.1,.2], 'T':[100,200,300]}))
 
 env.run(assembly_detection)
 
