@@ -72,7 +72,8 @@ env = Environment(trajectory='Correlation_vs_Datasize',
                   file_title='corr_vs_T_01',
                   large_overview_tables=True,
                   git_repository=base_path,
-                  overwrite_file=True)
+                  overwrite_file=True,
+                  log_folder='./logs/')
 
 traj = env.trajectory
 
