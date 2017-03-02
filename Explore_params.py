@@ -61,7 +61,7 @@ def assembly_detection(traj):
                       comment='Norm of the subset of the first eigenvector of length of the assembly size')
     traj.f_add_result('min_n_estimate', min_n_estimate,
                       comment='Smallest contribution to the estimated relevant subset of the eigenvector')
-    traj.f_add_result('min_n_estimate', min_n_exact,
+    traj.f_add_result('min_n_exact', min_n_exact,
                       comment='Smallest contribution to the exact relevant subset of the eigenvector')
 
 
@@ -80,7 +80,7 @@ traj.f_add_parameter('rate', 100, comment='Mean spiking rate')
 traj.f_add_parameter('A_size', 10, comment='size of assembly')
 traj.f_add_parameter('bkgr_corr', .0, comment='Background correlation')
 
-traj.f_explore(cartesian_product({'corr':[.01,.1,.2], 'T':[100,200,300]}))
+traj.f_explore(cartesian_product({'corr':[.0,.1,.2], 'T':[100,200,300]}))
 
 env.run(assembly_detection)
 

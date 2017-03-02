@@ -5,7 +5,7 @@ from elephant.spike_train_surrogates import *
 from elephant.statistics import mean_firing_rate, cv, isi
 from quantities import Hz, ms
 from scipy.linalg import eigh
-from neo.io.nestio import NestIO
+# from neo.io.nestio import NestIO
 import neo
 
 
@@ -124,7 +124,7 @@ def analyze_correlations(spiketrain_list, filename='testfile'):
 N = 50
 
 # Generate Spiketrains
-spiketrain_list1 = testdata.test_data(size=N, corr=.3, t_stop=500*ms,
+spiketrain_list1 = testdata.test_data(size=N, corr=.0, t_stop=500*ms,
                                       rate=100*Hz, assembly_sizes=[10,5],
                                       method="CPP", bkgr_corr=0.1)
 for i, st in enumerate(spiketrain_list1):

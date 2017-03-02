@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2e472702-85e4-422c-bc22-2b0cafeaf73a" name="Default" comment="" />
+    <list default="true" id="2e472702-85e4-422c-bc22-2b0cafeaf73a" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Explore_params.py" afterPath="$PROJECT_DIR$/Explore_params.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Matrix_Analysis_Testscript.py" afterPath="$PROJECT_DIR$/Matrix_Analysis_Testscript.py" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,7 +50,7 @@
           <file leaf-file-name="test_data.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/validation/test_data.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="589">
+                <state relative-caret-position="445">
                   <caret line="85" column="55" lean-forward="false" selection-start-line="85" selection-start-column="55" selection-end-line="85" selection-end-column="55" />
                   <folding>
                     <element signature="e#9#27#0" expanded="true" />
@@ -71,8 +74,8 @@
           <file leaf-file-name="Explore_params.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Explore_params.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="511">
-                  <caret line="82" column="73" lean-forward="false" selection-start-line="82" selection-start-column="73" selection-end-line="82" selection-end-column="73" />
+                <state relative-caret-position="303">
+                  <caret line="63" column="34" lean-forward="false" selection-start-line="63" selection-start-column="34" selection-end-line="63" selection-end-column="34" />
                   <folding>
                     <element signature="e#0#48#0" expanded="true" />
                   </folding>
@@ -87,11 +90,9 @@
           <file leaf-file-name="Matrix_Analysis_Testscript.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Matrix_Analysis_Testscript.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="560">
-                  <caret line="113" column="0" lean-forward="false" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
-                  <folding>
-                    <element signature="e#0#18#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="-1264">
+                  <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -192,9 +193,9 @@
         <option value="$PROJECT_DIR$/validation/dist.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/validation/test_data.py" />
-        <option value="$PROJECT_DIR$/Matrix_Analysis_Testscript.py" />
         <option value="$PROJECT_DIR$/validation/matrix.py" />
         <option value="$PROJECT_DIR$/Explore_params.py" />
+        <option value="$PROJECT_DIR$/Matrix_Analysis_Testscript.py" />
       </list>
     </option>
   </component>
@@ -258,10 +259,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="pet" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assembly" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -511,8 +508,8 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.Explore_params" />
-        <item index="1" class="java.lang.String" itemvalue="Python.Matrix_Analysis_Testscript (1)" />
+        <item index="0" class="java.lang.String" itemvalue="Python.Matrix_Analysis_Testscript (1)" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Explore_params" />
         <item index="2" class="java.lang.String" itemvalue="Python.angle_dist" />
         <item index="3" class="java.lang.String" itemvalue="Python.ErrorTest" />
         <item index="4" class="java.lang.String" itemvalue="Python.brunel_network_sim" />
@@ -546,9 +543,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-5" y="-18" width="1930" height="1202" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12018977" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12018977" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32885906" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40556088" sideWeight="0.24986821" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3271202" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -916,26 +913,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/validation/test_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="589">
-          <caret line="85" column="55" lean-forward="false" selection-start-line="85" selection-start-column="55" selection-end-line="85" selection-end-column="55" />
-          <folding>
-            <element signature="e#9#27#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Matrix_Analysis_Testscript.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="560">
-          <caret line="113" column="0" lean-forward="false" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/validation/matrix.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="543">
@@ -946,13 +923,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/validation/test_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="445">
+          <caret line="85" column="55" lean-forward="false" selection-start-line="85" selection-start-column="55" selection-end-line="85" selection-end-column="55" />
+          <folding>
+            <element signature="e#9#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Explore_params.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="511">
-          <caret line="82" column="73" lean-forward="false" selection-start-line="82" selection-start-column="73" selection-end-line="82" selection-end-column="73" />
+        <state relative-caret-position="303">
+          <caret line="63" column="34" lean-forward="false" selection-start-line="63" selection-start-column="34" selection-end-line="63" selection-end-column="34" />
           <folding>
             <element signature="e#0#48#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Matrix_Analysis_Testscript.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1264">
+          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
