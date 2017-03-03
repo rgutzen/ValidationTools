@@ -329,7 +329,12 @@ def detect_assemblies(EVs, EWs, detect_by='eigenvalue', show=True, EW_lim=2, jup
 
         n_ids += [ids[np.argsort(EVs[i][ids])][::-1]]
 
-        relevant_EVs += [EVs[i][n_ids[i]]]
+        if len(n_ids[i]-1):
+            cur_rel_EVs = EVs[i][n_ids[i]]
+        else:
+            cur_rel_EVs = np.array(EVs[i][n_ids[i]])
+
+        relevant_EVs += [cur_rel_EVs]
 
         if show:
             print "\033[4mAssembly {}, eigenvalue {:.2f}, size {}\033[0m"\
