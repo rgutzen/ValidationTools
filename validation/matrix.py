@@ -101,7 +101,7 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, reference_EWs=[],
         ref_EW_hist, __ = np.histogram(reference_EWs, bins=edges, density=False)
         dx = edges[1]-edges[0]
         ref_x = np.append(edges[0] - dx, edges)
-        # ref_x += dx / 2.
+        ref_x += dx / 2.
         ref_y = np.zeros_like(ref_x)
         ref_y[1:-1] = ref_EW_hist
         ax.plot(ref_x, ref_y, color='k')
@@ -312,22 +312,29 @@ def detect_assemblies(EVs, EWs, detect_by='eigenvalue', show=True, EW_lim=2, jup
         th = detect_by
     else:
         th = 0
-    i = 0
-    n_ids = []
-    relevant_EVs = []
-    while EWs[i] > EW_lim:
+
+    def _get_ids(EV, th):
         if th:
             if th < 1:
-                ids = np.where(EVs[i] > th)[0]
+                ids = np.where(EV > th)[0]
                 size = len(ids)
             elif th >= 1:
                 size = int(th)
-                ids = np.argpartition(EVs[i], -size)[-size:]
+                ids = np.argpartition(EV, -size)[-size:]
         else:
             size = int(np.ceil(EWs[i]))
-            ids = np.argpartition(EVs[i], -size)[-size:]
+            ids = np.argpartition(EV, -size)[-size:]
 
-        n_ids += [ids[np.argsort(EVs[i][ids])][::-1]]
+        return ids[np.argsort(EVs[i][ids])][::-1]
+
+
+    i = 0
+    n_ids = []
+    relevant_EVs = []
+
+    while EWs[i] > EW_lim:
+
+        n_ids += [_get_ids(EVs[i], th)]
 
         if len(n_ids[i]-1):
             cur_rel_EVs = EVs[i][n_ids[i]]
@@ -336,9 +343,9 @@ def detect_assemblies(EVs, EWs, detect_by='eigenvalue', show=True, EW_lim=2, jup
 
         relevant_EVs += [cur_rel_EVs]
 
-        if show:
+        if show and EWs[i] > EW_lim:
             print "\033[4mAssembly {}, eigenvalue {:.2f}, size {}\033[0m"\
-                  .format(i+1, EWs[i], size)
+                  .format(i+1, EWs[i], len(n_ids[i]))
             print "Neuron ID:\t",
             for n in n_ids[i]:
                 print "{:2.0f}{}\t".format(n, "" if jupyter else "\t"),
@@ -348,6 +355,10 @@ def detect_assemblies(EVs, EWs, detect_by='eigenvalue', show=True, EW_lim=2, jup
                 print "{:.2f}\t".format(EVs[i][n]),
             print "\t{:.2f}\n".format(np.linalg.norm(EVs[i][n_ids[i]]))
         i += 1
+
+    for ev in EVs:
+        th = 1/np.sqrt(len(ev))
+        n_ids += [_get_ids(ev, th)]
 
     if not len(relevant_EVs):
         relevant_EVs = [[0]]

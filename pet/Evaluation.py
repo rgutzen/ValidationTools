@@ -151,7 +151,7 @@ fig, ax = plt.subplots(nrows=1, ncols=1)
 fig.tight_layout()
 
 for corr in [0., .02, .04, .06, 0.08, .1]:
-    evaluate_repetition('T', 'Norm_estimate',
+    evaluate_repetition('T', 'EW',
                         fix_param=['corr'],
                         fix_value=[corr],
                         ax=ax)

@@ -1,20 +1,25 @@
-## ValidationTools
+## Validation Tools
 Development of statistical tests and tools for comparison of neural activity data with the aim of validating neural simulations.
 
 Based on Elephant and neo.
 
-
 #### ToDo
 
-+ estimate minimum data size to detect features with a certain resolution
-    + assemblysize; assemblycorr; assemblycorr with backgroundcorr
++ PSTH Distribution Comparison: Paper von Grüm, Abeles
++ Debug: Create assemblies with specific neuron ids 
++ Explore Parameters
+    + Blaustein Cluster: Slurm queuing, rsync, requirements (-> Michael)
+    + Add comparison to random network
+    + estimate minimum data size to detect features with a certain resolution
+        + assemblysize; assemblycorr; assemblycorr with backgroundcorr
 + How to evaluate the signficiance of high-dim angles?
     + Foward problem to mathematician!
++ Theoretical distribution of correlation matrix eigenvalues
 + Visualisation in -N/ K-space? -> DataHigh (for Win?)
 + PCA directly on binned spiketrains/ inst. firing rate (t)
     + Reduction of spiking variability by trial averaging/ temp. smoothing
     + Activity trace in <=3D k-space
-    + luczak harris paper, rate vector, GPFA
+    + luczak harris paper, rate vector, GPFA (-> Junji, Carlos)
 + Implement oscillations analysis (test with brunel)
     + spiketrainwise autocorrelation function
     + population autocorrelation
@@ -22,10 +27,8 @@ Based on Elephant and neo.
 + Write function annotations
 + Maybe apply method to Networks with asset method (->carlos)
 + Implement CuBIC (in elephant)
-+ Develop useful to_file function
 + Adapt code for collab packages
 + Create correct requirements.txt
-
 
 
 #### ORGANIZATIONAL CONSTRUCT
@@ -35,7 +38,7 @@ Based on Elephant and neo.
     + Distribution Comparisons
     + Correlation Matrix
     + Oscillations
-    + Graphs
+    + (Graphs)
 
 * IMPLEMENTATION
 
@@ -75,4 +78,5 @@ Based on Elephant and neo.
 
     + NEST vs SpiNNaker
     + Brunel network with different solver/ time step/ precision
+        + measures to detect state
     + SpiNNaker Izhekevich exact vs inexact
