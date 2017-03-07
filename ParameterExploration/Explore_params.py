@@ -70,12 +70,12 @@ def assembly_detection(traj):
 
 
 env = Environment(trajectory='5corr_6T_4rep',
-                  filename=base_path + '/pet/assembly/corr_T.hdf5',
+                  filename=base_path + '/ParameterExploration/assembly/corr_T.hdf5',
                   file_title='corr_vs_T_01',
                   large_overview_tables=True,
                   git_repository=base_path,
                   overwrite_file=True,
-                  log_folder=base_path + '/pet/logs/',
+                  log_folder=base_path + '/ParameterExploration/logs/',
                   results_per_run=9)
 
 traj = env.trajectory

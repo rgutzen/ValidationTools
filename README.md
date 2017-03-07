@@ -5,7 +5,14 @@ Based on Elephant and neo.
 
 #### ToDo
 
-+ PSTH Distribution Comparison: Paper von Grüm, Abeles
+Thilo Talk:
+    + ISI_i vs ISI_i+1 to detect correlations
+    + 
+
++ Draw raw distributions for visual comparison
++ Theoretical prediction for spectral radius
++ Apply Methods to PSTH Distribution Comparison
+    + s. Paper von Grün, Abeles
 + Debug: Create assemblies with specific neuron ids 
 + Explore Parameters
     + Blaustein Cluster: Slurm queuing, rsync, requirements (-> Michael)
@@ -28,8 +35,6 @@ Based on Elephant and neo.
 + Maybe apply method to Networks with asset method (->carlos)
 + Implement CuBIC (in elephant)
 + Adapt code for collab packages
-+ Create correct requirements.txt
-
 
 #### ORGANIZATIONAL CONSTRUCT
 

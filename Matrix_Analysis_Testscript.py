@@ -36,9 +36,6 @@ COLLAB_PATH = '/home/robin/Projects/ValidationTools'
 COLLAB_PATH_NEST = COLLAB_PATH + "/sim_data/NEST_data"
 COLLAB_PATH_SPINNAKER = COLLAB_PATH + "/sim_data/SpiNNaker_data"
 
-plotting_path = './plotting_functions.py'
-plotting = imp.load_source('*', plotting_path)
-
 statistics_path = './validation/dist.py'
 dist = imp.load_source('*', statistics_path)
 

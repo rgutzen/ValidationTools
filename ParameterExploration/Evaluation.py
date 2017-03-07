@@ -7,7 +7,7 @@ sns.set_color_codes('colorblind')
 sns.despine()
 
 def load_traj(filename):
-    base_path = '/home/robin/Projects/ValidationTools/pet/assembly/'
+    base_path = '/home/robin/Projects/ValidationTools/ParameterExploration/assembly/'
 
     traj = Trajectory(filename=base_path + filename)
 

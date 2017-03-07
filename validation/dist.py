@@ -4,38 +4,48 @@ Input is respectively two data arrays of arbitrary length.
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.ticker import FormatStrFormatter
 from scipy import stats as st
-import math as m
-# # Seaborn is not included in the HBP environment
 import seaborn as sns
 sns.set(style='ticks', palette='Set2')
 sns.despine()
 sns.set_color_codes('colorblind')
 
-def plot_comparison(dist1,dist2):
-    binnum = len(dist1)
-    bins = np.linspace(-binnum/2., binnum/2., binnum+1)
-    fig = plt.figure('Distribution Comparison')
-    plt.plot(bins[:-1], dist1, color='g', lw=2, label='dist1')
-    plt.plot(bins[:-1], dist2, color='y', lw=2, label='dist2')
-    plt.draw()
-    return None
 
+def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None,
+            xlabel='a.u.'):
+    """
+    Kullback-Leibner Divergence D_KL(P||Q)
 
-def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None, xlabel='a.u.'):
-    """Kullback-Leibner Divergence D_KL(P||Q)
+    Calculates the difference of two sampled distributions P and Q in form of
+    an entropy measure. The D_KL measure is effectively the difference of the
+    cross-entropy of the of both distribution P,Q and the entropy of P.
 
-       Takes two normed discrete distributions. Or two data sets from which
-       the distribution will be calculated for the number of bins (default 10)
+    . math $$ D\mathrm{KL}(P||Q) =\sum{i} P(i) \log_2 \frac{P(i)}{Q(i)}
+                                 = H(P,Q) - H(P) $$
 
-       Q must not have zero values else the function will return inf.
+    D_KL can be interpreted as the amount of information lost when
+    approximating P by Q.
+    D_KL(P||Q) =/= D_KL(Q||P), therefore both values are returned.
 
-       Returns: D_KL, D_KL_as
-                D_KL can be interpreted as the amount of information lost
-                when approximating P by Q. D_KL_as is D_KL(Q||P), as the
-                divergence is asymmetric.
+    :param sample1: array, list
+        Can either be normed distribution or sample of values from which a
+        histogram distributions with *bins* is calculated. (= P)
+    :param sample2: array, list
+        Can either be normed distribution or sample of values from which a
+        histogram distributions with *bins* is calculated. (= Q)
+    :param bins: int, array of edges
+        Parameter is forwarded to numpy.histogram(). Default = 10
+    :param excl_zeros: Bool
+        D_KL can't be calculated if there are zero values in the distribution.
+        Therefore all zeros are omitted when excl_zeros is True (default).
+    :param ax: matplotlib.axis
+        An visual representation of the distributions and their divergence is
+        given onto the matplotlib axis when provided
+    :param xlabel: string
+        Label string for plot
+    :return:
+        D_KL(P||Q)
+        D_KL(Q||P)
     """
 
     def isdist(sample, prec=0.001):
@@ -107,16 +117,32 @@ def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None, xlabel='a.u.'):
 
 
 def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter'):
-    """Kolmogorov-Smirnov two-sample test
+    """
+    Kolmogorov-Smirnov-Distance D_KS
 
-       Takes two sets of sample variables of possibly different size.
+    .math $$ D_\mathrm{KS} = \sup | \hat{P}(x) - \hat{Q}(x) | $$
 
-       Returns: D_KS, pvalue
-                D_KS is the maximal distance between the two cumulative
-                distribution functions. The pvalue describes the probability
-                of finding D_KS value as larger or larger as observed under
-                the assumption of the null hypothesis, which is the
-                probability of the two underlying distributions are equal.
+    The KS-Distance measures the maximal vertical distance of the cumulative
+    distributions $\hat{P}$ and $\hat{Q}$. This is a sensitive tool for
+    detecting differences in mean, variance or distribution type.
+
+    The null hypothesis that the underlying distributions are identical is
+    rejected when the D_KS statistic is larger than a critical value or
+    equivalently when the correponding p-value is less than the signficance
+    level.
+
+    :param sample1: array, list
+        Sample of the parmeter of interest.
+    :param sample2: array, list
+        Sample of the parmeter of interest.
+    :param ax: matplotlib.axis
+        An visual representation of the distributions and their divergence is
+        given onto the matplotlib axis when provided.
+    :param xlabel: string
+        Label string for plot
+    :return:
+        D_Ks
+        p-value
     """
     # filtering out nans
     sample1 = np.array(sample1)[np.isfinite(sample1)]
@@ -150,22 +176,49 @@ def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter'):
 
 
 def MWU_test(sample1, sample2, excl_nan=True, ax=None):
-    """Mann-Whitney-Wilcoxon test
+    """
+    Mann-Whitney-U test
 
-        Takes two sets of sample variables.
+    .math $$ U_i = R_i - \frac{n_i(n_i + 1)}{2}\\ U = min(U_1,U_2) $$
+
+    With the rank sum R and the sample size n_i.
+
+    The Mann-Whitney U is a rank statistic which test the null hypothesis
+    that a random value of sample 1 is equally likely to be larger or a smaller
+    value than a randomly chosen value of sample 2.
+
+    The U_i statistic is in the range of [0,n_1 n_2],
+    and the U=min(U_1,U_2) statistic is in the range of [0,n_1*n_2/2].
+
+    For sample sizes >20, U follows approximately a normal distribution.
+    With this assumption a p-value can be inferred. The null hypothesis is
+    consequently rejected when the p-value is less than the significance level.
 
         Returns: U, pvalue
                 U = U2 is the summed rank of the second sample.
                 pvalue: probability to observe such a rank difference under
                 the assumption of the null hypothesis.
+    :param sample1: array, list
+        Sample of the parmeter of interest.
+    :param sample2: array, list
+        Sample of the parmeter of interest.
+    :param excl_nan: Bool
+        When True it excludes all non finite values from the sample which
+        influences the U statistic because of the change in sample size.
+    :param ax: matplotlib.axis
+        An visual representation of the distributions and their divergence is
+        given onto the matplotlib axis when provided.
+    :return:
+        U
+        p-value
     """
     if excl_nan:
         sample1 = np.array(sample1)[np.isfinite(sample1)]
         sample2 = np.array(sample2)[np.isfinite(sample2)]
 
-    # if len(sample1) < 20 or len(sample2) < 20:
-    #     raise Warning('The sample size is too small. '
-    #                   'The test might lose its validity!')
+    if len(sample1) < 20 or len(sample2) < 20:
+        raise Warning('The sample size is too small. '
+                      'The test might lose its validity!')
 
     U, pvalue = st.mannwhitneyu(sample1, sample2, alternative='two-sided')
 

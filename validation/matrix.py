@@ -7,28 +7,29 @@ import numpy as np
 from scipy.linalg import eigh
 import scipy.integrate as integrate
 import matplotlib.pyplot as plt
+from cycler import cycler
 from scipy import stats as st
-import contextlib
 from quantities import Hz, ms
 from elephant.conversion import BinnedSpikeTrain
 from elephant.spike_train_correlation import corrcoef
-import neo
-# Seaborn is not included in the HBP environment
 import seaborn as sns
 sns.set(style='ticks', palette='Set2')
 sns.set_color_codes('colorblind')
 sns.despine()
 
 
-@contextlib.contextmanager
-def printoptions(*args, **kwargs):
-    original = np.get_printoptions()
-    np.set_printoptions(*args, **kwargs)
-    yield
-    np.set_printoptions(**original)
-
-
 def corr_matrix(spiketrains, binsize=2*ms, corr_type='pearson'):
+    """
+    Generates a correlation matrix from a set of spiketrains.
+
+    :param spiketrains: list
+        List of spiketrains
+    :param binsize: quantity
+        Binsize for temporal binning of the spiketrains
+    :param corr_type: 'pearson', ... other to come?
+    :return: numpy.ndarray
+        Matrix of pairwise correlation coefficients
+    """
     # ToDo: Implement Correlation (pearson, spearman, ...?)
     t_lims = [(st.t_start, st.t_stop) for st in spiketrains]
     tmin = min(t_lims, key=lambda f: f[0])[0]
@@ -54,7 +55,18 @@ def pc_trafo(matrix, EWs=[], EVs=[]):
     return diag_matrix
 
 
-def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None, sorted=False):
+def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None,
+                sorted=False):
+    """
+    Plot correlation matrix as seaborn.heatmap
+
+    :param matrix:
+    :param ax:
+    :param remove_autocorr:
+    :param labels:
+    :param sorted:
+    :return:
+    """
     if sorted:
         EWs, EVs = eigh(corr_matrix)
         labels = detect_assemblies(EVs, EWs, detect_by='eigenvalues', sort=True)
@@ -76,21 +88,40 @@ def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None, sorted
         for i in range(len(matrix)):
             matrix[i, i] = 1
 
-    # ToDo: offer 'sorted' option for estimated assemblies presentation
     return None
 
 
-def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, reference_EWs=[],
-                            color='g'):
-    lmin = min(EWs)
-    lmax = max(EWs)
+def eigenvalue_distribution(EWs, ax=plt.gca(), bins=20, reference_EWs=[],
+                            color=''):
+    """
+    Plot histogram of the eigenvalue distribution in order to determine
+    significant outliers.
+
+    :param EWs: list, array
+        eigenvalues
+    :param ax: matplotlib.axis
+    :param bins: int, list
+        Number of bins or list of bin edges
+    :param reference_EWs: list
+        List of eigenvalues to which the provided eigenvalues should be
+        compared. Those can be eigenvalues from surrogate data or theoretical
+        predictions.
+        ToDo:
+        (If no reference is given the eigenvalue distribution is plotted with
+        the expected spectral radius as reference)
+    :param color:
+    :return:
+    """
+
     print "\n\033[4mEigenvalue distribution:\033[0m" \
           "\n\tEW_max = {:.2f}" \
           "\n\tEW_min = {:.2f}"\
-          .format(lmax, lmin)
+          .format(max(EWs), min(EWs))
 
-    edges = np.array([lmin + i*(lmax-lmin)/binnum for i in range(binnum+1)])
-    EW_hist, edges = np.histogram(EWs, bins=edges, density=False)
+    if not color:
+        color = plt.cm.get_cmap()(0)
+
+    EW_hist, edges = np.histogram(EWs, bins=bins, density=False)
     ax.bar(left=edges[:-1], height=EW_hist, width=edges[1]-edges[0],
            color=color)
     ax.set_xlabel('EW')
@@ -98,7 +129,8 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, reference_EWs=[],
     ax.set_xlim(0, max(edges))
 
     if len(reference_EWs):
-        ref_EW_hist, __ = np.histogram(reference_EWs, bins=edges, density=False)
+        ref_EW_hist, __ = np.histogram(reference_EWs, bins=edges,
+                                       density=False)
         dx = edges[1]-edges[0]
         ref_x = np.append(edges[0] - dx, edges)
         ref_x += dx / 2.
@@ -106,45 +138,63 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), binnum=20, reference_EWs=[],
         ref_y[1:-1] = ref_EW_hist
         ax.plot(ref_x, ref_y, color='k')
 
-        # y = 1
-        # a = (1 - np.sqrt(y)) ** 2
-        # b = (1 + np.sqrt(y)) ** 2
-        # marchenko_pastur = lambda x: np.sqrt((x - a) * (b - x)) / (2 * np.pi * x * y)
-        # marchenko_pastur = lambda x: np.sqrt(4*x - x**2) / (2*np.pi*x)
-        # xaxis = np.linspace(0, int(math.ceil(edges[-1])), 50)
-        # ax.plot(xaxis, [marchenko_pastur(x) for x in xaxis], color='r')
-    else:
-        # Reference to Random Correlation Matrix
-        N = len(EWs)
-        rand_matrix = np.random.rand(N, N) * 2. - 1
-        corr_matrix = (rand_matrix + rand_matrix.T) / 2.
-        surrogate_EWs, __ = np.linalg.eig(corr_matrix)
-        # for i in range(N):
-        #     corr_matrix[i,i] = 1.
-        maxl = max([abs(min(surrogate_EWs)), abs(max(surrogate_EWs))])
-        wigner_dist = lambda x: 2. / (np.pi*maxl**2) * np.sqrt(maxl**2-x**2)
-        wigner_x = np.linspace(-maxl, maxl, 100, dtype=float)
-        wigner_y = [wigner_dist(x) for x in wigner_x]
-        ax.plot(wigner_x, wigner_y, color='r')
+    #     # y = 1
+    #     # a = (1 - np.sqrt(y)) ** 2
+    #     # b = (1 + np.sqrt(y)) ** 2
+    #     # marchenko_pastur = lambda x: np.sqrt((x - a) * (b - x)) / (2 * np.pi * x * y)
+    #     # marchenko_pastur = lambda x: np.sqrt(4*x - x**2) / (2*np.pi*x)
+    #     # xaxis = np.linspace(0, int(math.ceil(edges[-1])), 50)
+    #     # ax.plot(xaxis, [marchenko_pastur(x) for x in xaxis], color='r')
+    # else:
+    #     # Reference to Random Correlation Matrix
+    #     N = len(EWs)
+    #     rand_matrix = np.random.rand(N, N) * 2. - 1
+    #     corr_matrix = (rand_matrix + rand_matrix.T) / 2.
+    #     surrogate_EWs, __ = np.linalg.eig(corr_matrix)
+    #     # for i in range(N):
+    #     #     corr_matrix[i,i] = 1.
+    #     maxl = max([abs(min(surrogate_EWs)), abs(max(surrogate_EWs))])
+    #     wigner_dist = lambda x: 2. / (np.pi*maxl**2) * np.sqrt(maxl**2-x**2)
+    #     wigner_x = np.linspace(-maxl, maxl, 100, dtype=float)
+    #     wigner_y = [wigner_dist(x) for x in wigner_x]
+    #     ax.plot(wigner_x, wigner_y, color='r')
+    #
+    # nbr_of_sig_ew = len(np.where(EWs > ref_x[-1])[0])
 
-    nbr_of_sig_ew = len(np.where(EWs > ref_x[-1])[0])
-    # print "\t{} eigenvalue{} are larger than the reference distribution \n"\
-    #       .format(nbr_of_sig_ew, "" if nbr_of_sig_ew-1 else "s")
-    return nbr_of_sig_ew
+    return None
 
 
-def redundancy(EWs, show=True):
-    ### Measure of correlation of the matrix entries
-    ### For 0 correlation sum(EW^2)=N -> phi=0
-    ### For perfect correlation EW_1=N -> sum(EW^2)=N^2 -> phi=1
+def redundancy(EWs):
+    """
+    The redundancy is a measure of correlation in the eigenvalues.
+
+    .math $$ \phi = \sqrt{\frac{\sum EW_i^2 - N}{N(N-1)}} $$
+
+    For no redundancy all EW=1 -> sum(EW^2)=N -> phi=0
+    For maximal redundancy EW_1=N -> sum(EW^2)=N^2 -> phi=1
+
+    :param EWs:
+    :param show:
+    :return:
+    """
+
     N = len(EWs)
     phi = np.sqrt((np.sum(EWs**2)-N) / (N*(N-1)))
-    if show:
-        print "\nRedundancy = {:.2f} \n".format(phi)
+    print "\nRedundancy = {:.2f} \n".format(phi)
+
     return phi
 
 
 def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=None, color='r'):
+    """
+
+    :param EWs:
+    :param method: 'SCREE', 'proportion', 'broken-stick', 'average-root'
+    :param alpha:
+    :param ax:
+    :param color:
+    :return:
+    """
     EWs = np.sort(EWs)[::-1]
     total_v = np.sum(abs(EWs))
 
@@ -170,7 +220,7 @@ def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=None, color='r'):
 
     elif method == "average-root":
         ### Are EWs larger than Tr(C)/N=1
-        pc_count = np.where(EWs < 1)[0][0]
+        pc_count = len(np.where(EWs > 1)[0])
 
     elif method == "SCREE":
         ### Which EWs are above a dent in the EW spectra
@@ -220,10 +270,20 @@ def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=None, color='r'):
     print "\t"+"\n\t".join('{}: {:.2f}'
                            .format(*pc) for pc in enumerate(EWs[:pc_count])) \
           + "\n"
+
     return pc_count
 
 
-def print_eigenvectors(EVs, EWs=[], pc_count=0, colormap=[90,90,94,92,93,91,96,95,97]):
+def print_eigenvectors(EVs, EWs=[], pc_count=0,
+                       colormap=[90,90,94,92,93,91,96,95,97]):
+    """
+
+    :param EVs:
+    :param EWs:
+    :param pc_count:
+    :param colormap:
+    :return:
+    """
     colorcode = lambda v: int(abs(v) * len(colormap))
 
     print "\n\033[4mEW:\033[0m   \033[4mEigenvectors:\033[0m ",
@@ -248,11 +308,24 @@ def print_eigenvectors(EVs, EWs=[], pc_count=0, colormap=[90,90,94,92,93,91,96,9
 
 
 def EV_angles(EVs1, EVs2, deg=True):
-    ### EVs must be sorted in ascending order as returned by scipy.linalg.eigh()
+    """
+    Calculate the angles between the vectors EVs1_i and EVs2_i and the angle
+    between their spanned eigenspaces.
+
+    :param EVs1, EVs2: numpy.ndarray
+        The eigenvectors must be presented column-wise in ascending order, just
+        as returned by scipy.linalg.eigh().
+    :param deg: Boolean
+        If True angles are return in degrees, else in rad.
+    :return:
+        vector angles
+        space angle
+    """
     assert len(EVs1) == len(EVs2)
     # Transform into descending array of the eigenvector arrays
     EVs1 = np.absolute(EVs1.T[::-1])
     EVs2 = np.absolute(EVs2.T[::-1])
+
     for EVs in [EVs1, EVs2]:
         for EV in EVs:
             np.testing.assert_almost_equal(np.linalg.norm(EV), 1., decimal=7)
@@ -260,33 +333,6 @@ def EV_angles(EVs1, EVs2, deg=True):
     M = np.dot(EVs1, EVs2.T)
     vector_angles = np.arccos(np.diag(M))
     space_angle = np.arccos(np.sqrt(np.linalg.det(np.dot(M, M.T))))
-
-    # plt.figure()
-    # Angle histogram
-    # hist, edges = np.histogram(vector_angles, bins=20, density=True)
-    # plt.bar(edges[:-1], hist, np.diff(edges), color='g')
-    #
-    # # Sample random vectors
-    # N = 50
-    # res = 1000
-    # rand_angles = []
-    # for j in range(res):
-    #     vector = np.random.normal(size=(2, N))
-    #     for i in range(2):
-    #         vector[i] /= np.linalg.norm(vector[i])
-    #     vector = np.absolute(vector)
-    #     rand_angles += [np.arccos(np.dot(vector[0], vector[1]))]
-    # hist, edges = np.histogram(rand_angles, bins=20, density=True)
-    # plt.plot(edges[:-1]+np.diff(edges), hist, color='k')
-
-    # N = len(EVs1[0])
-    # res = 500
-    # step = np.pi/(res)
-    # phi = [step * (i+1) for i in range(res)]
-    # norm = integrate.quad(lambda a: np.sin(a) ** (N - 2), 0, np.pi)[0]
-    # f = [(np.sin(p)) ** (N - 2) for p in phi]
-    # f = [f_it / (sum(f)*step) for f_it in f]
-    # plt.plot(phi, f, color='r')
 
     if deg:
         vector_angles *= 180 / np.pi
@@ -296,7 +342,8 @@ def EV_angles(EVs1, EVs2, deg=True):
         unit = " rad"
 
     print "\n\033[4mAngles between the eigenvectors\033[0m" \
-          + "\n\t" + "\n\t".join('{:.2f}{}'.format(a, unit) for a in vector_angles)\
+          + "\n\t" + "\n\t".join('{:.2f}{}'.format(a, unit)
+                                 for a in vector_angles)\
           + "\n\n" \
           + "\033[4mAngle between eigenspaces\033[0m" \
           + "\n\t{:.2f}{}".format(space_angle, unit)
@@ -305,7 +352,32 @@ def EV_angles(EVs1, EVs2, deg=True):
     return vector_angles, space_angle
 
 
-def detect_assemblies(EVs, EWs, detect_by='eigenvalue', show=True, EW_lim=2, jupyter=False, sort=False):
+def detect_assemblies(EVs, EWs, detect_by='eigenvalue', show=True, EW_lim=2,
+                      jupyter=False, sort=False):
+    """
+
+    :param EVs:
+    :param EWs:
+    :param detect_by: 'eigenvalue', int, float
+        'eigenvalue'    The respective sizes of the assemblies are estimated
+                        by the next larger int of the eigenvalue.
+        int             a direct estimate of the assembly size
+        float           a threshold for the vector elements
+    :param show:
+    :param EW_lim:
+    :param jupyter:
+    :param sort:
+        For EW > EW_lim the significant contributions according to the
+        detection method in the eigenvectors determine the most significant
+        and therefore top ordered neurons.
+        For all other EW < EW_lim the neurons are ordered by their above chance
+        contribution (> 1/sqrt(N)) to the eigenvectors ordered by their eigen-
+        values.
+        In case their are still neurons left they are appended in order of
+        their id.
+    :return:
+    """
+
     EVs = np.absolute(EVs.T[::-1])
     EWs = EWs[::-1]
     if type(detect_by) == float or type(detect_by) == int:
@@ -376,6 +448,3 @@ def detect_assemblies(EVs, EWs, detect_by='eigenvalue', show=True, EW_lim=2, jup
         return relevant_EVs, st_num_list
 
     return relevant_EVs
-
-
-# ToDo: Write annotations
