@@ -1,0 +1,29 @@
+2017-03-09 17:24:00,751 pypet.environment.Environment INFO     Triggered NEW GIT commit `4138dd1b142c948e800f4cbc98bbd180ef526275`.
+2017-03-09 17:24:00,751 pypet.storageservice.HDF5StorageService INFO     I will use the hdf5 file `/home/robin/Projects/ValidationTools/ParameterExploration/assembly/corr_T.hdf5`.
+2017-03-09 17:24:00,753 pypet.storageservice.HDF5StorageService INFO     You specified ``overwrite_file=True``, so I deleted the file `/home/robin/Projects/ValidationTools/ParameterExploration/assembly/corr_T.hdf5`.
+2017-03-09 17:24:00,755 pypet.environment.Environment INFO     Environment initialized.
+2017-03-09 17:24:00,759 pypet.environment.Environment INFO     I am preparing the Trajectory for the experiment and initialise the store.
+2017-03-09 17:24:00,759 pypet.environment.Environment INFO     Initialising the storage for the trajectory.
+2017-03-09 17:24:00,761 pypet.storageservice.HDF5StorageService INFO     Initialising storage or updating meta data of Trajectory `2corr_2T_5rep`.
+2017-03-09 17:24:00,789 pypet.storageservice.HDF5StorageService INFO     Finished init or meta data update for `2corr_2T_5rep`.
+2017-03-09 17:24:00,794 pypet.environment.Environment INFO     
+************************************************************
+STARTING runs of trajectory
+`2corr_2T_5rep`.
+************************************************************
+
+2017-03-09 17:24:00,795 pypet INFO     PROGRESS: Finished   0/180 runs [                    ]  0.0%
+2017-03-09 17:24:00,795 pypet INFO     
+=========================================
+ Starting single run #0 of 180 
+=========================================
+
+2017-03-09 17:24:08,326 pypet ERROR    ERROR occurred during a single run! 
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/pypet/environment.py", line 260, in _sigint_handling_single_run
+    return _single_run(kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/pypet/environment.py", line 315, in _single_run
+    result = runfunc(traj, *runargs, **kwrunparams)
+  File "/home/robin/Projects/ValidationTools/ParameterExploration/Explore_params.py", line 64, in assembly_detection
+    redundancy = matstat.redundancy(EWs, show=False)
+TypeError: redundancy() got an unexpected keyword argument 'show'

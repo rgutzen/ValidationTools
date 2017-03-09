@@ -1,0 +1,9 @@
+2017-03-09 17:24:08,326 pypet ERROR    ERROR occurred during a single run! 
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/pypet/environment.py", line 260, in _sigint_handling_single_run
+    return _single_run(kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/pypet/environment.py", line 315, in _single_run
+    result = runfunc(traj, *runargs, **kwrunparams)
+  File "/home/robin/Projects/ValidationTools/ParameterExploration/Explore_params.py", line 64, in assembly_detection
+    redundancy = matstat.redundancy(EWs, show=False)
+TypeError: redundancy() got an unexpected keyword argument 'show'

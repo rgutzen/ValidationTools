@@ -1,0 +1,31 @@
+2017-03-09 15:09:32,582 pypet.storageservice.HDF5StorageService INFO     I will use the hdf5 file `/home/robin/Projects/ValidationTools/ParameterExploration/lmax_dist/lmax_N.hdf5`.
+2017-03-09 15:09:32,586 pypet.environment.Environment INFO     Environment initialized.
+2017-03-09 15:09:32,587 pypet.environment.Environment INFO     I am preparing the Trajectory for the experiment and initialise the store.
+2017-03-09 15:09:32,587 pypet.environment.Environment INFO     Initialising the storage for the trajectory.
+2017-03-09 15:09:32,591 pypet.storageservice.HDF5StorageService INFO     Initialising storage or updating meta data of Trajectory `N_10-200`.
+2017-03-09 15:09:32,622 pypet.storageservice.HDF5StorageService INFO     Finished init or meta data update for `N_10-200`.
+2017-03-09 15:09:32,626 pypet.environment.Environment INFO     
+************************************************************
+STARTING runs of trajectory
+`N_10-200`.
+************************************************************
+
+2017-03-09 15:09:32,626 pypet INFO     PROGRESS: Finished  0/11 runs [                    ]  0.0%
+2017-03-09 15:09:32,626 pypet INFO     
+=========================================
+ Starting single run #0 of 11 
+=========================================
+
+2017-03-09 15:09:34,774 pypet ERROR    ERROR occurred during a single run! 
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/pypet/environment.py", line 260, in _sigint_handling_single_run
+    return _single_run(kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/pypet/environment.py", line 315, in _single_run
+    result = runfunc(traj, *runargs, **kwrunparams)
+  File "/home/robin/Projects/ValidationTools/rand_corr_matrix_pectral_norm.py", line 47, in explore_lmax
+    traj.f_add_result('Mean l_max', lmax_mean)
+  File "/usr/local/lib/python2.7/dist-packages/pypet/naturalnaming.py", line 3482, in f_add_result
+    args=args, kwargs=kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/pypet/naturalnaming.py", line 1203, in _add_generic
+    '%s please choose other names.' % (full_name, faulty_names))
+ValueError: Your Parameter/Result/Node `Mean l_max` contains the following not admissible names:  `Mean l_max` contains non-admissible characters (use only [A-Za-z0-9_-]), please choose other names.

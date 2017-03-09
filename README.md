@@ -5,20 +5,15 @@ Based on Elephant and neo.
 
 #### ToDo
 
-Thilo Talk:
-    + ISI_i vs ISI_i+1 to detect correlations
-
 + Draw raw distributions for visual comparison
 + Apply Methods to PSTH Distribution Comparison
     + s. Paper von Grün, Abeles
-+ Debug: Create assemblies with specific neuron ids 
 + Explore Parameters
     + Blaustein Cluster: Slurm queuing, rsync, requirements (-> Michael)
-    + Add comparison to random network
     + estimate minimum data size to detect features with a certain resolution
         + assemblysize; assemblycorr; assemblycorr with backgroundcorr
-+ How to evaluate the signficiance of high-dim angles?
-    + Foward problem to mathematician!
++ How to evaluate the significance of high-dim angles?
+    + Forward problem to mathematician!
 + Theoretical distribution of correlation matrix eigenvalues
 + Visualisation in -N/ K-space? -> DataHigh (for Win?)
 + PCA directly on binned spiketrains/ inst. firing rate (t)
@@ -30,7 +25,7 @@ Thilo Talk:
     + population autocorrelation
     + relation to fourier analysis
 + Write function annotations
-+ Maybe apply method to Networks with asset method (->carlos)
++ Maybe apply method to Networks with ASSET method (->carlos)
 + Integrate CuBIC (in elephant)
 + Adapt code for collab packages
 
