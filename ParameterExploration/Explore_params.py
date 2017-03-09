@@ -61,7 +61,7 @@ def assembly_detection(traj):
 
     EWs, EVs = eigh(corr_matrix)
 
-    redundancy = matstat.redundancy(EWs, show=False)
+    redundancy = matstat.redundancy(EWs)
 
     SCREE_count = matstat.eigenvalue_spectra(EWs, method='SCREE')
 
