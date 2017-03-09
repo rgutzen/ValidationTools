@@ -12,6 +12,7 @@ from scipy import stats as st
 from quantities import Hz, ms
 from elephant.conversion import BinnedSpikeTrain
 from elephant.spike_train_correlation import corrcoef
+from elephant.spike_train_generation import homogeneous_poisson_process as HPP
 import seaborn as sns
 sns.set(style='ticks', palette='Set2')
 sns.set_color_codes('colorblind')
@@ -90,9 +91,24 @@ def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None,
 
     return None
 
+def estimate_largest_eigenvalue(N, trials, t_stop, rate, bins):
+    lmax = np.zeros(trials)
+
+    for i in range(trials):
+        spiketrains = np.array([HPP(rate=rate*Hz, t_stop=t_stop*ms)
+                                for _ in range(N)])
+        binned_sts = BinnedSpikeTrain(spiketrains, bins*ms,
+                                      t_start=0*ms, t_stop=t_stop*ms)
+        corr_matrix = corrcoef(binned_sts)
+        EWs, __ = eigh(corr_matrix)
+        lmax[i] = max(EWs)
+
+    return np.mean(lmax), np.sqrt(np.var(lmax))
+
+
 
 def eigenvalue_distribution(EWs, ax=plt.gca(), bins=20, reference_EWs=[],
-                            color=''):
+                            reference_EW_max=None, color=0):
     """
     Plot histogram of the eigenvalue distribution in order to determine
     significant outliers.
@@ -118,8 +134,8 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), bins=20, reference_EWs=[],
           "\n\tEW_min = {:.2f}"\
           .format(max(EWs), min(EWs))
 
-    if not color:
-        color = plt.cm.get_cmap()(0)
+    if type(color) == int:
+        color = sns.color_palette()[color]
 
     EW_hist, edges = np.histogram(EWs, bins=bins, density=False)
     ax.bar(left=edges[:-1], height=EW_hist, width=edges[1]-edges[0],
@@ -138,14 +154,11 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), bins=20, reference_EWs=[],
         ref_y[1:-1] = ref_EW_hist
         ax.plot(ref_x, ref_y, color='k')
 
-    #     # y = 1
-    #     # a = (1 - np.sqrt(y)) ** 2
-    #     # b = (1 + np.sqrt(y)) ** 2
-    #     # marchenko_pastur = lambda x: np.sqrt((x - a) * (b - x)) / (2 * np.pi * x * y)
-    #     # marchenko_pastur = lambda x: np.sqrt(4*x - x**2) / (2*np.pi*x)
-    #     # xaxis = np.linspace(0, int(math.ceil(edges[-1])), 50)
-    #     # ax.plot(xaxis, [marchenko_pastur(x) for x in xaxis], color='r')
-    # else:
+    if reference_EW_max is not None:
+        ax.axvline(reference_EW_max, color='k', linestyle='--', linewidth=2)
+        ax.plot([reference_EW_max], [1], color='r')
+        ax.set_xlim(0, max([max(edges), reference_EW_max]))
+
     #     # Reference to Random Correlation Matrix
     #     N = len(EWs)
     #     rand_matrix = np.random.rand(N, N) * 2. - 1

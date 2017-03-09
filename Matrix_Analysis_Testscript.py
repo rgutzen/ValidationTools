@@ -99,8 +99,16 @@ def analyze_correlations(spiketrain_list, filename='testfile'):
     # EW Spectra
     EWs, EVs = eigh(corr_matrix)
     sEWs, sEVs = eigh(surrogate_corr_matrix)
-    pc_count = matstat.eigenvalue_distribution(EWs, ax[1,0], reference_EWs=sEWs,
-                                               binnum=int(max(EWs))*5)
+    EWmax_mean, EWmax_std = matstat.estimate_largest_eigenvalue(100,
+                                                                10,
+                                                                500,
+                                                                100,
+                                                                2)
+
+    pc_count = matstat.eigenvalue_distribution(EWs, ax[1,0],
+                                               # reference_EWs=sEWs,
+                                               reference_EW_max=EWmax_mean + 2*EWmax_std,
+                                               bins=int(max(EWs))*5)
 
     # EW Redundancy
     matstat.redundancy(EWs)
@@ -123,7 +131,7 @@ N = 50
 # Generate Spiketrains
 spiketrain_list1 = testdata.test_data(size=N, corr=.0, t_stop=500*ms,
                                       rate=100*Hz, assembly_sizes=[10,5],
-                                      method="CPP", bkgr_corr=0.1)
+                                      method="CPP", bkgr_corr=0.0)
 for i, st in enumerate(spiketrain_list1):
     st.annotations['id'] = i
 

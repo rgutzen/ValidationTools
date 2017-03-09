@@ -138,9 +138,9 @@ def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[],
 
     if shuffle:
         if shuffle_seed is None:
-            r.random.shuffle(spiketrains)
+            r.shuffle(spiketrains)
         else:
-            r.random.Random(shuffle_seed).shuffle(spiketrains)
+            r.Random(shuffle_seed).shuffle(spiketrains)
 
     return spiketrains
 

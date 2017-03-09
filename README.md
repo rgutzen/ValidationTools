@@ -7,10 +7,8 @@ Based on Elephant and neo.
 
 Thilo Talk:
     + ISI_i vs ISI_i+1 to detect correlations
-    + 
 
 + Draw raw distributions for visual comparison
-+ Theoretical prediction for spectral radius
 + Apply Methods to PSTH Distribution Comparison
     + s. Paper von Grün, Abeles
 + Debug: Create assemblies with specific neuron ids 
@@ -33,7 +31,7 @@ Thilo Talk:
     + relation to fourier analysis
 + Write function annotations
 + Maybe apply method to Networks with asset method (->carlos)
-+ Implement CuBIC (in elephant)
++ Integrate CuBIC (in elephant)
 + Adapt code for collab packages
 
 #### ORGANIZATIONAL CONSTRUCT

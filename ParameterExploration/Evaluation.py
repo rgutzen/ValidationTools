@@ -6,8 +6,10 @@ sns.set(style='ticks', palette='Set2')
 sns.set_color_codes('colorblind')
 sns.despine()
 
+base_path = '/home/robin/Projects/ValidationTools/ParameterExploration/lmax_dist/'
+
+
 def load_traj(filename):
-    base_path = '/home/robin/Projects/ValidationTools/ParameterExploration/assembly/'
 
     traj = Trajectory(filename=base_path + filename)
 
@@ -141,27 +143,23 @@ def show_results(traj):
     print_table(table)
 
 
-traj = load_traj('corr_T.hdf5')
+traj = load_traj('lmax_N.hdf5')
 
-show_params(traj)
+# show_params(traj)
 
 # show_results(traj)
 
 fig, ax = plt.subplots(nrows=1, ncols=1)
 fig.tight_layout()
 
-for corr in [0., .02, .04, .06, 0.08, .1]:
-    evaluate_repetition('T', 'EW',
-                        fix_param=['corr'],
-                        fix_value=[corr],
-                        ax=ax)
+evaluate('N', 'Mean_lmax', ax=ax)
 
-# evaluate_repetition('T', 'Norm_estimate',
-#                     fix_param=['corr'],
-#                     fix_value=[0.08],
-#                     color='r',
-#                     ax=ax)
+# for corr in [0., .02, .04, .06, 0.08, .1]:
+#     evaluate_repetition('T', 'EW',
+#                         fix_param=['corr'],
+#                         fix_value=[corr],
+#                         ax=ax)
 
-ax.legend()
+# ax.legend()
 plt.show()
 
