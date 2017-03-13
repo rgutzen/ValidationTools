@@ -127,14 +127,17 @@ def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[],
 
     if bkgr_corr > 0:
         bkgr_size = size-sum(assembly_sizes)+1
-        amp_dist = poisson(bkgr_corr*bkgr_size).pmf(np.arange(bkgr_size))
-        amp_dist = amp_dist / sum(amp_dist)
-        spiketrains[np.sum(assembly_sizes):]\
+        # amp_dist = poisson(bkgr_corr*bkgr_size).pmf(np.arange(bkgr_size))
+        # amp_dist = amp_dist / sum(amp_dist)
+        amp_dist = np.zeros(bkgr_size)
+        amp_dist[1] = 1 - bkgr_corr
+        amp_dist[2] = bkgr_corr
+        spiketrains[int(np.sum(assembly_sizes)):]\
             = CPP(rate=rate, A=amp_dist, t_stop=t_stop)
     else:
         spiketrains[sum(assembly_sizes):] \
             = np.array([HPP(rate=rate, t_stop=t_stop)
-                        for x in range(size-sum(assembly_sizes))])
+                        for _ in range(size-sum(assembly_sizes))])
 
     if shuffle:
         if shuffle_seed is None:

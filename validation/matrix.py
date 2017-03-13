@@ -348,8 +348,8 @@ def EV_angles(EVs1, EVs2, deg=True):
     space_angle = np.arccos(np.sqrt(np.linalg.det(np.dot(M, M.T))))
 
     if deg:
-        vector_angles *= 180 / np.pi
-        space_angle *= 180 / np.pi
+        vector_angles *= 180. / np.pi
+        space_angle *= 180. / np.pi
         unit = "°"
     else:
         unit = " rad"

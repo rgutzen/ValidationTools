@@ -5,13 +5,23 @@ Based on Elephant and neo.
 
 #### ToDo
 
++ GED (generalized eigenvalue decompositon): de Cheveigné and Parra "Joint decorrelation ..."
+    + can be calculated by scipy.eig
+
 + Draw raw distributions for visual comparison
++ analytic T-dependent spectral radius
 + Apply Methods to PSTH Distribution Comparison
     + s. Paper von Grün, Abeles
 + Explore Parameters
     + Blaustein Cluster: Slurm queuing, rsync, requirements (-> Michael)
+        + Performance estimate: 2.6MB/run, 11.2s/run (based on 32 runs)
+        + Git checkout on cluster?
+        + elephant, neo installation?
     + estimate minimum data size to detect features with a certain resolution
         + assemblysize; assemblycorr; assemblycorr with backgroundcorr
+    + Graphs
+        
+      
 + How to evaluate the significance of high-dim angles?
     + Forward problem to mathematician!
 + Theoretical distribution of correlation matrix eigenvalues

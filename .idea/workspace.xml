@@ -3,9 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="2e472702-85e4-422c-bc22-2b0cafeaf73a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ParameterExploration/Evaluation.py" afterPath="$PROJECT_DIR$/ParameterExploration/Evaluation.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ParameterExploration/assembly/corr_T.hdf5" afterPath="$PROJECT_DIR$/ParameterExploration/assembly/corr_T.hdf5" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ParameterExploration/Explore_params.py" afterPath="$PROJECT_DIR$/ParameterExploration/Explore_params.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/requirements.txt" afterPath="$PROJECT_DIR$/requirements.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/validation/matrix.py" afterPath="$PROJECT_DIR$/validation/matrix.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/validation/test_data.py" afterPath="$PROJECT_DIR$/validation/test_data.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,7 +21,265 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
-    <favorites_list name="ValidationTools" />
+    <favorites_list name="ValidationTools">
+      <favorite_root url="file://$PROJECT_DIR$" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+        <favorite_root url="file://$PROJECT_DIR$/.idea" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+          <favorite_root url="file://$PROJECT_DIR$/.idea/vcs.xml" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/.idea/misc.xml" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/.idea/modules.xml" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/.idea/workspace.xml" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/.idea/inspectionProfiles" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+            <favorite_root url="file://$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          </favorite_root>
+          <favorite_root url="file://$PROJECT_DIR$/.idea/codeStyleSettings.xml" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/.idea/NeuroSim-Comparison-Tools.iml" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+        </favorite_root>
+        <favorite_root url="file://$PROJECT_DIR$/sim_data" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+          <favorite_root url="file://$PROJECT_DIR$/sim_data/NEST_data" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/NEST_data/ver" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/NEST_data/spikes_L4E.h5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/NEST_data/spikes_L4I.h5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/NEST_data/spikes_L5E.h5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/NEST_data/spikes_L5I.h5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/NEST_data/spikes_L6E.h5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/NEST_data/spikes_L6I.h5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/NEST_data/spikes_L23E.h5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/NEST_data/spikes_L23I.h5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          </favorite_root>
+          <favorite_root url="file://$PROJECT_DIR$/sim_data/brunel_exp" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/brunel_exp/AI_D1.5_g5_v2.png" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/brunel_exp/SR_D1.5_g2_v2.png" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/brunel_exp/J0.1_D1.5_g3.0_v2.0_T1000.0%0.1_ex-12502-0.gdf" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/brunel_exp/J0.1_D1.5_g3.0_v2.0_T1000.0%0.1_in-12503-0.gdf" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/brunel_exp/J0.1_D1.5_g3.0_v4.0_T1000.0%0.1_ex-12502-0.gdf" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/brunel_exp/J0.1_D1.5_g3.0_v4.0_T1000.0%0.1_in-12503-0.gdf" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/brunel_exp/J0.1_D1.5_g5.0_v2.0_T1000.0%0.1_ex-12502-0.gdf" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/brunel_exp/J0.1_D1.5_g5.0_v2.0_T1000.0%0.1_in-12503-0.gdf" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/brunel_exp/J0.1_D1.5_g5.0_v4.0_T1000.0%0.1_ex-12502-0.gdf" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/brunel_exp/J0.1_D1.5_g5.0_v4.0_T1000.0%0.1_in-12503-0.gdf" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/brunel_exp/J0.1_D1.5_g7.0_v3.5_T1000.0%0.1_ex-12502-0.gdf" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/brunel_exp/J0.1_D1.5_g7.0_v3.5_T1000.0%0.1_in-12503-0.gdf" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/brunel_exp/J0.1_D1.5_g7.0_v0.85_T1000.0%0.1_ex-12502-0.gdf" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/brunel_exp/J0.1_D1.5_g7.0_v0.85_T1000.0%0.1_in-12503-0.gdf" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          </favorite_root>
+          <favorite_root url="file://$PROJECT_DIR$/sim_data/SpiNNaker_data" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/SpiNNaker_data/spikes_L4E.h5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/SpiNNaker_data/spikes_L4I.h5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/SpiNNaker_data/spikes_L5E.h5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/SpiNNaker_data/spikes_L5I.h5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/SpiNNaker_data/spikes_L6E.h5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/SpiNNaker_data/spikes_L6I.h5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/SpiNNaker_data/spikes_L23E.h5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/sim_data/SpiNNaker_data/spikes_L23I.h5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          </favorite_root>
+        </favorite_root>
+        <favorite_root url="file://$PROJECT_DIR$/README.md" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+        <favorite_root url="file://$PROJECT_DIR$/validation" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+          <favorite_root url="file://$PROJECT_DIR$/validation/dist.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/validation/matrix.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/validation/__init__.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/validation/test_data.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/validation/angle_dist.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+        </favorite_root>
+        <favorite_root url="file://$PROJECT_DIR$/example_graphs" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+          <favorite_root url="file://$PROJECT_DIR$/example_graphs/03_KL.png" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/example_graphs/03_KS.png" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/example_graphs/04_MWW.png" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/example_graphs/02_isi_cv.png" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/example_graphs/01_rasterplot.png" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/example_graphs/05_corr_matrix.png" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/example_graphs/06_eigenvectors.png" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/example_graphs/Validation_Book_NEST_SPINNAKER.html" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/example_graphs/Validation_Book_artifical_data.html" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+        </favorite_root>
+        <favorite_root url="file://$PROJECT_DIR$/hdf5io_test.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+        <favorite_root url="file://$PROJECT_DIR$/requirements.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+        <favorite_root url="file://$PROJECT_DIR$/MinErrorScript.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+        <favorite_root url="file://$PROJECT_DIR$/.ipynb_checkpoints" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+          <favorite_root url="file://$PROJECT_DIR$/.ipynb_checkpoints/Validation_Book-checkpoint.ipynb" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+        </favorite_root>
+        <favorite_root url="file://$PROJECT_DIR$/ParameterExploration" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+          <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+            <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+              <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_1df02f2_2017_03_09_15h10m31s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_1df02f2_2017_03_09_15h10m31s/LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_1df02f2_2017_03_09_15h10m31s/ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              </favorite_root>
+              <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_5a8b0ac_2017_03_09_15h09m32s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_5a8b0ac_2017_03_09_15h09m32s/LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_5a8b0ac_2017_03_09_15h09m32s/ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              </favorite_root>
+              <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_6c908ba_2017_03_09_15h08m17s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_6c908ba_2017_03_09_15h08m17s/LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_6c908ba_2017_03_09_15h08m17s/ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              </favorite_root>
+              <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_9bafeb6_2017_03_09_15h58m49s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_9bafeb6_2017_03_09_15h58m49s/LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_9bafeb6_2017_03_09_15h58m49s/ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              </favorite_root>
+              <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_abbceaf_2017_03_09_16h00m00s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_abbceaf_2017_03_09_16h00m00s/LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_abbceaf_2017_03_09_16h00m00s/ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              </favorite_root>
+              <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_b5947af_2017_03_09_15h07m14s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_b5947af_2017_03_09_15h07m14s/LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_b5947af_2017_03_09_15h07m14s/ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              </favorite_root>
+              <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_d3e00ac_2017_03_09_15h10m10s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_d3e00ac_2017_03_09_15h10m10s/LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_d3e00ac_2017_03_09_15h10m10s/ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              </favorite_root>
+            </favorite_root>
+            <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/2corr_2T_5rep" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+              <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/2corr_2T_5rep/environment_4138dd1_2017_03_09_17h24m00s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/2corr_2T_5rep/environment_4138dd1_2017_03_09_17h24m00s/LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/2corr_2T_5rep/environment_4138dd1_2017_03_09_17h24m00s/ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              </favorite_root>
+              <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/2corr_2T_5rep/environment_bfd47a6_2017_03_09_17h24m47s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/2corr_2T_5rep/environment_bfd47a6_2017_03_09_17h24m47s/LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/2corr_2T_5rep/environment_bfd47a6_2017_03_09_17h24m47s/ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              </favorite_root>
+            </favorite_root>
+            <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/5corr_6T_4rep" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+              <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/5corr_6T_4rep/environment_aeced05_2017_03_03_11h00m25s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/5corr_6T_4rep/environment_aeced05_2017_03_03_11h00m25s/LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/5corr_6T_4rep/environment_aeced05_2017_03_03_11h00m25s/ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              </favorite_root>
+            </favorite_root>
+            <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_11h58m59s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+              <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_11h58m59s/environment_0292da6_2017_03_13_11h58m59s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_11h58m59s/environment_0292da6_2017_03_13_11h58m59s/LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_11h58m59s/environment_0292da6_2017_03_13_11h58m59s/ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              </favorite_root>
+            </favorite_root>
+            <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h05m35s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+              <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h05m35s/environment_a09e48c_2017_03_13_12h05m35s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h05m35s/environment_a09e48c_2017_03_13_12h05m35s/LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h05m35s/environment_a09e48c_2017_03_13_12h05m35s/ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h05m35s/environment_a09e48c_2017_03_13_12h05m35s/run_ALL_Mangiafuoco_PoolWorker-3-31802_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h05m35s/environment_a09e48c_2017_03_13_12h05m35s/run_ALL_Mangiafuoco_QueueProcess-31799_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h05m35s/environment_a09e48c_2017_03_13_12h05m35s/run_ALL_Mangiafuoco_PoolWorker-3-31802_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h05m35s/environment_a09e48c_2017_03_13_12h05m35s/run_ALL_Mangiafuoco_QueueProcess-31799_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              </favorite_root>
+            </favorite_root>
+            <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h06m18s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+              <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h06m18s/environment_63007b0_2017_03_13_12h06m18s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h06m18s/environment_63007b0_2017_03_13_12h06m18s/LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h06m18s/environment_63007b0_2017_03_13_12h06m18s/ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h06m18s/environment_63007b0_2017_03_13_12h06m18s/run_ALL_Mangiafuoco_PoolWorker-3-32172_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h06m18s/environment_63007b0_2017_03_13_12h06m18s/run_ALL_Mangiafuoco_PoolWorker-4-32173_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h06m18s/environment_63007b0_2017_03_13_12h06m18s/run_ALL_Mangiafuoco_QueueProcess-32169_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h06m18s/environment_63007b0_2017_03_13_12h06m18s/run_ALL_Mangiafuoco_PoolWorker-3-32172_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h06m18s/environment_63007b0_2017_03_13_12h06m18s/run_ALL_Mangiafuoco_PoolWorker-4-32173_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h06m18s/environment_63007b0_2017_03_13_12h06m18s/run_ALL_Mangiafuoco_QueueProcess-32169_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              </favorite_root>
+            </favorite_root>
+            <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h07m09s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+              <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h07m09s/environment_795b2bf_2017_03_13_12h07m09s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h07m09s/environment_795b2bf_2017_03_13_12h07m09s/LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h07m09s/environment_795b2bf_2017_03_13_12h07m09s/ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h07m09s/environment_795b2bf_2017_03_13_12h07m09s/run_ALL_Mangiafuoco_QueueProcess-32588_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h07m09s/environment_795b2bf_2017_03_13_12h07m09s/run_00000000_Mangiafuoco_Process-3-32591_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h07m09s/environment_795b2bf_2017_03_13_12h07m09s/run_ALL_Mangiafuoco_QueueProcess-32588_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h07m09s/environment_795b2bf_2017_03_13_12h07m09s/run_00000000_Mangiafuoco_Process-3-32591_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              </favorite_root>
+            </favorite_root>
+            <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+              <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_ALL_Mangiafuoco_QueueProcess-669_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000000_Mangiafuoco_Process-3-672_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000001_Mangiafuoco_Process-4-675_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000002_Mangiafuoco_Process-5-678_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000003_Mangiafuoco_Process-6-687_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000004_Mangiafuoco_Process-7-690_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000005_Mangiafuoco_Process-8-694_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000006_Mangiafuoco_Process-9-697_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_ALL_Mangiafuoco_QueueProcess-669_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000007_Mangiafuoco_Process-10-700_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000008_Mangiafuoco_Process-11-703_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000009_Mangiafuoco_Process-12-706_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000010_Mangiafuoco_Process-13-709_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000011_Mangiafuoco_Process-14-712_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000012_Mangiafuoco_Process-15-715_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000013_Mangiafuoco_Process-16-718_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000014_Mangiafuoco_Process-17-721_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000015_Mangiafuoco_Process-18-724_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000016_Mangiafuoco_Process-19-727_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000017_Mangiafuoco_Process-20-730_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000018_Mangiafuoco_Process-21-733_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000019_Mangiafuoco_Process-22-736_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000020_Mangiafuoco_Process-23-739_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000021_Mangiafuoco_Process-24-742_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000022_Mangiafuoco_Process-25-745_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000023_Mangiafuoco_Process-26-748_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000024_Mangiafuoco_Process-27-751_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000025_Mangiafuoco_Process-28-789_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000026_Mangiafuoco_Process-29-799_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000027_Mangiafuoco_Process-30-803_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000028_Mangiafuoco_Process-31-806_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000029_Mangiafuoco_Process-32-809_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000030_Mangiafuoco_Process-33-812_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000031_Mangiafuoco_Process-34-815_LOG.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000000_Mangiafuoco_Process-3-672_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000001_Mangiafuoco_Process-4-675_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000002_Mangiafuoco_Process-5-678_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000003_Mangiafuoco_Process-6-687_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000004_Mangiafuoco_Process-7-690_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000005_Mangiafuoco_Process-8-694_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000006_Mangiafuoco_Process-9-697_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000007_Mangiafuoco_Process-10-700_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000008_Mangiafuoco_Process-11-703_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000009_Mangiafuoco_Process-12-706_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000010_Mangiafuoco_Process-13-709_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000011_Mangiafuoco_Process-14-712_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000012_Mangiafuoco_Process-15-715_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000013_Mangiafuoco_Process-16-718_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000014_Mangiafuoco_Process-17-721_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000015_Mangiafuoco_Process-18-724_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000016_Mangiafuoco_Process-19-727_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000017_Mangiafuoco_Process-20-730_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000018_Mangiafuoco_Process-21-733_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000019_Mangiafuoco_Process-22-736_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000020_Mangiafuoco_Process-23-739_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000021_Mangiafuoco_Process-24-742_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000022_Mangiafuoco_Process-25-745_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000023_Mangiafuoco_Process-26-748_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000024_Mangiafuoco_Process-27-751_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000025_Mangiafuoco_Process-28-789_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000026_Mangiafuoco_Process-29-799_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000027_Mangiafuoco_Process-30-803_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000028_Mangiafuoco_Process-31-806_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000029_Mangiafuoco_Process-32-809_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000030_Mangiafuoco_Process-33-812_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+                <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h08m14s/environment_b64a591_2017_03_13_12h08m14s/run_00000031_Mangiafuoco_Process-34-815_ERROR.txt" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+              </favorite_root>
+            </favorite_root>
+          </favorite_root>
+          <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/assembly" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+            <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/assembly/corr_T.hdf5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+            <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/assembly/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_13_12h11m03s.hdf5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          </favorite_root>
+          <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/lmax_dist" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+            <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/lmax_dist/lmax_dist_backup.hdf5" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          </favorite_root>
+          <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/__init__.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/Evaluation.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/Explore_params.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/ParameterExploration/rand_corr_matrix_pectral_norm.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+        </favorite_root>
+        <favorite_root url="file://$PROJECT_DIR$/Validation_Book.ipynb" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+        <favorite_root url="file://$PROJECT_DIR$/brunel_network_sim.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+        <favorite_root url="file://$PROJECT_DIR$/Matrix_Analysis_Testscript.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+        <favorite_root url="file://$PROJECT_DIR$/Previous NEST_SpiNNaker_comparison" module="NeuroSim-Comparison-Tools" type="directory" klass="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode">
+          <favorite_root url="file://$PROJECT_DIR$/Previous NEST_SpiNNaker_comparison/__init__.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/Previous NEST_SpiNNaker_comparison/plotting_functions.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/Previous NEST_SpiNNaker_comparison/NEST_SpiNNaker_comparison.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+          <favorite_root url="file://$PROJECT_DIR$/Previous NEST_SpiNNaker_comparison/NEST_SpiNNaker_comparison.ipynb" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+        </favorite_root>
+      </favorite_root>
+    </favorites_list>
   </component>
   <component name="FileEditorManager">
     <splitter split-orientation="horizontal" split-proportion="0.50377357">
@@ -28,8 +288,8 @@
           <file leaf-file-name="matrix.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/validation/matrix.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="3263">
-                  <caret line="364" column="37" lean-forward="false" selection-start-line="364" selection-start-column="37" selection-end-line="364" selection-end-column="37" />
+                <state relative-caret-position="-753">
+                  <caret line="368" column="49" lean-forward="true" selection-start-line="368" selection-start-column="49" selection-end-line="368" selection-end-column="49" />
                   <folding>
                     <element signature="e#77#95#0" expanded="true" />
                   </folding>
@@ -52,18 +312,18 @@
           <file leaf-file-name="dist.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/validation/dist.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-1088">
+                <state relative-caret-position="112">
                   <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Explore_params.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="Explore_params.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/ParameterExploration/Explore_params.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-737">
-                  <caret line="63" column="39" lean-forward="false" selection-start-line="63" selection-start-column="39" selection-end-line="63" selection-end-column="39" />
+                <state relative-caret-position="672">
+                  <caret line="216" column="57" lean-forward="true" selection-start-line="216" selection-start-column="57" selection-end-line="216" selection-end-column="57" />
                   <folding>
                     <element signature="e#0#48#0" expanded="true" />
                   </folding>
@@ -71,11 +331,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Evaluation.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Evaluation.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/ParameterExploration/Evaluation.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="575">
-                  <caret line="156" column="42" lean-forward="true" selection-start-line="156" selection-start-column="42" selection-end-line="156" selection-end-column="42" />
+                <state relative-caret-position="103">
+                  <caret line="100" column="0" lean-forward="false" selection-start-line="100" selection-start-column="0" selection-end-line="120" selection-end-column="22" />
                   <folding>
                     <element signature="e#0#28#0" expanded="true" />
                   </folding>
@@ -86,8 +346,8 @@
           <file leaf-file-name="test_data.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/validation/test_data.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1663">
-                  <caret line="143" column="0" lean-forward="false" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
+                <state relative-caret-position="2016">
+                  <caret line="133" column="31" lean-forward="false" selection-start-line="133" selection-start-column="31" selection-end-line="133" selection-end-column="31" />
                   <folding>
                     <element signature="e#9#27#0" expanded="true" />
                   </folding>
@@ -102,8 +362,8 @@
           <file leaf-file-name="Matrix_Analysis_Testscript.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Matrix_Analysis_Testscript.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="544">
-                  <caret line="178" column="26" lean-forward="false" selection-start-line="178" selection-start-column="26" selection-end-line="178" selection-end-column="26" />
+                <state relative-caret-position="2240">
+                  <caret line="148" column="6" lean-forward="false" selection-start-line="148" selection-start-column="6" selection-end-line="148" selection-end-column="6" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
                   </folding>
@@ -127,8 +387,8 @@
             <entry file="file://$PROJECT_DIR$/README.md">
               <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
                 <state split_layout="FIRST">
-                  <first_editor relative-caret-position="112">
-                    <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+                  <first_editor relative-caret-position="256">
+                    <caret line="16" column="70" lean-forward="false" selection-start-line="16" selection-start-column="70" selection-end-line="16" selection-end-column="70" />
                     <folding />
                   </first_editor>
                   <second_editor />
@@ -139,8 +399,8 @@
           <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/requirements.txt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="256">
-                  <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+                <state relative-caret-position="336">
+                  <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -149,9 +409,11 @@
           <file leaf-file-name="rand_corr_matrix_pectral_norm.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/ParameterExploration/rand_corr_matrix_pectral_norm.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="47">
-                  <caret line="3" column="35" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-                  <folding />
+                <state relative-caret-position="1120">
+                  <caret line="77" column="0" lean-forward="false" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
+                  <folding>
+                    <element signature="e#1#19#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -187,6 +449,8 @@
       <find>context</find>
       <find>plot_compar</find>
       <find>plotting</find>
+      <find>color</find>
+      <find>('</find>
     </findStrings>
     <replaceStrings>
       <replace>SIP</replace>
@@ -194,6 +458,7 @@
       <replace>HPP</replace>
       <replace>sample1</replace>
       <replace>sample2</replace>
+      <replace>('$set.$.</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -220,15 +485,15 @@
         <option value="$PROJECT_DIR$/Explore_params.py" />
         <option value="$PROJECT_DIR$/pet/Explore_params.py" />
         <option value="$PROJECT_DIR$/pet/Evaluation.py" />
-        <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/validation/dist.py" />
-        <option value="$PROJECT_DIR$/validation/test_data.py" />
         <option value="$PROJECT_DIR$/rand_corr_matrix_pectral_norm.py" />
-        <option value="$PROJECT_DIR$/ParameterExploration/rand_corr_matrix_pectral_norm.py" />
         <option value="$PROJECT_DIR$/Matrix_Analysis_Testscript.py" />
-        <option value="$PROJECT_DIR$/validation/matrix.py" />
-        <option value="$PROJECT_DIR$/ParameterExploration/Explore_params.py" />
         <option value="$PROJECT_DIR$/ParameterExploration/Evaluation.py" />
+        <option value="$PROJECT_DIR$/ParameterExploration/rand_corr_matrix_pectral_norm.py" />
+        <option value="$PROJECT_DIR$/requirements.txt" />
+        <option value="$PROJECT_DIR$/validation/matrix.py" />
+        <option value="$PROJECT_DIR$/validation/test_data.py" />
+        <option value="$PROJECT_DIR$/ParameterExploration/Explore_params.py" />
         <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
@@ -254,6 +519,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -350,7 +616,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -370,7 +635,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.Evaluation">
+  <component name="RunManager" selected="Python.Explore_params">
     <configuration default="false" name="angle_dist" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -599,8 +864,8 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.Evaluation" />
-        <item index="1" class="java.lang.String" itemvalue="Python.Explore_params" />
+        <item index="0" class="java.lang.String" itemvalue="Python.Explore_params" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Evaluation" />
         <item index="2" class="java.lang.String" itemvalue="Python.Matrix_Analysis_Testscript" />
         <item index="3" class="java.lang.String" itemvalue="Python.rand_corr_matrix_pectral_norm" />
         <item index="4" class="java.lang.String" itemvalue="Python.angle_dist" />
@@ -634,14 +899,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-5" y="-18" width="1930" height="1202" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16183448" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15129152" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32885906" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40556088" sideWeight="0.24986821" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3271202" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24421832" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30712304" sideWeight="0.7501318" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35152635" sideWeight="0.7501318" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24986821" sideWeight="0.4935484" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33395004" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24986821" sideWeight="0.5064516" order="2" side_tool="true" content_ui="tabs" />
@@ -702,14 +967,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/validation/dist.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1584">
-          <caret line="88" column="42" lean-forward="false" selection-start-line="88" selection-start-column="42" selection-end-line="88" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Previous NEST_SpiNNaker_comparison/plotting_functions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
@@ -774,13 +1031,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="259">
           <caret line="531" column="0" lean-forward="false" selection-start-line="531" selection-start-column="0" selection-end-line="531" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/lib/python2.7/dist-packages/elephant/spike_train_generation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-998">
-          <caret line="89" column="0" lean-forward="false" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -884,14 +1134,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/validation/angle_dist.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1040">
@@ -920,14 +1162,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ParameterExploration/rand_corr_matrix_pectral_norm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="47">
-          <caret line="3" column="35" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Validation_Book.ipynb">
       <provider selected="true" editor-type-id="ipnb-editor">
         <state>
@@ -937,75 +1171,108 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/validation/dist.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1088">
+        <state relative-caret-position="112">
           <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/validation/test_data.py">
+    <entry file="file://$PROJECT_DIR$/ParameterExploration/rand_corr_matrix_pectral_norm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1663">
-          <caret line="143" column="0" lean-forward="false" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
+        <state relative-caret-position="1120">
+          <caret line="77" column="0" lean-forward="false" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
           <folding>
-            <element signature="e#9#27#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/validation/matrix.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3263">
-          <caret line="364" column="37" lean-forward="false" selection-start-line="364" selection-start-column="37" selection-end-line="364" selection-end-column="37" />
-          <folding>
-            <element signature="e#77#95#0" expanded="true" />
+            <element signature="e#1#19#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Matrix_Analysis_Testscript.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="178" column="26" lean-forward="false" selection-start-line="178" selection-start-column="26" selection-end-line="178" selection-end-column="26" />
+        <state relative-caret-position="2240">
+          <caret line="148" column="6" lean-forward="false" selection-start-line="148" selection-start-column="6" selection-end-line="148" selection-end-column="6" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ParameterExploration/Explore_params.py">
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/elephant/spike_train_generation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-737">
-          <caret line="63" column="39" lean-forward="false" selection-start-line="63" selection-start-column="39" selection-end-line="63" selection-end-column="39" />
+        <state relative-caret-position="127">
+          <caret line="744" column="0" lean-forward="false" selection-start-line="744" selection-start-column="0" selection-end-line="744" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/validation/test_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2016">
+          <caret line="133" column="31" lean-forward="false" selection-start-line="133" selection-start-column="31" selection-end-line="133" selection-end-column="31" />
           <folding>
-            <element signature="e#0#48#0" expanded="true" />
+            <element signature="e#9#27#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2016.3/system/python_stubs/-1247972723/sys.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ParameterExploration/Evaluation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="156" column="42" lean-forward="true" selection-start-line="156" selection-start-column="42" selection-end-line="156" selection-end-column="42" />
+        <state relative-caret-position="103">
+          <caret line="100" column="0" lean-forward="false" selection-start-line="100" selection-start-column="0" selection-end-line="120" selection-end-column="22" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/validation/matrix.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-753">
+          <caret line="368" column="49" lean-forward="true" selection-start-line="368" selection-start-column="49" selection-end-line="368" selection-end-column="49" />
+          <folding>
+            <element signature="e#77#95#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="256">
+            <caret line="16" column="70" lean-forward="false" selection-start-line="16" selection-start-column="70" selection-end-line="16" selection-end-column="70" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
       <provider editor-type-id="text-editor">
         <state relative-caret-position="96">
           <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
         </state>
       </provider>
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="112">
-            <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-            <folding />
-          </first_editor>
-          <second_editor />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ParameterExploration/Explore_params.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="672">
+          <caret line="216" column="57" lean-forward="true" selection-start-line="216" selection-start-column="57" selection-end-line="216" selection-end-column="57" />
+          <folding>
+            <element signature="e#0#48#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

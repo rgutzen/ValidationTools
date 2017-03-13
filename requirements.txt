@@ -15,6 +15,7 @@ numpy==1.10.4
 PyNN==0.7.5
 scipy==0.18.1
 tables==3.2.2
+guppy==0.1.10
+elephant==0.3.0
 # PyNEST==2.11.0
-# elephant==0.3.0
 # neo==0.4.0.dev0
