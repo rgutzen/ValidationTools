@@ -215,28 +215,28 @@ traj.f_add_parameter('repetition', 0, comment='Iterator to produce statistics')
 
 # Test exploration
 
-traj.f_explore(cartesian_product({'corr': [.1, .12],
-                                  'T': [2000, 3000],
-                                  'repetition': [2, 3],
-                                  'A_size': [8, 10],
-                                  'bkgr_corr': [.05, .1],
-                                  }))
+# traj.f_explore(cartesian_product({'corr': [.1, .12],
+#                                   'T': [2000, 3000],
+#                                   'repetition': [2, 3],
+#                                   'A_size': [8, 10],
+#                                   'bkgr_corr': [.05, .1],
+#                                   }))
 
 # Large Scan
 
-# traj.f_explore(cartesian_product({'corr': [.0, .01, .02, .03, .04, .05,
-#                                            .06, .07, .08, .09, .1,
-#                                            .12, .14, .16, .18, .2,
-#                                            .25, .3, .35, .4, .5],
-#                                   'T': [200, 500, 1000, 1500, 2000, 2500,
-#                                         3000, 3500, 4000, 4500, 5000, 5500
-#                                         6000, 6500, 7000, 7500, 8000, 8500,
-#                                         9000, 9500, 10000],
-#                                   'A_size': [2, 3, 4, 5, 6, 7, 8, 9, 10],
-#                                   'bkgr_corr': [.0, .01, .02, .03, .04, .05,
-#                                                 .06, .07, .08, .09, .1],
-#                                   'repetition': [0, 1, 2, 3, 4]
-#                                   }))
+traj.f_explore(cartesian_product({'corr': [.0, .01, .02, .03, .04, .05,
+                                           .06, .07, .08, .09, .1,
+                                           .12, .14, .16, .18, .2,
+                                           .25, .3, .35, .4, .5],
+                                  'T': [200, 500, 1000, 1500, 2000, 2500,
+                                        3000, 3500, 4000, 4500, 5000, 5500,
+                                        6000, 6500, 7000, 7500, 8000, 8500,
+                                        9000, 9500, 10000],
+                                  'A_size': [2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                  'bkgr_corr': [.0, .01, .02, .03, .04, .05,
+                                                .06, .07, .08, .09, .1],
+                                  'repetition': [n for n in range(10)]
+                                  }))
 # ToDo: Do more repetitions ~100
 
 # Surpress pickling of config data to speed up runs

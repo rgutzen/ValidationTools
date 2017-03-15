@@ -5,14 +5,25 @@ Input is respectively two data arrays of arbitrary length.
 
 import numpy as np
 from scipy import stats as st
+import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set(style='ticks', palette='Set2')
 sns.despine()
 sns.set_color_codes('colorblind')
 
+def show(sample1, sample2, bins=100, ax=plt.gca()):
+    P, edges = np.histogram(sample1, bins=bins, density=True)
+    Q, _____ = np.histogram(sample2, bins=edges, density=True)
+    dx = np.diff(edges)[0]
+    xvalues = edges[:-1] + dx/2.
+    ax.plot(xvalues, P)
+    ax.plot(xvalues, Q)
+    ax.set_xlim(xvalues[0], xvalues[-1])
+    ax.set_ylim(0, max(max(P), max(Q)))
+    return ax
 
 def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None,
-            xlabel='a.u.'):
+            xlabel='a.u.', mute=False):
     """
     Kullback-Leibner Divergence D_KL(P||Q)
 
@@ -53,9 +64,11 @@ def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None,
             return True
         return False
 
-    print '\n\033[4mKullback-Leidler-Divergence\033[0m'
+    if not mute:
+        print '\n\033[4mKullback-Leidler-Divergence\033[0m'
     if isdist(sample1) and isdist(sample2):
-        print '\tInterpreting input as distribution...'
+        if not mute:
+            print '\tInterpreting input as distribution...'
         P = sample1
         Q = sample2
         edges = np.linspace(0, len(P), len(P)+1)
@@ -63,7 +76,8 @@ def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None,
         dx = np.diff(edges)[0]
 
     else:
-        print '\tInterpreting input as data sample...'
+        if not mute:
+            print '\tInterpreting input as data sample...'
         # filtering out nans
         sample1 = np.array(sample1)[np.isfinite(sample1)]
         sample2 = np.array(sample2)[np.isfinite(sample2)]
@@ -87,16 +101,18 @@ def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None,
         edges = edges[Pnot0]
         _final_len = len(P)
         discard = _init_len - _final_len
-        print '\t{} zero value{} have been discarded.'\
-              .format(discard, "s" if discard-1 else "")
+        if not mute:
+            print '\t{} zero value{} have been discarded.'\
+                  .format(discard, "s" if discard-1 else "")
     else:
         if np.where(Q == 0.)[0].size:
             raise ValueError('Q must not have zero values!')
     D_KL = st.entropy(P, Q, base=2)
     D_KL_as = st.entropy(Q, P, base=2)
 
-    print '\tD_KL(P||Q) = {:.2f}\n\tD_KL(Q||P) = {:.2f}\n' \
-          .format(D_KL, D_KL_as)
+    if not mute:
+        print '\tD_KL(P||Q) = {:.2f}\n\tD_KL(Q||P) = {:.2f}\n' \
+              .format(D_KL, D_KL_as)
 
     if ax:
         ax.set_ylabel('Probability Density')

@@ -37,7 +37,8 @@ def corr_matrix(spiketrains, binsize=2*ms, corr_type='pearson'):
     if corr_type == 'pearson':
         binned_sts = BinnedSpikeTrain(spiketrains, binsize,
                                       t_start=tmin, t_stop=tmax)
-        return corrcoef(binned_sts)
+        return np.nan_to_num(corrcoef(binned_sts))
+
     return None
 
 

@@ -2,31 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2e472702-85e4-422c-bc22-2b0cafeaf73a" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/assembly/corr_T.hdf5" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/2corr_2T_5rep/environment_4138dd1_2017_03_09_17h24m00s/ERROR.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/2corr_2T_5rep/environment_4138dd1_2017_03_09_17h24m00s/LOG.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/2corr_2T_5rep/environment_bfd47a6_2017_03_09_17h24m47s/ERROR.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/2corr_2T_5rep/environment_bfd47a6_2017_03_09_17h24m47s/LOG.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/5corr_6T_4rep/environment_aeced05_2017_03_03_11h00m25s/ERROR.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/5corr_6T_4rep/environment_aeced05_2017_03_03_11h00m25s/LOG.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_1df02f2_2017_03_09_15h10m31s/ERROR.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_1df02f2_2017_03_09_15h10m31s/LOG.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_5a8b0ac_2017_03_09_15h09m32s/ERROR.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_5a8b0ac_2017_03_09_15h09m32s/LOG.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_6c908ba_2017_03_09_15h08m17s/ERROR.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_6c908ba_2017_03_09_15h08m17s/LOG.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_9bafeb6_2017_03_09_15h58m49s/ERROR.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_9bafeb6_2017_03_09_15h58m49s/LOG.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_abbceaf_2017_03_09_16h00m00s/ERROR.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_abbceaf_2017_03_09_16h00m00s/LOG.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_b5947af_2017_03_09_15h07m14s/ERROR.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_b5947af_2017_03_09_15h07m14s/LOG.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_d3e00ac_2017_03_09_15h10m10s/ERROR.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ParameterExploration/logs/N_10-200/environment_d3e00ac_2017_03_09_15h10m10s/LOG.txt" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NEST_SpiNNaker_Validation.ipynb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/load_spiketrains.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MinErrorScript.py" afterPath="$PROJECT_DIR$/MinErrorScript.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ParameterExploration/Explore_params.py" afterPath="$PROJECT_DIR$/ParameterExploration/Explore_params.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/requirements.txt" afterPath="$PROJECT_DIR$/requirements.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/validation/dist.py" afterPath="$PROJECT_DIR$/validation/dist.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/validation/matrix.py" afterPath="$PROJECT_DIR$/validation/matrix.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -302,14 +284,14 @@
     </favorites_list>
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.50377357">
+    <splitter split-orientation="horizontal" split-proportion="0.4738878">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="matrix.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/validation/matrix.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="64">
-                  <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+                <state relative-caret-position="-1136">
+                  <caret line="28" column="51" lean-forward="true" selection-start-line="28" selection-start-column="51" selection-end-line="28" selection-end-column="51" />
                   <folding>
                     <element signature="e#77#95#0" expanded="true" />
                   </folding>
@@ -330,7 +312,7 @@
           <file leaf-file-name="angle_dist.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/validation/angle_dist.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1040">
+                <state relative-caret-position="384">
                   <caret line="65" column="44" lean-forward="false" selection-start-line="65" selection-start-column="44" selection-end-line="65" selection-end-column="44" />
                   <folding>
                     <element signature="e#1#19#0" expanded="true" />
@@ -339,21 +321,23 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="dist.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="dist.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/validation/dist.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="112">
-                  <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-                  <folding />
+                <state relative-caret-position="-112">
+                  <caret line="119" column="8" lean-forward="true" selection-start-line="119" selection-start-column="8" selection-end-line="119" selection-end-column="8" />
+                  <folding>
+                    <element signature="e#135#153#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Explore_params.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Explore_params.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/ParameterExploration/Explore_params.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="258">
-                  <caret line="192" column="69" lean-forward="false" selection-start-line="192" selection-start-column="69" selection-end-line="192" selection-end-column="69" />
+                <state relative-caret-position="324">
+                  <caret line="225" column="0" lean-forward="false" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
                   <folding>
                     <element signature="e#0#26#0" expanded="true" />
                   </folding>
@@ -376,8 +360,8 @@
           <file leaf-file-name="test_data.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/validation/test_data.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2016">
-                  <caret line="133" column="31" lean-forward="false" selection-start-line="133" selection-start-column="31" selection-end-line="133" selection-end-column="31" />
+                <state relative-caret-position="643">
+                  <caret line="48" column="0" lean-forward="true" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
                   <folding>
                     <element signature="e#9#27#0" expanded="true" />
                   </folding>
@@ -389,7 +373,7 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="Matrix_Analysis_Testscript.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Matrix_Analysis_Testscript.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Matrix_Analysis_Testscript.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="1355">
@@ -405,10 +389,20 @@
             <entry file="file://$PROJECT_DIR$/MinErrorScript.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="240">
-                  <caret line="22" column="30" lean-forward="false" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
+                  <caret line="15" column="29" lean-forward="false" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
                   <folding>
                     <element signature="e#1#19#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="load_spiketrains.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/load_spiketrains.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="560">
+                  <caret line="35" column="28" lean-forward="false" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="28" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -429,8 +423,8 @@
           <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/requirements.txt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="192">
-                  <caret line="12" column="2" lean-forward="false" selection-start-line="12" selection-start-column="2" selection-end-line="12" selection-end-column="2" />
+                <state relative-caret-position="16">
+                  <caret line="1" column="12" lean-forward="false" selection-start-line="1" selection-start-column="12" selection-end-line="1" selection-end-column="12" />
                   <folding />
                 </state>
               </provider>
@@ -510,12 +504,10 @@
         <option value="$PROJECT_DIR$/Notes" />
         <option value="$PROJECT_DIR$/brunel_network_sim.py" />
         <option value="$PROJECT_DIR$/Validation_Book.ipynb" />
-        <option value="$PROJECT_DIR$/MinErrorScript.py" />
         <option value="$PROJECT_DIR$/angle_dist.py" />
         <option value="$PROJECT_DIR$/Explore_params.py" />
         <option value="$PROJECT_DIR$/pet/Explore_params.py" />
         <option value="$PROJECT_DIR$/pet/Evaluation.py" />
-        <option value="$PROJECT_DIR$/validation/dist.py" />
         <option value="$PROJECT_DIR$/rand_corr_matrix_pectral_norm.py" />
         <option value="$PROJECT_DIR$/Matrix_Analysis_Testscript.py" />
         <option value="$PROJECT_DIR$/ParameterExploration/Evaluation.py" />
@@ -524,8 +516,11 @@
         <option value="$PROJECT_DIR$/validation/oscillation.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/requirements.txt" />
-        <option value="$PROJECT_DIR$/validation/matrix.py" />
         <option value="$PROJECT_DIR$/ParameterExploration/Explore_params.py" />
+        <option value="$PROJECT_DIR$/MinErrorScript.py" />
+        <option value="$PROJECT_DIR$/validation/matrix.py" />
+        <option value="$PROJECT_DIR$/load_spiketrains.py" />
+        <option value="$PROJECT_DIR$/validation/dist.py" />
       </list>
     </option>
   </component>
@@ -601,6 +596,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="sim_data" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NEST_data" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ValidationTools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ValidationTools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="ParameterExploration" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -633,6 +646,9 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../HBP/HBP-env/bin/python2.7" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/ParameterExploration/" />
       <recent name="$PROJECT_DIR$/validation" />
@@ -640,28 +656,8 @@
       <recent name="$PROJECT_DIR$/pet" />
       <recent name="$PROJECT_DIR$/example_graphs" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-    </key>
   </component>
-  <component name="RunManager" selected="Python.Matrix_Analysis_Testscript">
-    <configuration default="false" name="angle_dist" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="NeuroSim-Comparison-Tools" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/validation/angle_dist.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.MinErrorScript">
     <configuration default="false" name="Explore_params" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -726,6 +722,23 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="NeuroSim-Comparison-Tools" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Matrix_Analysis_Testscript.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="MinErrorScript" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="NeuroSim-Comparison-Tools" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/MinErrorScript.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -865,19 +878,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.angle_dist" />
-      <item index="1" class="java.lang.String" itemvalue="Python.Explore_params" />
-      <item index="2" class="java.lang.String" itemvalue="Python.Evaluation" />
-      <item index="3" class="java.lang.String" itemvalue="Python.rand_corr_matrix_pectral_norm" />
-      <item index="4" class="java.lang.String" itemvalue="Python.Matrix_Analysis_Testscript" />
+      <item index="0" class="java.lang.String" itemvalue="Python.Explore_params" />
+      <item index="1" class="java.lang.String" itemvalue="Python.Evaluation" />
+      <item index="2" class="java.lang.String" itemvalue="Python.rand_corr_matrix_pectral_norm" />
+      <item index="3" class="java.lang.String" itemvalue="Python.Matrix_Analysis_Testscript" />
+      <item index="4" class="java.lang.String" itemvalue="Python.MinErrorScript" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.Matrix_Analysis_Testscript" />
+        <item index="0" class="java.lang.String" itemvalue="Python.MinErrorScript" />
         <item index="1" class="java.lang.String" itemvalue="Python.Explore_params" />
-        <item index="2" class="java.lang.String" itemvalue="Python.Evaluation" />
-        <item index="3" class="java.lang.String" itemvalue="Python.rand_corr_matrix_pectral_norm" />
-        <item index="4" class="java.lang.String" itemvalue="Python.angle_dist" />
+        <item index="2" class="java.lang.String" itemvalue="Python.Matrix_Analysis_Testscript" />
+        <item index="3" class="java.lang.String" itemvalue="Python.Evaluation" />
+        <item index="4" class="java.lang.String" itemvalue="Python.rand_corr_matrix_pectral_norm" />
       </list>
     </recent_temporary>
   </component>
@@ -915,8 +928,8 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40556088" sideWeight="0.24986821" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32747456" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3271202" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24421832" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3506013" sideWeight="0.7501318" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24421832" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3506013" sideWeight="0.7501318" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24986821" sideWeight="0.4935484" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33395004" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24986821" sideWeight="0.5064516" order="2" side_tool="true" content_ui="tabs" />
@@ -976,25 +989,13 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Previous NEST_SpiNNaker_comparison/NEST_SpiNNaker_comparison.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Previous NEST_SpiNNaker_comparison/NEST_SpiNNaker_comparison.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="-1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/validation/dist.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1638">
           <caret line="91" column="10" lean-forward="false" selection-start-line="91" selection-start-column="10" selection-end-line="91" selection-end-column="10" />
-          <folding />
+          <folding>
+            <element signature="e#135#153#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1175,26 +1176,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/validation/test_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2016">
-          <caret line="133" column="31" lean-forward="false" selection-start-line="133" selection-start-column="31" selection-end-line="133" selection-end-column="31" />
-          <folding>
-            <element signature="e#9#27#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MinErrorScript.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="22" column="30" lean-forward="false" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
-          <folding>
-            <element signature="e#1#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ParameterExploration/rand_corr_matrix_pectral_norm.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1120">
@@ -1223,35 +1204,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/requirements.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="12" column="2" lean-forward="false" selection-start-line="12" selection-start-column="2" selection-end-line="12" selection-end-column="2" />
+        <state relative-caret-position="16">
+          <caret line="1" column="12" lean-forward="false" selection-start-line="1" selection-start-column="12" selection-end-line="1" selection-end-column="12" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/validation/dist.py">
+    <entry file="file://$PROJECT_DIR$/ParameterExploration/Explore_params.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="324">
+          <caret line="225" column="0" lean-forward="false" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/validation/angle_dist.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1040">
+        <state relative-caret-position="384">
           <caret line="65" column="44" lean-forward="false" selection-start-line="65" selection-start-column="44" selection-end-line="65" selection-end-column="44" />
           <folding>
             <element signature="e#1#19#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/validation/oscillation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1265,22 +1240,65 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/NEST_SpiNNaker_Validation.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MinErrorScript.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="15" column="29" lean-forward="false" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
+          <folding>
+            <element signature="e#1#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/validation/test_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="643">
+          <caret line="48" column="0" lean-forward="true" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+          <folding>
+            <element signature="e#9#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/load_spiketrains.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="560">
+          <caret line="35" column="28" lean-forward="false" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/validation/oscillation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/validation/matrix.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+        <state relative-caret-position="-1136">
+          <caret line="28" column="51" lean-forward="true" selection-start-line="28" selection-start-column="51" selection-end-line="28" selection-end-column="51" />
           <folding>
             <element signature="e#77#95#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ParameterExploration/Explore_params.py">
+    <entry file="file://$PROJECT_DIR$/validation/dist.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="192" column="69" lean-forward="false" selection-start-line="192" selection-start-column="69" selection-end-line="192" selection-end-column="69" />
+        <state relative-caret-position="-112">
+          <caret line="119" column="8" lean-forward="true" selection-start-line="119" selection-start-column="8" selection-end-line="119" selection-end-column="8" />
           <folding>
-            <element signature="e#0#26#0" expanded="true" />
+            <element signature="e#135#153#0" expanded="true" />
           </folding>
         </state>
       </provider>

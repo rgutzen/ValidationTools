@@ -1,0 +1,23 @@
+2017-03-15 13:03:17,462 pypet.storageservice.HDF5StorageService INFO     I will use the hdf5 file `/home/robin/Projects/ValidationTools/ParameterExploration/results/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_15_13h03m17s.hdf5`.
+2017-03-15 13:03:17,466 pypet.environment.Environment INFO     Environment initialized.
+2017-03-15 13:03:29,004 pypet.storageservice.HDF5StorageService INFO     Start storing Trajectory `21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_15_13h03m17s`.
+2017-03-15 13:03:32,445 pypet.storageservice.HDF5StorageService INFO     Storing branch `config`.
+2017-03-15 13:03:32,826 pypet.storageservice.HDF5StorageService INFO     Storing branch `parameters`.
+2017-03-15 13:03:53,595 pypet.storageservice.HDF5StorageService INFO     Processed 59 nodes in 24s (2.40 nodes/s).
+2017-03-15 13:03:58,743 pypet.storageservice.HDF5StorageService INFO     Finished storing Trajectory `21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_15_13h03m17s`.
+2017-03-15 13:03:58,759 pypet.environment.Environment INFO     I am preparing the Trajectory for the experiment and initialise the store.
+2017-03-15 13:03:58,759 pypet.environment.Environment INFO     Initialising the storage for the trajectory.
+2017-03-15 13:03:58,761 pypet.storageservice.HDF5StorageService INFO     Initialising storage or updating meta data of Trajectory `21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_15_13h03m17s`.
+2017-03-15 13:03:58,785 pypet.storageservice.HDF5StorageService INFO     Finished init or meta data update for `21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_15_13h03m17s`.
+2017-03-15 13:03:58,788 pypet.environment.Environment INFO     
+************************************************************
+STARTING runs of trajectory
+`21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_15_13h03m17s`.
+************************************************************
+
+2017-03-15 13:03:58,790 pypet.storageservice.HDF5StorageService INFO     Initialising storage or updating meta data of Trajectory `21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_15_13h03m17s`.
+2017-03-15 13:03:58,819 pypet.storageservice.HDF5StorageService INFO     Finished init or meta data update for `21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_15_13h03m17s`.
+2017-03-15 13:03:58,850 pypet.environment.MultiprocContext INFO     Starting the Storage Queue!
+2017-03-15 13:03:58,859 pypet.environment.Environment INFO     Starting Pool with 1 processes
+2017-03-15 13:03:58,860 pypet.environment.Environment INFO     Freezing pool input
+2017-03-15 13:03:58,883 pypet INFO     PROGRESS: Finished      0/436590 runs [                    ]  0.0%

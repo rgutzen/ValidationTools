@@ -1,4 +1,5 @@
 pypet==0.3.0
+configparser
 matplotlib==1.5.2rc2
 quantities
 seaborn==0.7.1
