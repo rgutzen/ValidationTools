@@ -7,7 +7,6 @@ import numpy as np
 from scipy.linalg import eigh
 import scipy.integrate as integrate
 import matplotlib.pyplot as plt
-from cycler import cycler
 from scipy import stats as st
 from quantities import Hz, ms
 from elephant.conversion import BinnedSpikeTrain

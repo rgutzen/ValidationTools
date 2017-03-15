@@ -1,6 +1,6 @@
 pypet==0.3.0
 matplotlib==1.5.2rc2
-quantities==0+unknown
+quantities
 seaborn==0.7.1
 h5py==2.5.0
 ipykernel==4.5.2
@@ -16,6 +16,6 @@ PyNN==0.7.5
 scipy==0.18.1
 tables==3.2.2
 guppy==0.1.10
-elephant==0.3.0
+# elephant==0.3.0
 # PyNEST==2.11.0
 # neo==0.4.0.dev0

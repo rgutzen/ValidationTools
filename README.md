@@ -8,6 +8,8 @@ Based on Elephant and neo.
 + GED (generalized eigenvalue decompositon): de Cheveigné and Parra "Joint decorrelation ..."
     + can be calculated by scipy.eig
 
++ Make ValidationBook presentation-ready and integrate into collab
++ Separate Data (Results & Input) into non git controlled dir (to Sciebo)
 + Draw raw distributions for visual comparison
 + analytic T-dependent spectral radius
 + Apply Methods to PSTH Distribution Comparison
@@ -18,10 +20,7 @@ Based on Elephant and neo.
         + Git checkout on cluster?
         + elephant, neo installation?
     + estimate minimum data size to detect features with a certain resolution
-        + assemblysize; assemblycorr; assemblycorr with backgroundcorr
-    + Graphs
-        
-      
+        + assemblysize; assemblycorr; assemblycorr with backgroundcorr  
 + How to evaluate the significance of high-dim angles?
     + Forward problem to mathematician!
 + Theoretical distribution of correlation matrix eigenvalues

@@ -1,3 +1,4 @@
+from matplotlib import use
 from pypet import Environment, cartesian_product
 from imp import load_source
 from quantities import ms, Hz
@@ -8,6 +9,8 @@ from guppy import hpy; h=hpy()
 from os.path import expanduser
 import sys
 from StringIO import StringIO
+
+use('Agg')
 
 # Set up paths and validation packages
 
@@ -53,17 +56,17 @@ def show_params(traj):
     print "\033[0m"
 
 
-def assembly_detection(traj):
+def assembly_detection(traj, print_params=False):
     """"""
     # Print current parameters
 
-    show_params(traj)
+    if print_params:
+        show_params(traj)
 
     # Catch print output
 
     actualstdout = sys.stdout
     sys.stdout = StringIO()
-
 
     # Generate spiketrain sets
 
@@ -116,13 +119,15 @@ def assembly_detection(traj):
                                              detect_by='eigenvalue')[0]
 
     norm_estimate = norm(relevant_EVs)
-    min_n_estimate = min(relevant_EVs)
+    min_n_estimate = min(relevant_EVs)  # Is this useful?
 
     relevant_EVs = matstat.detect_assemblies(EVs, EWs, show=False,
                                              detect_by=traj.A_size)[0]
 
     norm_exact = norm(relevant_EVs)
     min_n_exact = min(relevant_EVs)
+
+    # ToDo: Estimate Assembly by above change load in eigenvector?
 
     # Angle Comparison
 
@@ -185,7 +190,7 @@ env = Environment(trajectory=trajname,
                   comment='Exploration of large 4D parameter room. '
                           'Investigation of the correlation structure and'
                           'comparison to identical network without assemblies.',
-                  filename=base_path + '/ParameterExploration/assembly/',
+                  filename=base_path + '/ParameterExploration/results/',
                   # large_overview_tables=True,
                   # git_repository=base_path,
                   # overwrite_file=True,
@@ -203,7 +208,7 @@ traj = env.trajectory
 traj.f_add_parameter('N', 100, comment='Number of neurons')
 traj.f_add_parameter('corr', .0, comment='Correlation within assembly')
 traj.f_add_parameter('T', 100, comment='Runtime')
-traj.f_add_parameter('rate', 100, comment='Mean spiking rate')
+traj.f_add_parameter('rate', 100, comment='Mean spiking rate')  # ToDo: ???????
 traj.f_add_parameter('A_size', 10, comment='size of assembly')
 traj.f_add_parameter('bkgr_corr', .0, comment='Background correlation')
 traj.f_add_parameter('repetition', 0, comment='Iterator to produce statistics')
@@ -217,21 +222,22 @@ traj.f_explore(cartesian_product({'corr': [.1, .12],
                                   'bkgr_corr': [.05, .1],
                                   }))
 
-# Full exploration
+# Large Scan
 
 # traj.f_explore(cartesian_product({'corr': [.0, .01, .02, .03, .04, .05,
 #                                            .06, .07, .08, .09, .1,
 #                                            .12, .14, .16, .18, .2,
 #                                            .25, .3, .35, .4, .5],
-#                                   'T': [200, 400, 600, 800, 1000,
-#                                         1200, 1400, 1600, 1800, 2000,
-#                                         2200, 2400, 2600, 2800, 3000,
-#                                         3200, 3400, 3600, 3800, 4000],
+#                                   'T': [200, 500, 1000, 1500, 2000, 2500,
+#                                         3000, 3500, 4000, 4500, 5000, 5500
+#                                         6000, 6500, 7000, 7500, 8000, 8500,
+#                                         9000, 9500, 10000],
 #                                   'A_size': [2, 3, 4, 5, 6, 7, 8, 9, 10],
 #                                   'bkgr_corr': [.0, .01, .02, .03, .04, .05,
 #                                                 .06, .07, .08, .09, .1],
 #                                   'repetition': [0, 1, 2, 3, 4]
 #                                   }))
+# ToDo: Do more repetitions ~100
 
 # Surpress pickling of config data to speed up runs
 
@@ -243,7 +249,6 @@ traj.config.f_remove(recursive=True)
 env.run(assembly_detection)
 
 env.disable_logging()
-
 
 print("--- %s seconds ---" % (time.time() - start_time))
 print h.heap()

@@ -1,3 +1,0 @@
-2017-03-09 15:58:49,523 pypet.storageservice.HDF5StorageService INFO     I will use the hdf5 file `/home/robin/Projects/ValidationTools/ParameterExploration/lmax_dist/lmax_N.hdf5`.
-2017-03-09 15:58:49,525 pypet.storageservice.HDF5StorageService INFO     You specified ``overwrite_file=True``, so I deleted the file `/home/robin/Projects/ValidationTools/ParameterExploration/lmax_dist/lmax_N.hdf5`.
-2017-03-09 15:58:49,527 pypet.environment.Environment INFO     Environment initialized.

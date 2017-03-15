@@ -1,2 +1,0 @@
-2017-03-09 15:08:17,452 pypet.storageservice.HDF5StorageService INFO     I will use the hdf5 file `/home/robin/Projects/ValidationTools/ParameterExploration/lmax_dist/lmax_N.hdf5`.
-2017-03-09 15:08:17,456 pypet.environment.Environment INFO     Environment initialized.
