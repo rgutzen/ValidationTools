@@ -179,81 +179,92 @@ def assembly_detection(traj, print_params=False):
     traj.f_add_result('$set.$.Space_angle', ref_space_angle,
                       comment='Angle between the eigenspaces')
 
+def main():
 
-# Set up Environment and Trajectory
+    # Set up Environment and Trajectory
 
-trajname = '21corr_20T_9Asize_11bkgr_5rep_memtest'
+    trajname = '21corr_20T_9Asize_11bkgr_5rep_memtest'
 
-env = Environment(trajectory=trajname,
-                  add_time=True,
-                  file_title=trajname,
-                  comment='Exploration of large 4D parameter room. '
-                          'Investigation of the correlation structure and'
-                          'comparison to identical network without assemblies.',
-                  filename=base_path + '/ParameterExploration/results/',
-                  # large_overview_tables=True,
-                  # git_repository=base_path,
-                  # overwrite_file=True,
-                  log_folder=base_path + '/ParameterExploration/logs/',
-                  log_multiproc=True,
-                  results_per_run=15,
-                  multiproc=True,
-                  ncores=1,
-                  use_pool=True,
-                  freeze_input=True,
-                  wrap_mode='QUEUE')
+    env = Environment(trajectory=trajname,
+                      add_time=True,
+                      file_title=trajname,
+                      comment='Exploration of large 4D parameter room. '
+                              'Investigation of the correlation structure and'
+                              'comparison to identical network without assemblies.',
+                      filename=home_path + '/ParameterExploration_results/results/',
+                      # large_overview_tables=True,
+                      # git_repository=base_path,
+                      # overwrite_file=True,
+                      log_folder=home_path + '/ParameterExploration_results/logs/',
+                      log_multiproc=True,
+                      # results_per_run=15,
+                      multiproc=True,
+                      ncores=16,
+                      use_scoop=True,
+                      freeze_input=True,
+                      wrap_mode='LOCAL')
 
-traj = env.trajectory
+    traj = env.trajectory
 
-traj.f_add_parameter('N', 100, comment='Number of neurons')
-traj.f_add_parameter('corr', .0, comment='Correlation within assembly')
-traj.f_add_parameter('T', 100, comment='Runtime')
-traj.f_add_parameter('rate', 100, comment='Mean spiking rate')  # ToDo: ???????
-traj.f_add_parameter('A_size', 10, comment='size of assembly')
-traj.f_add_parameter('bkgr_corr', .0, comment='Background correlation')
-traj.f_add_parameter('repetition', 0, comment='Iterator to produce statistics')
+    traj.f_add_parameter('N', 100, comment='Number of neurons')
+    traj.f_add_parameter('corr', .0, comment='Correlation within assembly')
+    traj.f_add_parameter('T', 100, comment='Runtime')
+    traj.f_add_parameter('rate', 50, comment='Mean spiking rate')  # ToDo: ???????
+    traj.f_add_parameter('A_size', 10, comment='size of assembly')
+    traj.f_add_parameter('bkgr_corr', .0, comment='Background correlation')
+    traj.f_add_parameter('repetition', 0, comment='Iterator to produce statistics')
 
-# Test exploration
+    # Test exploration
 
-# traj.f_explore(cartesian_product({'corr': [.1, .12],
-#                                   'T': [2000, 3000],
-#                                   'repetition': [2, 3],
-#                                   'A_size': [8, 10],
-#                                   'bkgr_corr': [.05, .1],
-#                                   }))
+    # traj.f_explore(cartesian_product({'corr': [.1, .12],
+    #                                   'T': [2000, 3000],
+    #                                   'repetition': [2, 3],
+    #                                   'A_size': [8, 10],
+    #                                   'bkgr_corr': [.05, .1],
+    #                                   }))
 
-# Large Scan
+    # Large Scan
 
-traj.f_explore(cartesian_product({'corr': [.0, .01, .02, .03, .04, .05,
-                                           .06, .07, .08, .09, .1,
-                                           .12, .14, .16, .18, .2,
-                                           .25, .3, .35, .4, .5],
-                                  'T': [200, 500, 1000, 1500, 2000, 2500,
-                                        3000, 3500, 4000, 4500, 5000, 5500,
-                                        6000, 6500, 7000, 7500, 8000, 8500,
-                                        9000, 9500, 10000],
-                                  'A_size': [2, 3, 4, 5, 6, 7, 8, 9, 10],
-                                  'bkgr_corr': [.0, .01, .02, .03, .04, .05,
-                                                .06, .07, .08, .09, .1],
-                                  'repetition': [n for n in range(10)]
-                                  }))
-# ToDo: Do more repetitions ~100
+    traj.f_explore(cartesian_product({'corr': [.0, .01, .02, .03, .04, .05,
+                                               .06, .07, .08, .09, .1,
+                                               .12, .14, .16, .18, .2,
+                                               .25, .3, .35, .4, .5],
+                                      'T': [500, 1000, 2000, 3000, 4000, 5000,
+                                            6000, 7000, 8000, 9000, 10000],
+                                      'A_size': [2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                      'bkgr_corr': [.0, .01, .02, .03, .04, .05,
+                                                    .06, .07, .08, .09, .1],
+                                      'repetition': [n for n in range(2)]
+                                      }))
+    # ToDo: Do more repetitions ~100
 
-# Surpress pickling of config data to speed up runs
+    # Surpress pickling of config data to speed up runs
 
-traj.f_store()
-traj.config.f_remove(recursive=True)
+    traj.f_store()
+    traj.config.f_remove(recursive=True)
 
-# Run exploration
+    # Run exploration
 
-env.run(assembly_detection)
+    env.run(assembly_detection)
 
-env.disable_logging()
+    # Let's check that all runs are completed!
 
-print("--- %s seconds ---" % (time.time() - start_time))
-print h.heap()
+    assert traj.f_is_completed()
 
-sys.exit(0)
+    # Finally disable logging and close all log-files
+
+    env.disable_logging()
+
+    print("--- %s seconds ---" % (time.time() - start_time))
+    print h.heap()
+
+    sys.exit(0)
+
+if __name__ == '__main__':
+    # This will execute the main function in case the script is called from the one true
+    # main process and not from a child processes spawned by your environment.
+    # Necessary for multiprocessing under Windows.
+    main()
 
 
 
