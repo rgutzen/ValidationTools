@@ -10,6 +10,7 @@ from scipy.stats import poisson
 import neo
 import random as r
 
+
 def load_data(path, file_name_list, N):
     """
     Loads spiketrains from a hdf5 file in the neo data format.
@@ -103,9 +104,9 @@ def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[],
             amp_dist[2] = bkgr_corr
             amp_dist[size] = corr
             # amp_dist[:size] = [1./(m.e*m.factorial(k)) for k in range(size)]
-            np.testing.assert_almost_equal(sum(amp_dist), 1., decimal=7)
+            # np.testing.assert_almost_equal(sum(amp_dist), 1., decimal=7)
             # norm_factor = (1. - corr) / np.sum(amp_dist[:size])
-            # amp_dist[:size] *= norm_factor
+            amp_dist *= (1./sum(amp_dist))
             return CPP(rate=rate, A=amp_dist, t_stop=t_stop)
 
         else:

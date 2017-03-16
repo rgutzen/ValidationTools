@@ -2,14 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2e472702-85e4-422c-bc22-2b0cafeaf73a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NEST_SpiNNaker_Validation.ipynb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/load_spiketrains.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MinErrorScript.py" afterPath="$PROJECT_DIR$/MinErrorScript.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ParameterExploration/Explore_params.py" afterPath="$PROJECT_DIR$/ParameterExploration/Explore_params.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/requirements.txt" afterPath="$PROJECT_DIR$/requirements.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/validation/dist.py" afterPath="$PROJECT_DIR$/validation/dist.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_15_13h03m17s/environment_bd79f21_2017_03_15_13h03m17s/run_ALL_Mangiafuoco_PoolWorker-3-19150_LOG.txt" afterPath="$PROJECT_DIR$/ParameterExploration/logs/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_15_13h03m17s/environment_bd79f21_2017_03_15_13h03m17s/run_ALL_Mangiafuoco_PoolWorker-3-19150_LOG.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ParameterExploration/results/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_15_13h03m17s.hdf5" afterPath="$PROJECT_DIR$/ParameterExploration/results/21corr_20T_9Asize_11bkgr_5rep_memtest_2017_03_15_13h03m17s.hdf5" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/validation/matrix.py" afterPath="$PROJECT_DIR$/validation/matrix.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/validation/test_data.py" afterPath="$PROJECT_DIR$/validation/test_data.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -287,11 +284,11 @@
     <splitter split-orientation="horizontal" split-proportion="0.4738878">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="matrix.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="matrix.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/validation/matrix.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-1136">
-                  <caret line="28" column="51" lean-forward="true" selection-start-line="28" selection-start-column="51" selection-end-line="28" selection-end-column="51" />
+                <state relative-caret-position="540">
+                  <caret line="336" column="10" lean-forward="false" selection-start-line="336" selection-start-column="4" selection-end-line="336" selection-end-column="10" />
                   <folding>
                     <element signature="e#77#95#0" expanded="true" />
                   </folding>
@@ -312,7 +309,7 @@
           <file leaf-file-name="angle_dist.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/validation/angle_dist.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="384">
+                <state relative-caret-position="1040">
                   <caret line="65" column="44" lean-forward="false" selection-start-line="65" selection-start-column="44" selection-end-line="65" selection-end-column="44" />
                   <folding>
                     <element signature="e#1#19#0" expanded="true" />
@@ -321,11 +318,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="dist.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="dist.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/validation/dist.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-112">
-                  <caret line="119" column="8" lean-forward="true" selection-start-line="119" selection-start-column="8" selection-end-line="119" selection-end-column="8" />
+                <state relative-caret-position="252">
+                  <caret line="209" column="17" lean-forward="false" selection-start-line="209" selection-start-column="17" selection-end-line="209" selection-end-column="17" />
                   <folding>
                     <element signature="e#135#153#0" expanded="true" />
                   </folding>
@@ -336,7 +333,7 @@
           <file leaf-file-name="Explore_params.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/ParameterExploration/Explore_params.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="324">
+                <state relative-caret-position="3488">
                   <caret line="225" column="0" lean-forward="false" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
                   <folding>
                     <element signature="e#0#26#0" expanded="true" />
@@ -360,8 +357,8 @@
           <file leaf-file-name="test_data.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/validation/test_data.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="643">
-                  <caret line="48" column="0" lean-forward="true" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+                <state relative-caret-position="1728">
+                  <caret line="108" column="42" lean-forward="false" selection-start-line="108" selection-start-column="42" selection-end-line="108" selection-end-column="42" />
                   <folding>
                     <element signature="e#9#27#0" expanded="true" />
                   </folding>
@@ -376,7 +373,7 @@
           <file leaf-file-name="Matrix_Analysis_Testscript.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Matrix_Analysis_Testscript.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1355">
+                <state relative-caret-position="2240">
                   <caret line="148" column="6" lean-forward="false" selection-start-line="148" selection-start-column="6" selection-end-line="148" selection-end-column="6" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
@@ -388,7 +385,7 @@
           <file leaf-file-name="MinErrorScript.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/MinErrorScript.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="240">
+                <state relative-caret-position="128">
                   <caret line="15" column="29" lean-forward="false" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
                   <folding>
                     <element signature="e#1#19#0" expanded="true" />
@@ -475,6 +472,7 @@
       <find>plotting</find>
       <find>color</find>
       <find>('</find>
+      <find>assert</find>
     </findStrings>
     <replaceStrings>
       <replace>SIP</replace>
@@ -512,15 +510,15 @@
         <option value="$PROJECT_DIR$/Matrix_Analysis_Testscript.py" />
         <option value="$PROJECT_DIR$/ParameterExploration/Evaluation.py" />
         <option value="$PROJECT_DIR$/ParameterExploration/rand_corr_matrix_pectral_norm.py" />
-        <option value="$PROJECT_DIR$/validation/test_data.py" />
         <option value="$PROJECT_DIR$/validation/oscillation.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/ParameterExploration/Explore_params.py" />
         <option value="$PROJECT_DIR$/MinErrorScript.py" />
-        <option value="$PROJECT_DIR$/validation/matrix.py" />
         <option value="$PROJECT_DIR$/load_spiketrains.py" />
         <option value="$PROJECT_DIR$/validation/dist.py" />
+        <option value="$PROJECT_DIR$/validation/test_data.py" />
+        <option value="$PROJECT_DIR$/validation/matrix.py" />
       </list>
     </option>
   </component>
@@ -545,7 +543,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -639,6 +636,7 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -923,23 +921,23 @@
     <frame x="-5" y="-18" width="1930" height="1202" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18239325" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14549288" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32885906" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40556088" sideWeight="0.24986821" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32747456" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3271202" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24421832" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3506013" sideWeight="0.7501318" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24986821" sideWeight="0.4935484" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33395004" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24986821" sideWeight="0.5064516" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36817762" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3506013" sideWeight="0.7501318" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32747456" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36817762" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32885906" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1130,13 +1128,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ParameterExploration/assembly/corr_T.hdf5">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="624">
-          <caret line="57" column="18" lean-forward="false" selection-start-line="57" selection-start-column="18" selection-end-line="57" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/ParameterExploration/assembly/corr_T.hdf5" />
     <entry file="file://$PROJECT_DIR$/Previous NEST_SpiNNaker_comparison/NEST_SpiNNaker_comparison.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
@@ -1212,7 +1204,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ParameterExploration/Explore_params.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
+        <state relative-caret-position="3488">
           <caret line="225" column="0" lean-forward="false" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
@@ -1222,7 +1214,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/validation/angle_dist.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
+        <state relative-caret-position="1040">
           <caret line="65" column="44" lean-forward="false" selection-start-line="65" selection-start-column="44" selection-end-line="65" selection-end-column="44" />
           <folding>
             <element signature="e#1#19#0" expanded="true" />
@@ -1232,7 +1224,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Matrix_Analysis_Testscript.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1355">
+        <state relative-caret-position="2240">
           <caret line="148" column="6" lean-forward="false" selection-start-line="148" selection-start-column="6" selection-end-line="148" selection-end-column="6" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
@@ -1249,20 +1241,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/MinErrorScript.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
+        <state relative-caret-position="128">
           <caret line="15" column="29" lean-forward="false" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
           <folding>
             <element signature="e#1#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/validation/test_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="643">
-          <caret line="48" column="0" lean-forward="true" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-          <folding>
-            <element signature="e#9#27#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1283,22 +1265,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/validation/matrix.py">
+    <entry file="file://$PROJECT_DIR$/validation/test_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1136">
-          <caret line="28" column="51" lean-forward="true" selection-start-line="28" selection-start-column="51" selection-end-line="28" selection-end-column="51" />
+        <state relative-caret-position="1728">
+          <caret line="108" column="42" lean-forward="false" selection-start-line="108" selection-start-column="42" selection-end-line="108" selection-end-column="42" />
           <folding>
-            <element signature="e#77#95#0" expanded="true" />
+            <element signature="e#9#27#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/validation/dist.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-112">
-          <caret line="119" column="8" lean-forward="true" selection-start-line="119" selection-start-column="8" selection-end-line="119" selection-end-column="8" />
+        <state relative-caret-position="252">
+          <caret line="209" column="17" lean-forward="false" selection-start-line="209" selection-start-column="17" selection-end-line="209" selection-end-column="17" />
           <folding>
             <element signature="e#135#153#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/validation/matrix.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="336" column="10" lean-forward="false" selection-start-line="336" selection-start-column="4" selection-end-line="336" selection-end-column="10" />
+          <folding>
+            <element signature="e#77#95#0" expanded="true" />
           </folding>
         </state>
       </provider>

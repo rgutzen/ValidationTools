@@ -341,7 +341,9 @@ def EV_angles(EVs1, EVs2, deg=True):
 
     for EVs in [EVs1, EVs2]:
         for EV in EVs:
-            np.testing.assert_almost_equal(np.linalg.norm(EV), 1., decimal=7)
+            if abs(np.linalg.norm(EV) - 1) > 0.001:
+                print "Warning: Eigenvector norm deviates from 1 ({:.7f})"\
+                      .format(np.linalg.norm(EV))
 
     M = np.dot(EVs1, EVs2.T)
     vector_angles = np.arccos(np.diag(M))
