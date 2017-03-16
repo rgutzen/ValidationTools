@@ -146,17 +146,17 @@ for i, st in enumerate(spiketrain_list1):
 # spiketrain_list1 = segment.spiketrains
 
 # Calculate CVs
-# dist_sample_1 = [cv(isi(st)) for st in spiketrain_list1]
+dist_sample_1 = [cv(isi(st)) for st in spiketrain_list1]
 
 
 # Analyze Correlations of spiketrains 1
-EWs1, EVs1, pc_count1 = analyze_correlations(spiketrain_list1)
+# EWs1, EVs1, pc_count1 = analyze_correlations(spiketrain_list1)
 
 
 # Generate second dataset
-# spiketrain_list2 = testdata.test_data(size=N, corr=.0, t_stop=500*ms,
-#                                       rate=100*Hz, assembly_sizes=[2],
-#                                       method="CPP", bkgr_corr=0.0)
+spiketrain_list2 = testdata.test_data(size=N, corr=.0, t_stop=500*ms,
+                                      rate=100*Hz, assembly_sizes=[2],
+                                      method="CPP", bkgr_corr=0.0)
 
 # Load SpiNNaker L4 exh Spiketrains
 # spiketrain_list2 = load_data(COLLAB_PATH_SPINNAKER, ['spikes_L4'], N)[0][0]
@@ -169,7 +169,7 @@ EWs1, EVs1, pc_count1 = analyze_correlations(spiketrain_list1)
 # spiketrain_list2 = segment.spiketrains
 
 # Calculate CVs
-# dist_sample_2 = [cv(isi(st)) for st in spiketrain_list2]
+dist_sample_2 = [cv(isi(st)) for st in spiketrain_list2]
 
 # Analyze Correlations of spiketrains 2
 # EWs2, EVs2, pc_count2 = analyze_correlations(spiketrain_list2)
@@ -180,7 +180,7 @@ EWs1, EVs1, pc_count1 = analyze_correlations(spiketrain_list1)
 # matstat.EV_angles(EVs1[:, :], EVs2[:, :])
 
 # Compare CV(ISI) Distributions
-# analyze_distributions(dist_sample_1, dist_sample_2)
+analyze_distributions(dist_sample_1, dist_sample_2)
 
 
 plt.show()

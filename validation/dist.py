@@ -11,6 +11,7 @@ sns.set(style='ticks', palette='Set2')
 sns.despine()
 sns.set_color_codes('colorblind')
 
+
 def show(sample1, sample2, bins=100, ax=plt.gca()):
     P, edges = np.histogram(sample1, bins=bins, density=True)
     Q, _____ = np.histogram(sample2, bins=edges, density=True)
@@ -21,6 +22,7 @@ def show(sample1, sample2, bins=100, ax=plt.gca()):
     ax.set_xlim(xvalues[0], xvalues[-1])
     ax.set_ylim(0, max(max(P), max(Q)))
     return ax
+
 
 def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None,
             xlabel='a.u.', mute=False):
@@ -124,11 +126,12 @@ def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None,
         Q = np.append(np.append(0, Q), 0)
         filly = np.append(np.append(0., diffy), 0.)
         xticks = np.arange(len(P))
-        ax.fill_between(xticks, filly, 0,  color='LightGrey')
-        ax.plot(xticks, P, lw=2, label='P', color='r')
-        ax.plot(xticks, Q, lw=2, label='Q', color='g')
-        ax.set_xlim(xticks[0], xticks[-1])
-        ax.set_xticklabels(["{:.2f}".format(xv) for xv in xvalues])
+        ax.fill_between(xvalues, filly, 0,  color='LightGrey')
+        ax.plot(xvalues, P, lw=2, label='P')
+        ax.plot(xvalues, Q, lw=2, label='Q')
+        ax.set_xlim(xvalues[0], xvalues[-1])
+        # ax.set_xlim(xticks[0], xticks[-1])
+        # ax.set_xticklabels(["{:.2f}".format(xv) for xv in xvalues])
     return D_KL, D_KL_as
 
 
@@ -256,7 +259,7 @@ def MWU_test(sample1, sample2, excl_nan=True, ax=None):
         ax.tick_params(axis='x', which='both', bottom='off', top='off',
                        labelbottom='off')
         ax.set_ylim(0, len(sample1)+len(sample2))
-        color = ['r', 'g']
+        color = ['g', 'r']
         bbox = ax.get_window_extent()
         linewidth = bbox.height/(len(sample1)+len(sample2))
 
