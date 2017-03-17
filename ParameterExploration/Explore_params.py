@@ -179,11 +179,11 @@ def assembly_detection(traj, print_params=False):
     traj.f_add_result('$set.$.Space_angle', ref_space_angle,
                       comment='Angle between the eigenspaces')
 
-def main():
+def main(task_id):
 
     # Set up Environment and Trajectory
 
-    trajname = '21corr_20T_9Asize_11bkgr_5rep_memtest'
+    trajname = '21corr_20T_9Asize_11bkgr'
 
     env = Environment(trajectory=trajname,
                       add_time=True,
@@ -191,7 +191,8 @@ def main():
                       comment='Exploration of large 4D parameter room. '
                               'Investigation of the correlation structure and'
                               'comparison to identical network without assemblies.',
-                      filename=home_path + '/ParameterExploration_results/results/',
+                      filename=home_path + '/ParameterExploration_results/results/'
+                               + trajname + '_{}'.format(str(task_id)),
                       # large_overview_tables=True,
                       # git_repository=base_path,
                       # overwrite_file=True,
@@ -200,9 +201,9 @@ def main():
                       # results_per_run=15,
                       multiproc=True,
                       ncores=16,
-                      use_scoop=True,
-                      freeze_input=True,
-                      wrap_mode='LOCAL')
+                      # use_scoop=True,
+                      # freeze_input=True,
+                      wrap_mode='QUEUE')
 
     traj = env.trajectory
 
@@ -264,7 +265,8 @@ if __name__ == '__main__':
     # This will execute the main function in case the script is called from the one true
     # main process and not from a child processes spawned by your environment.
     # Necessary for multiprocessing under Windows.
-    main()
+
+    main(sys.argv[-1])
 
 
 

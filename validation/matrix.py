@@ -312,7 +312,7 @@ def print_eigenvectors(EVs, EWs=[], pc_count=0,
 
     for i, EV in enumerate(EVs.T[:-pc_count:-1]):
         print "\033[47m{:3.1f}:\033[0m\t".format(EWs[-(i+1)]),
-        np.testing.assert_almost_equal(np.linalg.norm(EV), 1., decimal=7)
+        # np.testing.assert_almost_equal(np.linalg.norm(EV), 1., decimal=7)
         for n_coord in EV:
             print "\033[{}m {:+.2f}\033[0m"\
                 .format(colormap[colorcode(n_coord)], n_coord),
