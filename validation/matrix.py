@@ -108,7 +108,7 @@ def estimate_largest_eigenvalue(N, trials, t_stop, rate, bins):
 
 
 def eigenvalue_distribution(EWs, ax=plt.gca(), bins=20, reference_EWs=[],
-                            reference_EW_max=None, color=0):
+                            reference_EW_max=None, color=0, mute=False):
     """
     Plot histogram of the eigenvalue distribution in order to determine
     significant outliers.
@@ -128,11 +128,11 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), bins=20, reference_EWs=[],
     :param color:
     :return:
     """
-
-    print "\n\033[4mEigenvalue distribution:\033[0m" \
-          "\n\tEW_max = {:.2f}" \
-          "\n\tEW_min = {:.2f}"\
-          .format(max(EWs), min(EWs))
+    if not mute:
+        print "\n\033[4mEigenvalue distribution:\033[0m" \
+              "\n\tEW_max = {:.2f}" \
+              "\n\tEW_min = {:.2f}"\
+              .format(max(EWs), min(EWs))
 
     if type(color) == int:
         color = sns.color_palette()[color]
@@ -142,7 +142,7 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), bins=20, reference_EWs=[],
            color=color)
     ax.set_xlabel('EW')
     ax.set_ylabel('Occurrence')
-    ax.set_xlim(0, max(edges))
+    ax.set_xlim(min(edges), max(edges))
 
     if len(reference_EWs):
         ref_EW_hist, __ = np.histogram(reference_EWs, bins=edges,
@@ -177,7 +177,7 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), bins=20, reference_EWs=[],
     return None
 
 
-def redundancy(EWs):
+def redundancy(EWs, mute=False):
     """
     The redundancy is a measure of correlation in the eigenvalues.
 
@@ -193,12 +193,13 @@ def redundancy(EWs):
 
     N = len(EWs)
     phi = np.sqrt((np.sum(EWs**2)-N) / (N*(N-1)))
-    print "\nRedundancy = {:.2f} \n".format(phi)
+    if not mute:
+        print "\nRedundancy = {:.2f} \n".format(phi)
 
     return phi
 
 
-def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=None, color='r'):
+def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=None, color='r', mute=False):
     """
 
     :param EWs:
@@ -274,15 +275,16 @@ def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=None, color='r'):
         ax.set_xlim(0, len(EWs))
         ax.set_ylim(0, np.ceil((max(EWs)/total_v)*10)/10.)
 
-    print "\n\033[4mSignificance Test:\033[0m" \
-          "\n\tMethod: {0} " \
-          "\n\t{1} of {2} eigenvalues are significant"\
-          .format(method, pc_count, len(EWs))
+    if not mute:
+        print "\n\033[4mSignificance Test:\033[0m" \
+              "\n\tMethod: {0} " \
+              "\n\t{1} of {2} eigenvalues are significant"\
+              .format(method, pc_count, len(EWs))
 
-    print "\n\033[4mPrincial components:\033[0m"
-    print "\t"+"\n\t".join('{}: {:.2f}'
-                           .format(*pc) for pc in enumerate(EWs[:pc_count])) \
-          + "\n"
+        print "\n\033[4mPrincial components:\033[0m"
+        print "\t"+"\n\t".join('{}: {:.2f}'
+                               .format(*pc) for pc in enumerate(EWs[:pc_count])) \
+              + "\n"
 
     return pc_count
 
@@ -320,7 +322,7 @@ def print_eigenvectors(EVs, EWs=[], pc_count=0,
     return None
 
 
-def EV_angles(EVs1, EVs2, deg=True):
+def EV_angles(EVs1, EVs2, deg=True, mute=False):
     """
     Calculate the angles between the vectors EVs1_i and EVs2_i and the angle
     between their spanned eigenspaces.
@@ -346,7 +348,11 @@ def EV_angles(EVs1, EVs2, deg=True):
                       .format(np.linalg.norm(EV))
 
     M = np.dot(EVs1, EVs2.T)
-    vector_angles = np.arccos(np.diag(M))
+
+    if len(M) == 1:
+        vector_angles = np.arccos(M[0])
+    else:
+        vector_angles = np.arccos(np.diag(M))
     space_angle = np.arccos(np.sqrt(np.linalg.det(np.dot(M, M.T))))
 
     if deg:
@@ -356,12 +362,13 @@ def EV_angles(EVs1, EVs2, deg=True):
     else:
         unit = " rad"
 
-    print "\n\033[4mAngles between the eigenvectors\033[0m" \
-          + "\n\t" + "\n\t".join('{:.2f}{}'.format(a, unit)
-                                 for a in vector_angles)\
-          + "\n\n" \
-          + "\033[4mAngle between eigenspaces\033[0m" \
-          + "\n\t{:.2f}{}".format(space_angle, unit)
+    if not mute:
+        print "\n\033[4mAngles between the eigenvectors\033[0m" \
+              + "\n\t" + "\n\t".join('{:.2f}{}'.format(a, unit)
+                                     for a in vector_angles)\
+              + "\n\n" \
+              + "\033[4mAngle between eigenspaces\033[0m" \
+              + "\n\t{:.2f}{}".format(space_angle, unit)
     # ToDo: Understand the angle between spaces
 
     return vector_angles, space_angle

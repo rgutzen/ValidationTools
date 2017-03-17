@@ -8,6 +8,7 @@ Based on Elephant and neo.
 + GED (generalized eigenvalue decompositon): de Cheveigné and Parra "Joint decorrelation ..."
     + can be calculated by scipy.eig
 
++ snakemake
 + Make ValidationBook presentation-ready and integrate into collab
 + Separate Data (Results & Input) into non git controlled dir (to Sciebo)
 + Draw raw distributions for visual comparison

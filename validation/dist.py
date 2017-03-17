@@ -6,10 +6,72 @@ Input is respectively two data arrays of arbitrary length.
 import numpy as np
 from scipy import stats as st
 import matplotlib.pyplot as plt
+import math
+import pandas as pd
 import seaborn as sns
 sns.set(style='ticks', palette='Set2')
 sns.despine()
 sns.set_color_codes('colorblind')
+
+def to_precision(x,p):
+    """
+    returns a string representation of x formatted with a precision of p
+
+    Based on the webkit javascript implementation taken from here:
+    https://code.google.com/p/webkit-mirror/source/browse/JavaScriptCore/kjs/number_object.cpp
+    """
+
+    x = float(x)
+
+    if x == 0.:
+        return "0." + "0"*(p-1)
+
+    out = []
+
+    if x < 0:
+        out.append("-")
+        x = -x
+
+    e = int(math.log10(x))
+    tens = math.pow(10, e - p + 1)
+    n = math.floor(x/tens)
+
+    if n < math.pow(10, p - 1):
+        e = e -1
+        tens = math.pow(10, e - p+1)
+        n = math.floor(x / tens)
+
+    if abs((n + 1.) * tens - x) <= abs(n * tens -x):
+        n = n + 1
+
+    if n >= math.pow(10,p):
+        n = n / 10.
+        e = e + 1
+
+    m = "%.*g" % (p, n)
+
+    if e < -2 or e >= p:
+        out.append(m[0])
+        if p > 1:
+            out.append(".")
+            out.extend(m[1:p])
+        out.append('e')
+        if e > 0:
+            out.append("+")
+        out.append(str(e))
+    elif e == (p -1):
+        out.append(m)
+    elif e >= 0:
+        out.append(m[:e+1])
+        if e+1 < len(m):
+            out.append(".")
+            out.extend(m[e+1:])
+    else:
+        out.append("0.")
+        out.extend(["0"]*-(e+1))
+        out.append(m)
+
+    return "".join(out)
 
 
 def show(sample1, sample2, bins=100, ax=plt.gca()):
@@ -135,7 +197,7 @@ def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None,
     return D_KL, D_KL_as
 
 
-def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter'):
+def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter', mute=False):
     """
     Kolmogorov-Smirnov-Distance D_KS
 
@@ -168,16 +230,17 @@ def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter'):
     sample2 = np.array(sample2)[np.isfinite(sample2)]
 
     D_KS, pvalue = st.ks_2samp(sample1, sample2)
-    print "\n\033[4mKolmogorov-Smirnov-Distance\033[0m" \
-        + "\n\tlength 1 = {} \t length 2 = {}" \
-          .format(len(sample1), len(sample2)) \
-        + "\n\tD_KS = {:.2f} \t p value = {:.2f}\n" \
-          .format(D_KS, pvalue)
+    if not mute:
+        print "\n\033[4mKolmogorov-Smirnov-Distance\033[0m" \
+            + "\n\tlength 1 = {} \t length 2 = {}" \
+              .format(len(sample1), len(sample2)) \
+            + "\n\tD_KS = {:.2f} \t p value = {}\n" \
+              .format(D_KS, to_precision(pvalue,2))
 
     if ax:
         ax.set_ylabel('CDF')
         ax.set_xlabel(xlabel)
-        color = ['r', 'g']
+        color = sns.color_palette()
         for i, A in enumerate([sample1, sample2]):
             A_sorted = np.sort(A)
             A_sorted = np.append(A_sorted[0], A_sorted)
@@ -194,7 +257,8 @@ def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter'):
     return D_KS, pvalue
 
 
-def MWU_test(sample1, sample2, excl_nan=True, ax=None):
+def MWU_test(sample1, sample2, sample_names=None, linewidth=None,
+             excl_nan=True, ax=None, mute=False):
     """
     Mann-Whitney-U test
 
@@ -241,30 +305,43 @@ def MWU_test(sample1, sample2, excl_nan=True, ax=None):
 
     U, pvalue = st.mannwhitneyu(sample1, sample2, alternative='two-sided')
 
-    print "\n\033[4mMann-Whitney-U-Test\033[0m" \
-        + "\n\tlength 1 = {} \t length 2 = {}" \
-          .format(len(sample1), len(sample2)) \
-        + "\n\tU = {:.2f}   \t p value = {:.2f}" \
-          .format(U, pvalue)
+    if not mute:
+        print "\n\033[4mMann-Whitney-U-Test\033[0m" \
+            + "\n\tlength 1 = {} \t length 2 = {}" \
+              .format(len(sample1), len(sample2)) \
+            + "\n\tU = {:.2f}   \t p value = {}" \
+              .format(U, to_precision(pvalue, 2))
 
     if ax:
-        ranks = np.empty((2, len(sample1)+len(sample2)))
-        ranks[0, :len(sample1)] = sample1
-        ranks[1, :len(sample1)] = 0
-        ranks[0, len(sample1):] = sample2
-        ranks[1, len(sample1):] = 1
+        if sample_names is None:
+            sample_names = ['P', 'Q']
+        N = len(sample1) + len(sample2)
+        ranks = [[0]*2, [0]*N]
+        # ranks = list(np.empty((2, len(sample1)+len(sample2))))
+        ranks[0][:len(sample1)] = sample1
+        ranks[1][:len(sample1)] = [sample_names[0]]*len(sample1)
+        ranks[0][len(sample1):] = sample2
+        ranks[1][len(sample1):] = [sample_names[1]]*len(sample2)
         ranks[0] = st.rankdata(ranks[0])
 
-        ax.set_ylabel('Rank')
-        ax.tick_params(axis='x', which='both', bottom='off', top='off',
-                       labelbottom='off')
-        ax.set_ylim(0, len(sample1)+len(sample2))
-        color = ['g', 'r']
-        bbox = ax.get_window_extent()
-        linewidth = bbox.height/(len(sample1)+len(sample2))
+        dataframe = pd.DataFrame({'Ranks': ranks[0],
+                                  'Group': ranks[1],
+                                  'Cat': np.zeros(N)})
 
-        for i in range(len(ranks[0])):
-            ax.axhline(ranks[0, i], xmin=-1, xmax=1, lw=linewidth,
-                       color=color[int(ranks[1, i])])
+        sns.violinplot(data=dataframe, x='Cat', y='Ranks', hue='Group', split=True,
+                       palette=sns.color_palette(), inner='quartile', cut=0, ax=ax,
+                       scale_hue=True, scale='width')
+        # ax.set_ylabel('Rank')
+        # ax.tick_params(axis='x', which='both', bottom='off', top='off',
+        #                labelbottom='off')
+        # ax.set_ylim(0, len(sample1)+len(sample2))
+        # color = sns.color_palette()
+        # bbox = ax.get_window_extent()
+        # if linewidth is None:
+        #     linewidth = bbox.height/(len(sample1)+len(sample2))
+        #
+        # for i in range(len(ranks[0])):
+        #     ax.axhline(ranks[0, i], xmin=-1, xmax=1, lw=linewidth,
+        #                color=color[int(ranks[1, i])])
 
     return U, pvalue

@@ -234,8 +234,8 @@ def main(task_id):
                                             6000, 7000, 8000, 9000, 10000],
                                       'A_size': [2, 3, 4, 5, 6, 7, 8, 9, 10],
                                       'bkgr_corr': [.0, .01, .02, .03, .04, .05,
-                                                    .06, .07, .08, .09, .1],
-                                      'repetition': [n for n in range(2)]
+                                                    .06, .07, .08, .09, .1]#,
+                                      # 'repetition': [n for n in range(2)]
                                       }))
     # ToDo: Do more repetitions ~100
 
