@@ -169,7 +169,7 @@ def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None,
             print '\t{} zero value{} have been discarded.'\
                   .format(discard, "s" if discard-1 else "")
     else:
-        if np.where(Q == 0.)[0].size:
+        if 0. in Q or 0. in P:
             raise ValueError('Q must not have zero values!')
     D_KL = st.entropy(P, Q, base=2)
     D_KL_as = st.entropy(Q, P, base=2)
@@ -182,18 +182,16 @@ def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None,
         ax.set_ylabel('Probability Density')
         ax.set_xlabel(xlabel)
         xvalues = edges + dx/2.
-        xvalues = np.append(np.append(edges[0]-dx, xvalues), edges[-1]+dx)
+        xvalues = np.append(np.append(xvalues[0]-dx, xvalues), xvalues[-1]+dx)
         diffy = P * np.log(P / Q.astype(float))
         P = np.append(np.append(0, P), 0)
         Q = np.append(np.append(0, Q), 0)
         filly = np.append(np.append(0., diffy), 0.)
-        xticks = np.arange(len(P))
         ax.fill_between(xvalues, filly, 0,  color='LightGrey')
         ax.plot(xvalues, P, lw=2, label='P')
         ax.plot(xvalues, Q, lw=2, label='Q')
         ax.set_xlim(xvalues[0], xvalues[-1])
-        # ax.set_xlim(xticks[0], xticks[-1])
-        # ax.set_xticklabels(["{:.2f}".format(xv) for xv in xvalues])
+
     return D_KL, D_KL_as
 
 
@@ -235,7 +233,7 @@ def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter', mute=False):
             + "\n\tlength 1 = {} \t length 2 = {}" \
               .format(len(sample1), len(sample2)) \
             + "\n\tD_KS = {:.2f} \t p value = {}\n" \
-              .format(D_KS, to_precision(pvalue,2))
+              .format(D_KS, to_precision(pvalue, 2))
 
     if ax:
         ax.set_ylabel('CDF')
@@ -326,11 +324,13 @@ def MWU_test(sample1, sample2, sample_names=None, linewidth=None,
 
         dataframe = pd.DataFrame({'Ranks': ranks[0],
                                   'Group': ranks[1],
-                                  'Cat': np.zeros(N)})
+                                  'Kernel density estimate': np.zeros(N)})
 
-        sns.violinplot(data=dataframe, x='Cat', y='Ranks', hue='Group', split=True,
-                       palette=sns.color_palette(), inner='quartile', cut=0, ax=ax,
+        sns.violinplot(data=dataframe, x='Kernel density estimate', y='Ranks',
+                       hue='Group', split=True, palette=sns.color_palette(),
+                       inner='quartile', cut=0, ax=ax,
                        scale_hue=True, scale='width')
+
         # ax.set_ylabel('Rank')
         # ax.tick_params(axis='x', which='both', bottom='off', top='off',
         #                labelbottom='off')

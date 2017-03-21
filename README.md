@@ -5,9 +5,6 @@ Based on Elephant and neo.
 
 #### ToDo
 
-+ GED (generalized eigenvalue decompositon): de Cheveigné and Parra "Joint decorrelation ..."
-    + can be calculated by scipy.eig
-
 + snakemake
 + Make ValidationBook presentation-ready and integrate into collab
 + Separate Data (Results & Input) into non git controlled dir (to Sciebo)
@@ -24,6 +21,8 @@ Based on Elephant and neo.
         + assemblysize; assemblycorr; assemblycorr with backgroundcorr  
 + How to evaluate the significance of high-dim angles?
     + Forward problem to mathematician!
++ Use Depth Functions for multivariate significance of results
++ GED (generalized eigenvalue decompositon): de Cheveigné and Parra "Joint decorrelation ..."
 + Theoretical distribution of correlation matrix eigenvalues
 + Visualisation in -N/ K-space? -> DataHigh (for Win?)
 + PCA directly on binned spiketrains/ inst. firing rate (t)

@@ -1,0 +1,6 @@
+git+https://github.com/INM-6/elephant.git@feature/neo0.5
+git+https://github.com/INM-6/python-neo.git
+scipy
+seaborn
+h5py
+pandas

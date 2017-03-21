@@ -336,10 +336,20 @@ def EV_angles(EVs1, EVs2, deg=True, mute=False):
         vector angles
         space angle
     """
-    assert len(EVs1) == len(EVs2)
+
     # Transform into descending array of the eigenvector arrays
     EVs1 = np.absolute(EVs1.T[::-1])
     EVs2 = np.absolute(EVs2.T[::-1])
+
+    assert len(EVs1) == len(EVs2)
+
+    if len(EVs1[0]) != len(EVs2[0]):
+        min_length = min([len(EVs1[0]), len(EVs2[0])])
+        print "Warning: Samples are not the same size! [{} / {}] " \
+              "\n The vectors will be cut to length {} "\
+              .format(len(EVs1[0]), len(EVs2[0]), min_length)
+        EVs1 = EVs1[:, :min_length]
+        EVs2 = EVs2[:, :min_length]
 
     for EVs in [EVs1, EVs2]:
         for EV in EVs:
