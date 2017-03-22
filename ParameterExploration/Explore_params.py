@@ -115,8 +115,7 @@ def assembly_detection(traj, print_params=False):
 
     broken_stick_count = matstat.eigenvalue_spectra(EWs, method='broken-stick', mute=True)
 
-    relevant_EVs = matstat.detect_assemblies(EVs, EWs, show=False,
-                                             detect_by='eigenvalue', mute=True)[0]
+    relevant_EVs = matstat.detect_assemblies(EVs, EWs, detect_by='eigenvalue', mute=True)[0]
 
     norm_estimate = norm(relevant_EVs)
     min_n_estimate = min(relevant_EVs)  # Is this useful?
