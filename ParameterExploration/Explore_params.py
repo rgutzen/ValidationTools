@@ -121,8 +121,7 @@ def assembly_detection(traj, print_params=False):
     norm_estimate = norm(relevant_EVs)
     min_n_estimate = min(relevant_EVs)  # Is this useful?
 
-    relevant_EVs = matstat.detect_assemblies(EVs, EWs, show=False,
-                                             detect_by=traj.A_size, mute=True)[0]
+    relevant_EVs = matstat.detect_assemblies(EVs, EWs, detect_by=traj.A_size, mute=True)[0]
 
     norm_exact = norm(relevant_EVs)
     min_n_exact = min(relevant_EVs)
