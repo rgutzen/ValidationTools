@@ -94,11 +94,11 @@ def assembly_detection(traj, print_params=False):
     dist_sample_1 = matstat.corr_matrix(spiketrain_list).flatten()
     dist_sample_2 = matstat.corr_matrix(ref_spiketrain_list).flatten()
 
-    DKL = dist.KL_test(dist_sample_1, dist_sample_2, excl_zeros=True)
+    DKL = dist.KL_test(dist_sample_1, dist_sample_2, excl_zeros=True, mute=True)
 
-    DKS = dist.KS_test(dist_sample_1, dist_sample_2)
+    DKS = dist.KS_test(dist_sample_1, dist_sample_2, mute=True)
 
-    MWU = dist.MWU_test(dist_sample_1, dist_sample_2, excl_nan=True)
+    MWU = dist.MWU_test(dist_sample_1, dist_sample_2, excl_nan=True, mute=True)
 
     # Correlation Analysis
 
@@ -109,20 +109,20 @@ def assembly_detection(traj, print_params=False):
     EWs, EVs = eigh(corr_matrix)
     EW_max = np.sort(EWs)[-1]
 
-    redundancy = matstat.redundancy(EWs)
+    redundancy = matstat.redundancy(EWs, mute=True)
 
-    SCREE_count = matstat.eigenvalue_spectra(EWs, method='SCREE')
+    SCREE_count = matstat.eigenvalue_spectra(EWs, method='SCREE', mute=True)
 
-    broken_stick_count = matstat.eigenvalue_spectra(EWs, method='broken-stick')
+    broken_stick_count = matstat.eigenvalue_spectra(EWs, method='broken-stick', mute=True)
 
     relevant_EVs = matstat.detect_assemblies(EVs, EWs, show=False,
-                                             detect_by='eigenvalue')[0]
+                                             detect_by='eigenvalue', mute=True)[0]
 
     norm_estimate = norm(relevant_EVs)
     min_n_estimate = min(relevant_EVs)  # Is this useful?
 
     relevant_EVs = matstat.detect_assemblies(EVs, EWs, show=False,
-                                             detect_by=traj.A_size)[0]
+                                             detect_by=traj.A_size, mute=True)[0]
 
     norm_exact = norm(relevant_EVs)
     min_n_exact = min(relevant_EVs)
@@ -134,7 +134,7 @@ def assembly_detection(traj, print_params=False):
     ref_corr_matrix = matstat.corr_matrix(ref_spiketrain_list)
     ref_EWs, ref_EVs = eigh(ref_corr_matrix)
 
-    ref_vector_angles, ref_space_angle = matstat.EV_angles(EVs, ref_EVs)
+    ref_vector_angles, ref_space_angle = matstat.EV_angles(EVs, ref_EVs, mute=True)
 
     spectral_count = len(np.where(EWs > np.max(ref_EWs))[0])
 
@@ -179,7 +179,7 @@ def assembly_detection(traj, print_params=False):
     traj.f_add_result('$set.$.Space_angle', ref_space_angle,
                       comment='Angle between the eigenspaces')
 
-def main(task_id):
+def main(job_id):
 
     # Set up Environment and Trajectory
 
@@ -192,7 +192,7 @@ def main(task_id):
                               'Investigation of the correlation structure and'
                               'comparison to identical network without assemblies.',
                       filename=home_path + '/ParameterExploration_results/results/'
-                               + trajname + '_{}'.format(str(task_id)),
+                               + trajname + '_{}'.format('Array2') + '.h5',
                       # large_overview_tables=True,
                       # git_repository=base_path,
                       # overwrite_file=True,
@@ -213,7 +213,7 @@ def main(task_id):
     traj.f_add_parameter('rate', 50, comment='Mean spiking rate')  # ToDo: ???????
     traj.f_add_parameter('A_size', 10, comment='size of assembly')
     traj.f_add_parameter('bkgr_corr', .0, comment='Background correlation')
-    traj.f_add_parameter('repetition', 0, comment='Iterator to produce statistics')
+    traj.f_add_parameter('job_id', 0, comment='Iterator to produce statistics')
 
     # Test exploration
 
@@ -234,8 +234,8 @@ def main(task_id):
                                             6000, 7000, 8000, 9000, 10000],
                                       'A_size': [2, 3, 4, 5, 6, 7, 8, 9, 10],
                                       'bkgr_corr': [.0, .01, .02, .03, .04, .05,
-                                                    .06, .07, .08, .09, .1]#,
-                                      # 'repetition': [n for n in range(2)]
+                                                    .06, .07, .08, .09, .1],
+                                      'job_id': [int(job_id)]
                                       }))
     # ToDo: Do more repetitions ~100
 

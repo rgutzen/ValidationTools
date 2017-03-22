@@ -353,7 +353,7 @@ def EV_angles(EVs1, EVs2, deg=True, mute=False):
 
     for EVs in [EVs1, EVs2]:
         for EV in EVs:
-            if abs(np.linalg.norm(EV) - 1) > 0.001:
+            if abs(np.linalg.norm(EV) - 1) > 0.0001:
                 print "Warning: Eigenvector norm deviates from 1 ({:.7f})"\
                       .format(np.linalg.norm(EV))
 
@@ -384,7 +384,7 @@ def EV_angles(EVs1, EVs2, deg=True, mute=False):
     return vector_angles, space_angle
 
 
-def detect_assemblies(EVs, EWs, detect_by='eigenvalue', show=True, EW_lim=2,
+def detect_assemblies(EVs, EWs, detect_by='eigenvalue', mute=False, EW_lim=2,
                       jupyter=False, sort=False):
     """
 
@@ -447,7 +447,7 @@ def detect_assemblies(EVs, EWs, detect_by='eigenvalue', show=True, EW_lim=2,
 
         relevant_EVs += [cur_rel_EVs]
 
-        if show and EWs[i] > EW_lim:
+        if not mute and EWs[i] > EW_lim:
             print "\033[4mAssembly {}, eigenvalue {:.2f}, size {}\033[0m"\
                   .format(i+1, EWs[i], len(n_ids[i]))
             print "Neuron ID:\t",
@@ -465,7 +465,8 @@ def detect_assemblies(EVs, EWs, detect_by='eigenvalue', show=True, EW_lim=2,
         n_ids += [_get_ids(ev, th)]
 
     if not len(relevant_EVs):
-        relevant_EVs = [[0]]
+        max_EV = EVs[np.where(EWs == max(EWs))[0]]
+        relevant_EVs = [[max(max_EV)]]
 
     if sort:
         st_num_list = []
