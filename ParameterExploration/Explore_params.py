@@ -183,7 +183,7 @@ def main(job_id):
 
     # Set up Environment and Trajectory
 
-    trajname = '21corr_20T_9Asize_11bkgr'
+    trajname = '21corr_11T_9Asize_11bkgr'
 
     env = Environment(trajectory=trajname,
                       add_time=True,
@@ -192,7 +192,7 @@ def main(job_id):
                               'Investigation of the correlation structure and'
                               'comparison to identical network without assemblies.',
                       filename=home_path + '/ParameterExploration_results/results/'
-                               + trajname + '_{}'.format('Array2') + '.h5',
+                               + trajname + '_{}'.format(str(job_id)) + '.h5',
                       # large_overview_tables=True,
                       # git_repository=base_path,
                       # overwrite_file=True,
