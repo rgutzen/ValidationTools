@@ -184,7 +184,7 @@ def main(job_id):
     trajname = '21corr_11T_9Asize_11bkgr'
 
     env = Environment(trajectory=trajname,
-                      add_time=True,
+                      # add_time=True,
                       file_title=trajname,
                       comment='Exploration of large 4D parameter room. '
                               'Investigation of the correlation structure and'
@@ -198,10 +198,10 @@ def main(job_id):
                       log_multiproc=True,
                       # results_per_run=15,
                       multiproc=True,
-                      ncores=16,
-                      # use_scoop=True,
-                      # freeze_input=True,
-                      wrap_mode='QUEUE')
+                      ncores=8,
+                      use_scoop=True,
+                      freeze_input=True,
+                      wrap_mode='LOCAL')
 
     traj = env.trajectory
 
