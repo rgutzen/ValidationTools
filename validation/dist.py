@@ -79,6 +79,9 @@ def show(sample1, sample2, bins=100, ax=plt.gca()):
     Q, _____ = np.histogram(sample2, bins=edges, density=True)
     dx = np.diff(edges)[0]
     xvalues = edges[:-1] + dx/2.
+    xvalues = np.append(np.append(xvalues[0]-dx, xvalues), xvalues[-1]+dx)
+    P = np.append(np.append(0., P), 0.)
+    Q = np.append(np.append(0., Q), 0.)
     ax.plot(xvalues, P)
     ax.plot(xvalues, Q)
     ax.set_xlim(xvalues[0], xvalues[-1])
@@ -86,8 +89,7 @@ def show(sample1, sample2, bins=100, ax=plt.gca()):
     return ax
 
 
-def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None,
-            xlabel='a.u.', mute=False):
+def KL_test(sample1, sample2, bins=10, ax=None, xlabel='', mute=False):
     """
     Kullback-Leibner Divergence D_KL(P||Q)
 
@@ -153,26 +155,21 @@ def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None,
         P *= dx
         Q *= dx
 
-    if excl_zeros:
-        _init_len = len(P)
-        Qnot0 = np.where(Q != 0.)[0]
-        P = P[Qnot0]
-        Q = Q[Qnot0]
-        edges = edges[Qnot0]
-        Pnot0 = np.where(P != 0.)[0]
-        Q = Q[Pnot0]
-        P = P[Pnot0]
-        edges = edges[Pnot0]
-        _final_len = len(P)
-        discard = _init_len - _final_len
-        if not mute:
-            print '\t{} zero value{} have been discarded.'\
-                  .format(discard, "s" if discard-1 else "")
-    else:
-        if 0. in Q or 0. in P:
-            raise ValueError('Q must not have zero values!')
-    D_KL = st.entropy(P, Q, base=2)
-    D_KL_as = st.entropy(Q, P, base=2)
+    _init_len = len(P)
+    Qnot0 = np.where(Q != 0.)[0]
+    P_non0 = P[Qnot0]
+    Q_non0 = Q[Qnot0]
+    Pnot0 = np.where(P_non0 != 0.)[0]
+    Q_non0 = Q_non0[Pnot0]
+    P_non0 = P_non0[Pnot0]
+    _final_len = len(P_non0)
+    discard = _init_len - _final_len
+    if not mute:
+        print '\t{} zero value{} have been discarded.'\
+              .format(discard, "s" if discard-1 else "")
+
+    D_KL = st.entropy(P_non0, Q_non0, base=2)
+    D_KL_as = st.entropy(Q_non0, P_non0, base=2)
 
     if not mute:
         print '\tD_KL(P||Q) = {:.2f}\n\tD_KL(Q||P) = {:.2f}\n' \
@@ -183,11 +180,23 @@ def KL_test(sample1, sample2, bins=10, excl_zeros=True, ax=None,
         ax.set_xlabel(xlabel)
         xvalues = edges + dx/2.
         xvalues = np.append(np.append(xvalues[0]-dx, xvalues), xvalues[-1]+dx)
-        diffy = P * np.log(P / Q.astype(float))
+
+        def secure_log(E, D):
+            log = np.zeros_like(E)
+            i = 0
+            for e, d in zip(E, D):
+                if e == 0 or d == 0:
+                    log[i] = 0.
+                else:
+                    log[i] = np.log(e/d)
+                i += 1
+            return log
+
+        diffy = (P - Q) * secure_log(P, Q.astype(float))
         P = np.append(np.append(0, P), 0)
         Q = np.append(np.append(0, Q), 0)
         filly = np.append(np.append(0., diffy), 0.)
-        ax.fill_between(xvalues, filly, 0,  color='LightGrey')
+        ax.fill_between(xvalues, filly, 0,  color='0.8')
         ax.plot(xvalues, P, lw=2, label='P')
         ax.plot(xvalues, Q, lw=2, label='Q')
         ax.set_xlim(xvalues[0], xvalues[-1])
@@ -210,7 +219,7 @@ def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter', mute=False):
     equivalently when the correponding p-value is less than the signficance
     level.
 
-    :param sample1: array, list
+    :param sample1: numpy.ndarray
         Sample of the parmeter of interest.
     :param sample2: array, list
         Sample of the parmeter of interest.
@@ -239,13 +248,39 @@ def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter', mute=False):
         ax.set_ylabel('CDF')
         ax.set_xlabel(xlabel)
         color = sns.color_palette()
+
+        # print cumulative distributions and scatterplot
         for i, A in enumerate([sample1, sample2]):
             A_sorted = np.sort(A)
             A_sorted = np.append(A_sorted[0], A_sorted)
             CDF = (np.arange(len(A)+1)) / float(len(A))
             ax.step(A_sorted, CDF, where='post', color=color[i])
-            ax.scatter(A_sorted, [i+.01-i*.02]*len(A_sorted),
+            ax.scatter(A_sorted, [.99-i*.02]*len(A_sorted),
                        color=color[i], marker='D')
+        # calculate vertical distance
+        N = len(sample1) + len(sample2)
+        sample = np.zeros((4, N))
+        sample[0] = np.append(sample1, sample2)
+        sample[1] = np.append(np.ones(len(sample1)), np.zeros(len(sample2)))
+        sample[2] = np.append(np.zeros(len(sample1)), np.ones(len(sample2)))
+        sort_idx = np.argsort(sample[0])
+        sample[0] = sample[0][sort_idx]
+        sample[1] = np.cumsum(sample[1][sort_idx]) / float(len(sample1))
+        sample[2] = np.cumsum(sample[2][sort_idx]) / float(len(sample2))
+        distance = sample[1] - sample[2]
+        distance_plus = [d if d >= 0 else 0 for d in distance]
+        distance_minus = [-d if d <= 0 else 0 for d in distance]
+
+        # plot distance
+        ax.plot(sample[0], distance_plus, color=color[0], alpha=.5)
+        ax.fill_between(sample[0], distance_plus, 0, color=color[0], alpha=.5)
+        ax.plot(sample[0], distance_minus, color=color[0], alpha=.5)
+        ax.fill_between(sample[0], distance_minus, 0, color=color[1], alpha=.5)
+
+        # plot max distance marker
+        ax.axvline(sample[0][np.argmax(abs(distance))],
+                   color='.8', linestyle=':', linewidth=1.5)
+
         xlim_lower = min(min(sample1), min(sample2))
         xlim_upper = max(max(sample1), max(sample2))
         xlim_lower -= .03*(xlim_upper-xlim_lower)

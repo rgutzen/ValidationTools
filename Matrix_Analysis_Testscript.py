@@ -63,7 +63,7 @@ def analyze_distributions(sample1, sample2):
 
     # Kullback-Leidner Divergence
     dist.KL_test(sample1, sample2, ax=ax[0],
-                 bins=10, excl_zeros=True)
+                 bins=10)
 
     # Kolmogorov-Smirnov Disance
     dist.KS_test(sample1, sample2, ax=ax[1])
