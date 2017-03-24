@@ -1,5 +1,6 @@
 from matplotlib import use
 from pypet import Environment, cartesian_product
+from pypet import pypetconstants
 from imp import load_source
 from quantities import ms, Hz
 from scipy.linalg import eigh, norm
@@ -196,12 +197,14 @@ def main(job_id):
                       # overwrite_file=True,
                       log_folder=home_path + '/ParameterExploration_results/logs/',
                       log_multiproc=True,
-                      # results_per_run=15,
+                      results_per_run=15,
                       multiproc=True,
-                      ncores=8,
+                      # ncores=8,
                       use_scoop=True,
                       freeze_input=True,
-                      wrap_mode='LOCAL')
+                      wrap_mode=pypetconstants.WRAP_MODE_LOCAL,
+                      # wrap_mode='LOCAL'
+                      )
 
     traj = env.trajectory
 

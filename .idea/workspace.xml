@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2e472702-85e4-422c-bc22-2b0cafeaf73a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Matrix_Analysis_Testscript.py" afterPath="$PROJECT_DIR$/Matrix_Analysis_Testscript.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/validation/dist.py" afterPath="$PROJECT_DIR$/validation/dist.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ParameterExploration/Explore_params.py" afterPath="$PROJECT_DIR$/ParameterExploration/Explore_params.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -285,7 +284,7 @@
           <file leaf-file-name="matrix.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/validation/matrix.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1840">
+                <state relative-caret-position="5536">
                   <caret line="355" column="50" lean-forward="false" selection-start-line="355" selection-start-column="50" selection-end-line="355" selection-end-column="50" />
                   <folding>
                     <element signature="e#77#95#0" expanded="true" />
@@ -316,11 +315,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="dist.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="dist.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/validation/dist.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="416">
-                  <caret line="267" column="72" lean-forward="true" selection-start-line="267" selection-start-column="72" selection-end-line="267" selection-end-column="72" />
+                  <caret line="267" column="72" lean-forward="false" selection-start-line="267" selection-start-column="72" selection-end-line="267" selection-end-column="72" />
                   <folding>
                     <element signature="e#135#153#0" expanded="true" />
                   </folding>
@@ -328,11 +327,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Explore_params.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="Explore_params.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/ParameterExploration/Explore_params.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="464">
-                  <caret line="179" column="17" lean-forward="false" selection-start-line="179" selection-start-column="17" selection-end-line="179" selection-end-column="17" />
+                <state relative-caret-position="480">
+                  <caret line="187" column="29" lean-forward="false" selection-start-line="187" selection-start-column="29" selection-end-line="187" selection-end-column="29" />
                   <folding>
                     <element signature="e#0#26#0" expanded="true" />
                   </folding>
@@ -506,9 +505,9 @@
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/load_spiketrains_collab.py" />
         <option value="$PROJECT_DIR$/validation/matrix.py" />
-        <option value="$PROJECT_DIR$/ParameterExploration/Explore_params.py" />
         <option value="$PROJECT_DIR$/Matrix_Analysis_Testscript.py" />
         <option value="$PROJECT_DIR$/validation/dist.py" />
+        <option value="$PROJECT_DIR$/ParameterExploration/Explore_params.py" />
       </list>
     </option>
   </component>
@@ -533,7 +532,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -608,7 +607,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -898,18 +897,18 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40556088" sideWeight="0.24986821" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3271202" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24421832" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34875116" sideWeight="0.7501318" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24986821" sideWeight="0.4935484" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33302498" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24986821" sideWeight="0.5064516" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36817762" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39229968" sideWeight="0.7501318" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32747456" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36817762" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32885906" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1190,6 +1189,11 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+        </state>
+      </provider>
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="FIRST">
           <first_editor relative-caret-position="368">
@@ -1197,11 +1201,6 @@
             <folding />
           </first_editor>
           <second_editor />
-        </state>
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1225,16 +1224,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ParameterExploration/Explore_params.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="464">
-          <caret line="179" column="17" lean-forward="false" selection-start-line="179" selection-start-column="17" selection-end-line="179" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Matrix_Analysis_Testscript.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="466">
@@ -1247,7 +1236,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/validation/matrix.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1840">
+        <state relative-caret-position="5536">
           <caret line="355" column="50" lean-forward="false" selection-start-line="355" selection-start-column="50" selection-end-line="355" selection-end-column="50" />
           <folding>
             <element signature="e#77#95#0" expanded="true" />
@@ -1258,9 +1247,19 @@
     <entry file="file://$PROJECT_DIR$/validation/dist.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="416">
-          <caret line="267" column="72" lean-forward="true" selection-start-line="267" selection-start-column="72" selection-end-line="267" selection-end-column="72" />
+          <caret line="267" column="72" lean-forward="false" selection-start-line="267" selection-start-column="72" selection-end-line="267" selection-end-column="72" />
           <folding>
             <element signature="e#135#153#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ParameterExploration/Explore_params.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="187" column="29" lean-forward="false" selection-start-line="187" selection-start-column="29" selection-end-line="187" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
