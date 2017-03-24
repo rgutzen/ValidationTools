@@ -199,11 +199,12 @@ def main(job_id):
                       log_multiproc=True,
                       results_per_run=15,
                       multiproc=True,
-                      # ncores=8,
-                      use_scoop=True,
+                      ncores=16,
+                      # use_scoop=True,
+                      use_pool=True,
                       freeze_input=True,
-                      wrap_mode=pypetconstants.WRAP_MODE_LOCAL,
-                      # wrap_mode='LOCAL'
+                      # wrap_mode=pypetconstants.WRAP_MODE_LOCAL,
+                      wrap_mode='LOCAL'
                       )
 
     traj = env.trajectory
