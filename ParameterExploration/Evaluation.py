@@ -6,7 +6,8 @@ sns.set(style='ticks', palette='Set2')
 sns.set_color_codes('colorblind')
 sns.despine()
 
-base_path = '/home/robin/Projects/ValidationTools/ParameterExploration/assembly/'
+# base_path = '/home/robin/Projects/ValidationTools/ParameterExploration/assembly/'
+base_path = '/home/robin/Sciebo/ParameterExploration_results/results/'
 
 
 def load_traj(filename):

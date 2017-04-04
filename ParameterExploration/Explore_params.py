@@ -90,10 +90,12 @@ def assembly_detection(traj, print_params=False):
 
     # ToDo: Run exploration also with reference spiketrain list with same corr
 
+    corr_matrix = matstat.corr_matrix(spiketrain_list, binsize=traj.binsize*ms)
+
     # Distribution Comparison
 
-    dist_sample_1 = matstat.corr_matrix(spiketrain_list).flatten()
-    dist_sample_2 = matstat.corr_matrix(ref_spiketrain_list).flatten()
+    dist_sample_1 = corr_matrix.flatten()
+    dist_sample_2 = matstat.corr_matrix(ref_spiketrain_list, binsize=traj.binsize*ms).flatten()
 
     DKL = dist.KL_test(dist_sample_1, dist_sample_2, excl_zeros=True, mute=True)
 
@@ -102,8 +104,6 @@ def assembly_detection(traj, print_params=False):
     MWU = dist.MWU_test(dist_sample_1, dist_sample_2, excl_nan=True, mute=True)
 
     # Correlation Analysis
-
-    corr_matrix = matstat.corr_matrix(spiketrain_list)
 
     corrcoef = np.mean(corr_matrix[:traj.A_size, :traj.A_size].flatten())
 
@@ -178,6 +178,7 @@ def assembly_detection(traj, print_params=False):
     traj.f_add_result('$set.$.Space_angle', ref_space_angle,
                       comment='Angle between the eigenspaces')
 
+
 def main(job_id):
 
     # Set up Environment and Trajectory
@@ -185,7 +186,7 @@ def main(job_id):
     trajname = '21corr_11T_9Asize_11bkgr'
 
     env = Environment(trajectory=trajname,
-                      # add_time=True,
+                      add_time=True,
                       file_title=trajname,
                       comment='Exploration of large 4D parameter room. '
                               'Investigation of the correlation structure and'
@@ -211,6 +212,7 @@ def main(job_id):
 
     traj.f_add_parameter('N', 100, comment='Number of neurons')
     traj.f_add_parameter('corr', .0, comment='Correlation within assembly')
+    traj.f_add_parameter('binsize', 2, comment='Bin size in ms with which the correlation is computed')
     traj.f_add_parameter('T', 100, comment='Runtime')
     traj.f_add_parameter('rate', 50, comment='Mean spiking rate')  # ToDo: ???????
     traj.f_add_parameter('A_size', 10, comment='size of assembly')

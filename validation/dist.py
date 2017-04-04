@@ -279,7 +279,7 @@ def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter', mute=False):
 
         # plot max distance marker
         ax.axvline(sample[0][np.argmax(abs(distance))],
-                   color='.8', linestyle=':', linewidth=1.5)
+                   color='.8', linestyle='--', linewidth=1.7)
 
         xlim_lower = min(min(sample1), min(sample2))
         xlim_upper = max(max(sample1), max(sample2))
