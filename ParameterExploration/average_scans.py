@@ -19,6 +19,7 @@ result_names = ['Corrcoef', 'EW_max', 'Redundancy', 'SCREE_count',
 
 def _init_avg_file(name, init_file):
     f = File(print_path + name, 'w-')
+    print "\nInitialize new file... \n"
 
     # Parameters
     f.create_group('Parameters')
@@ -31,7 +32,6 @@ def _init_avg_file(name, init_file):
         f.create_dataset('Parameters/{}'.format(scan_param), data=param_array)
 
     runs = f['Parameters/' + scan_params[0]].len()
-    print "{} runs".format(runs)
 
     # fixed parameters (times in ms)
     f.create_dataset('Parameters/N', data=np.array([100]*runs))
@@ -46,6 +46,7 @@ def _init_avg_file(name, init_file):
         f.create_dataset('Results/{}/var'.format(result_name), (runs,), 'float')
 
     f['Results'].attrs['base_num'] = 0
+    f['Results'].attrs['processed_files'] = ['']
 
     return f
 
@@ -59,17 +60,28 @@ def _load_traj(filename, params_load=0, result_load=2):
     return traj
 
 
-def _load_avg_file(name):
-    f = File(print_path + name, 'r')
-    return f
+def _load_avg_file(name, mode='r+'):
+    avg_file = File(print_path + name, mode)
+    return avg_file
 
 
 def _update_avg_file(file_obj=None, name=None, new_scan=None):
     if file_obj is None:
         assert name is not None
+        print '\nLoad file...\n'
         file_obj = _load_avg_file(name)
+
+    processed_files = file_obj['Results'].attrs['processed_files']
+    if new_scan in processed_files:
+        print 'File already regarded in this average!'
+        return file_obj
+
+    print '\nLoad new parameter scan...\n'
     traj = _load_traj(new_scan)
 
+    print '\nUpdate file...\n'
+
+    runs = f['Results/{}/avg'.format(result_names[0])].len()
     base_num = file_obj['Results'].attrs['base_num']
 
     nbr_of_sets = traj.results.f_children()
@@ -101,29 +113,53 @@ def _update_avg_file(file_obj=None, name=None, new_scan=None):
                         print 'Name not found in results: {}'\
                               .format(result_name)
 
-                if not base_num:
-                    file_obj['Results/{}/avg'.format(result_name)] = scan_value
-                    file_obj['Results'].attrs['base_num'] = 1
-                else:
-                    prev_avg = file_obj['Results/{}/avg'.format(result_name)]
-                    new_avg = (base_num*prev_avg + scan_value) / (base_num + 1)
-                    file_obj['Results/{}/avg'.format(result_name)] = new_avg
+                subgroup = 'Results/{}/'.format(result_name)
+                avg = file_obj[subgroup + 'avg'][run]
+                var = file_obj[subgroup + 'var'][run]
 
-                    prev_var = file_obj['Results/{}/var'.format(result_name)]
+                if np.size(avg) != np.size(scan_value):
+                    # print 'Sizes differ ({} | {}) in run {} for {} \n' \
+                    #       'will only take the first element!' \
+                    #       .format(np.size(avg),
+                    #               np.size(scan_value), run, result_name)
+                    scan_value = scan_value[0]
+
+                if not base_num:
+                      avg = scan_value
+                else:
+                    prev_avg = avg
+                    new_avg = (base_num*prev_avg + scan_value) / (base_num + 1)
+                    avg = new_avg
+
+                    prev_var = var
                     new_var = ((base_num-1)*prev_var
                             + (scan_value-new_avg)*(scan_value-prev_avg)) \
                             * 1./base_num
-                    file_obj['Results/{}/var'.format(result_name)] = new_var
+                    var = new_var
+
+                file_obj[subgroup + 'avg'][run] = avg
+                file_obj[subgroup + 'var'][run] = var
+
+        print '{} / {}'.format(run+1, runs)
 
     file_obj['Results'].attrs['base_num'] = base_num + 1
+    file_obj['Results'].attrs['processed_files'] = np.append(processed_files,
+                                                             new_scan)
 
     return file_obj
 
 scan_nbr = 0
-for filename in listdir(data_path)[:1]:
+f = None
+average_file_name = 'avg_scanned_params.h5'
+
+if average_file_name not in listdir(print_path):
+    f = _init_avg_file(name=average_file_name, init_file=listdir(data_path)[0])
+    scan_nbr += .5
+
+for filename in listdir(data_path)[0:2]:
     if filename.split('.')[-1] == 'h5':
-        # f = _init_avg_file('test_file.h5', filename)
-        f = _update_avg_file(name='test_file.h5', new_scan=filename)
+        f = _update_avg_file(file_obj=f, name=average_file_name,
+                             new_scan=filename)
         scan_nbr += 1
 
 f.close()
