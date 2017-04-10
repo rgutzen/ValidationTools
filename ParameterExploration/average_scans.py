@@ -156,7 +156,7 @@ if average_file_name not in listdir(print_path):
     f = _init_avg_file(name=average_file_name, init_file=listdir(data_path)[0])
     scan_nbr += .5
 
-for filename in listdir(data_path)[0:18]:
+for filename in listdir(data_path)[0:39]:
     if filename.split('.')[-1] == 'h5':
         f = _update_avg_file(file_obj=f, name=average_file_name,
                              new_scan=filename)
