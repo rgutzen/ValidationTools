@@ -81,7 +81,7 @@ def _update_avg_file(file_obj=None, name=None, new_scan=None):
 
     print '\nUpdate file...\n'
 
-    runs = f['Results/{}/avg'.format(result_names[0])].len()
+    runs = file_obj['Results/{}/avg'.format(result_names[0])].len()
     base_num = file_obj['Results'].attrs['base_num']
 
     nbr_of_sets = traj.results.f_children()
@@ -125,7 +125,7 @@ def _update_avg_file(file_obj=None, name=None, new_scan=None):
                     scan_value = scan_value[0]
 
                 if not base_num:
-                      avg = scan_value
+                    avg = scan_value
                 else:
                     prev_avg = avg
                     new_avg = (base_num*prev_avg + scan_value) / (base_num + 1)
@@ -156,7 +156,7 @@ if average_file_name not in listdir(print_path):
     f = _init_avg_file(name=average_file_name, init_file=listdir(data_path)[0])
     scan_nbr += .5
 
-for filename in listdir(data_path)[0:39]:
+for filename in listdir(data_path)[0:55]:
     if filename.split('.')[-1] == 'h5':
         f = _update_avg_file(file_obj=f, name=average_file_name,
                              new_scan=filename)

@@ -44,7 +44,18 @@ def load_data(path, file_name_list, N):
             while len(spiketrain) < N:
                 spiketrain.append(neo.SpikeTrain([] * unit, t_start=tstart, t_stop=tstop))
             del spiketrain[N:]
+
+        for st_count in range(len(spiketrains[0])):
+            spiketrains[0][st_count].annotations['type'] = 'exc'
+            spiketrains[0][st_count].annotations['layer'] = \
+                file_name.split('_')[-1]
+        for st_count in range(len(spiketrains[1])):
+            spiketrains[1][st_count].annotations['type'] = 'inh'
+            spiketrains[1][st_count].annotations['layer'] = \
+                file_name.split('_')[-1]
+
         spike_train_list.append(spiketrains)
+
     return spike_train_list
 
 
