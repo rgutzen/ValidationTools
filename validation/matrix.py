@@ -465,7 +465,7 @@ def detect_assemblies(EVs, EWs, detect_by='eigenvalue', mute=False, EW_lim=2,
         n_ids += [_get_ids(ev, th)]
 
     if not len(relevant_EVs):
-        max_EV = EVs[np.where(EWs == max(EWs))[0]]
+        max_EV = EVs[np.where(EWs == max(EWs))[0][0]]
         relevant_EVs = [[max(max_EV)]]
 
     if sort:

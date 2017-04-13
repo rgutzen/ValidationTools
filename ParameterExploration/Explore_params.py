@@ -116,16 +116,6 @@ def assembly_detection(traj, print_params=False):
 
     broken_stick_count = matstat.eigenvalue_spectra(EWs, method='broken-stick', mute=True)
 
-    relevant_EVs = matstat.detect_assemblies(EVs, EWs, detect_by='eigenvalue', mute=True)[0]
-
-    norm_estimate = norm(relevant_EVs)
-    min_n_estimate = min(relevant_EVs)  # Is this useful?
-
-    relevant_EVs = matstat.detect_assemblies(EVs, EWs, detect_by=traj.A_size, mute=True)[0]
-
-    norm_exact = norm(relevant_EVs)
-    min_n_exact = min(relevant_EVs)
-
     # ToDo: Estimate Assembly by above change load in eigenvector?
 
     # Angle Comparison
@@ -136,6 +126,18 @@ def assembly_detection(traj, print_params=False):
     ref_vector_angles, ref_space_angle = matstat.EV_angles(EVs, ref_EVs, mute=True)
 
     spectral_count = len(np.where(EWs > np.max(ref_EWs))[0])
+
+    # Assembly Detection
+
+    relevant_EVs = matstat.detect_assemblies(EVs, EWs, detect_by='eigenvalue', EW_lim=max(ref_EWs), mute=True)[0]
+
+    norm_estimate = norm(relevant_EVs)
+    min_n_estimate = min(relevant_EVs)  # Is this useful?
+
+    relevant_EVs = matstat.detect_assemblies(EVs, EWs, detect_by=traj.A_size, EW_lim=max(ref_EWs), mute=True)[0]
+
+    norm_exact = norm(relevant_EVs)
+    min_n_exact = min(relevant_EVs)
 
     # Mute print output from functions
 

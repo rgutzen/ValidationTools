@@ -4,7 +4,7 @@ import imp
 from elephant.spike_train_surrogates import *
 from elephant.statistics import mean_firing_rate, cv, isi
 from quantities import Hz, ms
-from scipy.linalg import eigh
+from scipy.linalg import eigh, norm
 # from neo.io.nestio import NestIO
 import neo
 
@@ -117,20 +117,20 @@ def analyze_correlations(spiketrain_list, filename='testfile'):
     pc_count = matstat.eigenvalue_spectra(EWs, method='SCREE', ax=ax[1,1])
 
     # Print eigenvectors
-    matstat.print_eigenvectors(EVs, EWs, pc_count)
+    matstat.print_eigenvectors(EVs, EWs, 10)
 
     # Detect assemblies
-    matstat.detect_assemblies(EVs, EWs, detect_by='eigenvalue')
+    print matstat.detect_assemblies(EVs, EWs, detect_by='eigenvalue')
 
 
     return EWs, EVs, pc_count
 
 
-N = 50
+N = 100
 
 # Generate Spiketrains
-spiketrain_list1 = testdata.test_data(size=N, corr=.0, t_stop=500*ms,
-                                      rate=100*Hz, assembly_sizes=[10,5],
+spiketrain_list1 = testdata.test_data(size=N, corr=.0, t_stop=10000*ms,
+                                      rate=50*Hz, assembly_sizes=[5],
                                       method="CPP", bkgr_corr=0.0)
 for i, st in enumerate(spiketrain_list1):
     st.annotations['id'] = i
@@ -146,17 +146,19 @@ for i, st in enumerate(spiketrain_list1):
 # spiketrain_list1 = segment.spiketrains
 
 # Calculate CVs
-dist_sample_1 = [cv(isi(st)) for st in spiketrain_list1]
+# dist_sample_1 = [cv(isi(st)) for st in spiketrain_list1]
 
 
 # Analyze Correlations of spiketrains 1
-# EWs1, EVs1, pc_count1 = analyze_correlations(spiketrain_list1)
+EWs1, EVs1, pc_count1 = analyze_correlations(spiketrain_list1)
 
+# print np.sort(np.abs(EVs1[0]))[:2:-1]
+# print norm(np.sort(np.abs(EVs1[0]))[:2:-1])
 
 # Generate second dataset
-spiketrain_list2 = testdata.test_data(size=N, corr=.0, t_stop=500*ms,
-                                      rate=100*Hz, assembly_sizes=[2],
-                                      method="CPP", bkgr_corr=0.0)
+# spiketrain_list2 = testdata.test_data(size=N, corr=.0, t_stop=500*ms,
+#                                       rate=100*Hz, assembly_sizes=[2],
+#                                       method="CPP", bkgr_corr=0.0)
 
 # Load SpiNNaker L4 exh Spiketrains
 # spiketrain_list2 = load_data(COLLAB_PATH_SPINNAKER, ['spikes_L4'], N)[0][0]
@@ -169,7 +171,7 @@ spiketrain_list2 = testdata.test_data(size=N, corr=.0, t_stop=500*ms,
 # spiketrain_list2 = segment.spiketrains
 
 # Calculate CVs
-dist_sample_2 = [cv(isi(st)) for st in spiketrain_list2]
+# dist_sample_2 = [cv(isi(st)) for st in spiketrain_list2]
 
 # Analyze Correlations of spiketrains 2
 # EWs2, EVs2, pc_count2 = analyze_correlations(spiketrain_list2)
@@ -180,7 +182,7 @@ dist_sample_2 = [cv(isi(st)) for st in spiketrain_list2]
 # matstat.EV_angles(EVs1[:, :], EVs2[:, :])
 
 # Compare CV(ISI) Distributions
-analyze_distributions(dist_sample_1, dist_sample_2)
+# analyze_distributions(dist_sample_1, dist_sample_2)
 
 
 plt.show()
