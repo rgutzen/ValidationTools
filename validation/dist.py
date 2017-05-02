@@ -75,8 +75,12 @@ def to_precision(x,p):
 
 
 def show(sample1, sample2, bins=100, ax=plt.gca()):
-    P, edges = np.histogram(sample1, bins=bins, density=True)
-    Q, _____ = np.histogram(sample2, bins=edges, density=True)
+    if np.amax(sample1) >= np.amax(sample2):
+        P, edges = np.histogram(sample1, bins=bins, density=True)
+        Q, _____ = np.histogram(sample2, bins=edges, density=True)
+    else:
+        Q, edges = np.histogram(sample2, bins=bins, density=True)
+        P, _____ = np.histogram(sample1, bins=edges, density=True)
     dx = np.diff(edges)[0]
     xvalues = edges[:-1] + dx/2.
     xvalues = np.append(np.append(xvalues[0]-dx, xvalues), xvalues[-1]+dx)
@@ -89,7 +93,47 @@ def show(sample1, sample2, bins=100, ax=plt.gca()):
     return ax
 
 
-def KL_test(sample1, sample2, bins=10, ax=None, xlabel='', mute=False):
+def effect_size(sample1, sample2, true_var=None, comparison=np.mean,
+                bias_correction=True, comparison_args={}, dof=0,
+                log_scale=False):
+    n1 = len(sample1)
+    n2 = len(sample2)
+
+    if true_var is not None:
+        pooled_var = true_var
+    else:
+        summed_dev = (n1-1) * np.var(sample1, ddof=1) \
+                     + (n2-1) * np.var(sample2, ddof=1)
+        pooled_var = summed_dev / (n1 + n2 - 2)
+
+    def measure(sample):
+        n = len(sample)
+        return comparison(sample, **comparison_args) * n/(n-dof)
+
+    diff = np.abs(measure(sample1) - measure(sample2))
+
+    es = diff / np.sqrt(pooled_var)
+
+    if bias_correction:
+        es *= (1 - 3 / (4*(n1 + n2 - 2) - 1))
+
+    se = np.sqrt((n1 + n2) / (n1 * n2) + es**2 / (2*(n1 + n2 - 2)))
+
+    ci_bound = 1.96 * se  # 95% confidence
+
+    prec = int(np.ceil(np.abs(np.log10(ci_bound))))
+    if ci_bound >= 1:
+        prec = 0
+
+    print "\n\tEffect Size = {:.{}f} (+- {:.{}f})"\
+          .format(es, prec, ci_bound, prec)
+    print "\tConfidence Interval (95%) = " \
+          "[{:.{}f} .. {:.{}f}]\n".format(es-ci_bound, prec, es+ci_bound, prec)
+
+    return es, ci_bound
+
+
+def KL_test(sample1, sample2, bins=100, ax=None, xlabel='', mute=False):
     """
     Kullback-Leibner Divergence D_KL(P||Q)
 
@@ -111,7 +155,7 @@ def KL_test(sample1, sample2, bins=10, ax=None, xlabel='', mute=False):
         Can either be normed distribution or sample of values from which a
         histogram distributions with *bins* is calculated. (= Q)
     :param bins: int, array of edges
-        Parameter is forwarded to numpy.histogram(). Default = 10
+        Parameter is forwarded to numpy.histogram(). Default = 100
     :param excl_zeros: Bool
         D_KL can't be calculated if there are zero values in the distribution.
         Therefore all zeros are omitted when excl_zeros is True (default).
@@ -148,8 +192,12 @@ def KL_test(sample1, sample2, bins=10, ax=None, xlabel='', mute=False):
         sample1 = np.array(sample1)[np.isfinite(sample1)]
         sample2 = np.array(sample2)[np.isfinite(sample2)]
 
-        P, edges = np.histogram(sample1, bins=bins, density=True)
-        Q, _____ = np.histogram(sample2, bins=edges, density=True)
+        if np.amax(sample1) >= np.amax(sample2):
+            P, edges = np.histogram(sample1, bins=bins, density=True)
+            Q, _____ = np.histogram(sample2, bins=edges, density=True)
+        else:
+            Q, edges = np.histogram(sample2, bins=bins, density=True)
+            P, _____ = np.histogram(sample1, bins=edges, density=True)
         dx = np.diff(edges)[0]
         edges = edges[:-1]
         P *= dx
@@ -336,7 +384,8 @@ def MWU_test(sample1, sample2, sample_names=None, linewidth=None,
         raise Warning('The sample size is too small. '
                       'The test might lose its validity!')
 
-    U, pvalue = st.mannwhitneyu(sample1, sample2, alternative='two-sided')
+    U, pvalue = st.mannwhitneyu(sample1, sample2, alternative=None)
+    pvalue *= 2
 
     if not mute:
         print "\n\033[4mMann-Whitney-U-Test\033[0m" \

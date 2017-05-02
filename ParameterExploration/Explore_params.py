@@ -97,7 +97,7 @@ def assembly_detection(traj, print_params=False):
     dist_sample_1 = corr_matrix.flatten()
     dist_sample_2 = matstat.corr_matrix(ref_spiketrain_list, binsize=traj.binsize*ms).flatten()
 
-    DKL = dist.KL_test(dist_sample_1, dist_sample_2, excl_zeros=True, mute=True)
+    DKL = dist.KL_test(dist_sample_1, dist_sample_2, mute=True)
 
     DKS = dist.KS_test(dist_sample_1, dist_sample_2, mute=True)
 
@@ -116,7 +116,7 @@ def assembly_detection(traj, print_params=False):
 
     broken_stick_count = matstat.eigenvalue_spectra(EWs, method='broken-stick', mute=True)
 
-    # ToDo: Estimate Assembly by above change load in eigenvector?
+    # ToDo: Estimate Assembly by above chance load in eigenvector?
 
     # Angle Comparison
 

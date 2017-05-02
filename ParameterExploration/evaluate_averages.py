@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 import seaborn as sns
 
-sns.set(style='ticks', palette='Set2', context='talk')
+sns.set(style='ticks', palette='Set2', context='poster')
 
 home_path = expanduser('~')
 path = home_path + '/Sciebo/ParameterExploration_results/average/'
@@ -128,7 +128,7 @@ def plot(x, z, y=None, fixed=default_params, return_fixed=False,
         labelstr = "{} = {}".format(family_name, family_member)
         curr_handle, = ax.plot(x, z[0], lw=2, label=labelstr)
         sz = np.sqrt(z[1])
-        ax.fill_between(x, z[0] + sz, z[0] - sz, alpha=.3)
+        ax.fill_between(x, z[0] + sz, z[0] - sz, color='k', alpha=.1)
 
         if len(family)-1 and legend == 'side':
             if family_member == family[0]:
@@ -136,7 +136,7 @@ def plot(x, z, y=None, fixed=default_params, return_fixed=False,
                         transform=ax.transAxes)
             ax.text(1.02*x[-1], z[0][-1],
                     '{}'.format(family_member),
-                    fontsize=14, fontweight='bold',
+                    fontweight='bold',
                     color=curr_handle.get_color())
 
     if len(family)-1:
@@ -153,20 +153,23 @@ def plot(x, z, y=None, fixed=default_params, return_fixed=False,
         fix_name_str += "\n{}".format(fix)
         fix_value_str += "\n{}".format(fixed[fix])
 
-    ax.text(.9, 1.01, fix_name_str, fontsize=14, transform=ax.transAxes,
+    ax.text(.9, 1.01, fix_name_str, transform=ax.transAxes,
             horizontalalignment='right')
-    ax.text(1, 1.01, fix_value_str, fontsize=14, transform=ax.transAxes,
+    ax.text(1, 1.01, fix_value_str, transform=ax.transAxes,
             horizontalalignment='right')
 
     ax.text(.05, 1.01,
-            'mean & std estimated on base N = {}'
+            'mean & std estimated with {} repetitions'
             .format(f['Results'].attrs['base_num']),
-            fontsize=12,
+            fontsize=13,
             transform=ax.transAxes)
 
     ax.grid()
     ax.set_xlim(x[0], x[-1])
     sns.despine()
+
+    if x_name == 'corr':
+        ax.set_xlabel('Synchrony Probability')
 
     if return_fixed:
         return fixed, ax
@@ -186,10 +189,12 @@ if __name__ == '__main__':
     # plot(x='A_size', z='Corrcoef', family='corr',
     #      fixed={'A_size': 5, 'T': 10000, 'bkgr_corr': 0, 'corr': 0.2})
     # plot(x='corr', z='Corrcoef', family='A_size',
-    #      fixed={'A_size': 5, 'T': 10000, 'bkgr_corr': 0, 'corr': 0.2})
+         # fixed={'A_size': 5, 'T': 10000, 'bkgr_corr': 0, 'corr': 0.2})
 
     ## Is the EW an appropriate estimator for the assemblysize?
-    # plot(x='A_size', z='EW_max', family='corr',
+    plot(x='corr', z='EW_max', family='A_size',
+         fixed={'A_size': 5, 'T': 10000, 'bkgr_corr': 0, 'corr': 0.2})
+    # plot(x='corr', z='EW_max', family='corr',
     #      fixed={'A_size': 5, 'T': 10000, 'bkgr_corr': 0, 'corr': 0.2})
 
     ## How well can the assembly be detected without reference?
@@ -207,12 +212,12 @@ if __name__ == '__main__':
 
     # plot(x='corr', z='D_KS', family='A_size',
     #      fixed={'A_size': 5, 'T': 10000, 'bkgr_corr': 0, 'corr': 0.2})
-    # plot(x='corr', z='D_KS_p', family='A_size',
+    # plot(x='A_size', z='D_KS_p', family='corr',
     #      fixed={'A_size': 5, 'T': 10000, 'bkgr_corr': 0, 'corr': 0.2})
 
     # plot(x='corr', z='MWU', family='A_size',
     #      fixed={'A_size': 5, 'T': 10000, 'bkgr_corr': 0, 'corr': 0.2})
-    # plot(x='corr', z='MWU_p', family='A_size',
+    # plot(x='A_size', z='MWU_p', family='corr',
     #      fixed={'A_size': 5, 'T': 10000, 'bkgr_corr': 0, 'corr': 0.2})
 
     ## How well can the assembly be characterized?
@@ -226,7 +231,6 @@ if __name__ == '__main__':
     # plot(x='corr', z='Norm_estimate', family='A_size',
     #      fixed={'A_size': 5, 'T': 10000, 'bkgr_corr': 0, 'corr': 0.2})
 
-    # plot(x='A_size', z='min_n_exact', family='corr',
+    # plot(x='corr', z='min_n_exact', family='A_size',
     #      fixed={'A_size': 5, 'T': 10000, 'bkgr_corr': 0, 'corr': 0.2})
-
     plt.show()

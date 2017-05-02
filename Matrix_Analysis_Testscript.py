@@ -108,7 +108,9 @@ def analyze_correlations(spiketrain_list, filename='testfile'):
     pc_count = matstat.eigenvalue_distribution(EWs, ax[1,0],
                                                # reference_EWs=sEWs,
                                                reference_EW_max=EWmax_mean + 2*EWmax_std,
-                                               bins=int(max(EWs))*5)
+                                               bins=int(max(EWs))*5,
+                                               wigner_params={'N':100, 'B':5000},
+                                               )
 
     # EW Redundancy
     matstat.redundancy(EWs)
@@ -129,8 +131,8 @@ def analyze_correlations(spiketrain_list, filename='testfile'):
 N = 100
 
 # Generate Spiketrains
-spiketrain_list1 = testdata.test_data(size=N, corr=.0, t_stop=10000*ms,
-                                      rate=50*Hz, assembly_sizes=[5],
+spiketrain_list1 = testdata.test_data(size=N, corr=.5, t_stop=10000*ms,
+                                      rate=50*Hz, assembly_sizes=[10],
                                       method="CPP", bkgr_corr=0.0)
 for i, st in enumerate(spiketrain_list1):
     st.annotations['id'] = i
@@ -151,6 +153,15 @@ for i, st in enumerate(spiketrain_list1):
 
 # Analyze Correlations of spiketrains 1
 EWs1, EVs1, pc_count1 = analyze_correlations(spiketrain_list1)
+
+loads = np.array(EVs1.flatten())
+mean = np.sqrt(np.sum(loads**2)/len(loads))
+print 'arithmetic: {:.3f} +- {:.3f}'.format(np.mean(np.abs(loads)), np.var(np.abs(loads)))
+print np.sum((np.mean(np.abs(loads)) - np.abs(loads))**2/len(loads))
+centered_load = loads - mean
+print 'squared: {:.3f} +- {:.3f}'.format(mean, np.sum(centered_load**2)/len(loads))
+
+print np.sum(np.abs(centered_load))/len(loads)
 
 # print np.sort(np.abs(EVs1[0]))[:2:-1]
 # print norm(np.sort(np.abs(EVs1[0]))[:2:-1])

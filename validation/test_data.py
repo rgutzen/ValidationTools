@@ -118,6 +118,7 @@ def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[],
             # np.testing.assert_almost_equal(sum(amp_dist), 1., decimal=7)
             # norm_factor = (1. - corr) / np.sum(amp_dist[:size])
             amp_dist *= (1./sum(amp_dist))
+            print amp_dist
             return CPP(rate=rate, A=amp_dist, t_stop=t_stop)
 
         else:

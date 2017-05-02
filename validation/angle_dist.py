@@ -1,8 +1,40 @@
 
 import numpy as np
 from numpy import pi
+import imp
 import scipy as sc
 import matplotlib.pyplot as plt
+import seaborn as sns
+from quantities import Hz, ms
+from scipy.linalg import eigh, norm
+
+
+test_data_path = 'test_data.py'
+testdata = imp.load_source('*', test_data_path)
+matrix_analysis_path = 'matrix.py'
+matstat = imp.load_source('*', matrix_analysis_path)
+
+
+def generate_ev_angles(N):
+    sts1 = testdata.test_data(N, 0, 10000 * ms, 10 * Hz, method="CPP",
+                       assembly_sizes=[],
+                       bkgr_corr=0., shuffle=False, shuffle_seed=None)
+    sts2 = testdata.test_data(N, 0, 10000 * ms, 10 * Hz, method="CPP",
+                       assembly_sizes=[],
+                       bkgr_corr=0., shuffle=False, shuffle_seed=None)
+
+    corr_matrix1 = matstat.corr_matrix(sts1)
+    corr_matrix2 = matstat.corr_matrix(sts2)
+
+    __, EVs1 = eigh(corr_matrix1)
+    __, EVs2 = eigh(corr_matrix2)
+
+    EVs1 = np.absolute(EVs1.T[::-1])
+    EVs2 = np.absolute(EVs2.T[::-1])
+
+    phi = [np.arccos(np.dot(evs1, evs2)) for evs1, evs2 in zip(EVs1, EVs2)]
+
+    return np.array(phi)
 
 
 def generate_rand_angles(N, res, abs=True):
@@ -67,19 +99,64 @@ def alt_func(N,res):
         f = f/sum(f) * res * 2/pi
     return angle, f
 
-N = 3
+N = 100
 res = 10000
 
-plt.figure()
-hist, edges = np.histogram(generate_rand_angles(N, res), bins=20, density=True)
-plt.bar(edges[:-1], hist, np.diff(edges)*.9)
+draw_angles = np.array([70.30, 69.30, 56.78])
+draw_angles *= pi/180.
+color_id = [0, 2, 4]
+
+other_angles = np.array([70.30, 69.30, 56.78, 54.09, 52.68, 53.02, 53.44, 52.49, 53.29, 50.43, 46.04, 54.77, 53.68, 52.02, 51.56, 48.76, 49.63, 50.10, 53.00, 52.22, 47.29, 54.80, 44.02, 50.84, 48.79, 46.75, 56.45, 52.88, 54.34, 55.21, 55.28, 46.28, 54.13, 46.75, 55.23, 54.55, 54.94, 47.70, 53.97, 51.75, 46.90, 50.47, 48.88, 50.00, 51.69, 52.67, 56.32, 45.88, 4.12, 57.02, 50.63, 52.84, 50.22, 45.47, 44.21, 48.92, 49.69, 46.88, 52.83, 48.44, 54.03, 53.16, 50.23, 50.94, 50.12, 51.80, 52.51, 52.57, 53.07, 52.96, 53.21, 51.97, 52.52, 48.38, 57.16, 50.48, 50.69, 47.00, 52.92, 49.59, 54.11, 47.46, 50.24, 49.19, 48.86, 53.78, 46.45, 50.95, 59.04, 53.89, 55.84, 52.20, 59.65, 53.16, 58.54, 63.58, 60.93, 72.00, 70.83, 66.49])
+other_angles *= pi/180.
+
+sns.set(style='ticks', palette='Set2', context='poster')
+fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(15,5))
+edges = np.linspace(0, pi/2, 31*pi)
+
+hist, ___ = np.histogram(generate_rand_angles(N, res), bins=edges, density=True)
+dx = edges[1]-edges[0]
+r_ang = ax.bar(edges[:-1], hist, np.diff(edges), color='0.7', edgecolor='w')
+# ax.plot(edges[:-1]+dx, hist, ls='steps', color='0.3')
+
+
+ax2 = ax.twinx()
+hist, __ = np.histogram(other_angles, bins=edges, density=True)
+ev_ang = ax2.bar(edges[:-1], hist, np.diff(edges), color='g', edgecolor='w', label='EV angles')
+
+plt.legend()
+
+# hist, edges = np.histogram(generate_ev_angles(N), bins=40, density=True)
+# ax.bar(edges[:-1], hist, np.diff(edges)*.9, color=sns.color_palette()[2], edgecolor='w')
+
+lines = []
+for beta, cid in zip(draw_angles, color_id):
+    plt1 = ax.axvline(beta, color=sns.color_palette()[cid+1], linestyle='-', linewidth=4)
+    plt2 = ax.axvline(beta, color=sns.color_palette()[cid], linestyle='--', linewidth=4)
+    lines += [(plt1, plt2)]
+
+angle_description = [r"$\angle$(" + r"EV$^{CPP}$" + " {}, ".format(i+1)
+                     + r"EV$^{HPP}$" + " {})".format(i+1) for i in range(3)]
+plt.legend(lines + [r_ang, ev_ang], angle_description + ['10^3 Random angles', 'EV angles'], loc='upper left')
+
+ax.set_xticks(np.array([0, 0.125, .25, .375, .5])*pi)
+ax.set_xticklabels(['0', '1/8', '1/4', '3/8', '1/2'])
+ax.tick_params('y', colors='.5')
+ax.set_xlabel('Angle in units of pi')
+ax.set_ylabel('Angle Density HPP-HPP', color='0.5', fontweight='bold')
+ax2.set_xticks(np.array([0, 0.125, .25, .375, .5])*pi)
+ax2.set_xticklabels(['0', '1/8', '1/4', '3/8', '1/2'])
+ax2.tick_params('y', colors='g')
+ax2.set_ylabel('Angle Density CPP-HPP', color='g', fontweight='bold')
+
+
+# sns.despine()
 
 # hist, edges = np.histogram(projected_rand_angles(N, res), bins=edges, density=True)
 # x_values = edges[:-1]
 # plt.plot(x_values, hist)
 
-angle, f = alt_func(N,res)
-plt.plot(angle, f, 'r')
+# angle, f = alt_func(N,res)
+# plt.plot(angle, f, 'r')
 
 plt.show()
 

@@ -7,6 +7,7 @@ import numpy as np
 from scipy.linalg import eigh
 import scipy.integrate as integrate
 import matplotlib.pyplot as plt
+from matplotlib.ticker import NullFormatter
 from scipy import stats as st
 from quantities import Hz, ms
 from elephant.conversion import BinnedSpikeTrain
@@ -106,9 +107,77 @@ def estimate_largest_eigenvalue(N, trials, t_stop, rate, bins):
     return np.mean(lmax), np.sqrt(np.var(lmax))
 
 
+def eigenvalue_significance(EWs, ax=plt.gca(), bins=50, N=None, B=None,
+                            spectra_method='SCREE', EW_max=None, ylim=None,
+                            color=sns.color_palette()[0], mute=False):
+
+    left, bottom, width, height = ax.get_position()._get_bounds()
+    scaling = .7
+    ax.set_position([left, bottom,
+                     scaling * width, height])
+    axhist = plt.axes([left + scaling * width, bottom,
+                       (1-scaling) * width, height])
+    axhist.yaxis.tick_right()
+    axhist.get_xaxis().tick_bottom()
+    axhist.yaxis.set_label_position("right")
+    axhist.spines["left"].set_visible(False)
+    axhist.spines["top"].set_visible(False)
+
+    eigenvalue_spectra(EWs, ax=ax, method=spectra_method, alpha=.05,
+                       color=color, mute=mute)
+
+    ax.invert_xaxis()
+    ax.spines["left"].set_visible(False)
+    ax.spines["top"].set_visible(False)
+    ax.set_ylabel('')
+    ax.yaxis.set_ticks_position('none')
+    ax.get_xaxis().tick_bottom()
+    ax.yaxis.set_major_formatter(NullFormatter())
+
+    if ylim is None:
+        ylim = ax.get_ylim()
+    else:
+        ax.set_ylim(ylim)
+
+    axhist.set_xlabel('Occurence')
+    axhist.set_ylabel('Eigenvalue')
+
+    if type(color) == int:
+        color = sns.color_palette()[color]
+
+    EW_hist, edges = np.histogram(EWs, bins=bins, density=False)
+    axhist.barh(bottom=edges[:-1], width=EW_hist, height=edges[1]-edges[0],
+                color=color, edgecolor='w')
+    axhist.set_ylim(ylim)
+
+    # wigner semi circle
+    res = 100
+    q = B / float(N)
+    assert q >= 1
+    x_min = (1 - np.sqrt(1. / q)) ** 2
+    x_max = (1 + np.sqrt(1. / q)) ** 2
+
+    def wigner_dist(x):
+        return q / (2 * np.pi) * np.sqrt((x_max - x) * (x - x_min)) / x
+
+    ev_values = np.linspace(x_min, x_max, res)
+    dx = edges[1] - edges[0]
+    wigner_values = [wigner_dist(ev) * N * dx for ev in ev_values]
+    axhist.plot(wigner_values, ev_values, color='k',
+                label='Marchenko-Pastur Distribution')
+    axhist.axhline(x_max + N ** (-2 / 3), color='k', linestyle=':',
+                   label='Tracy-Widom Bound')
+
+    handles, labels = axhist.get_legend_handles_labels()
+    ax.legend(handles, labels, loc='upper left')
+
+    return edges, axhist
+
+
 
 def eigenvalue_distribution(EWs, ax=plt.gca(), bins=20, reference_EWs=[],
-                            reference_EW_max=None, color=0, mute=False):
+                            reference_EW_max=None, wigner_params=None, color=0,
+                            mute=False):
     """
     Plot histogram of the eigenvalue distribution in order to determine
     significant outliers.
@@ -139,8 +208,8 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), bins=20, reference_EWs=[],
 
     EW_hist, edges = np.histogram(EWs, bins=bins, density=False)
     ax.bar(left=edges[:-1], height=EW_hist, width=edges[1]-edges[0],
-           color=color)
-    ax.set_xlabel('EW')
+           color=color, edgecolor='w')
+    ax.set_xlabel('Eigenvalue')
     ax.set_ylabel('Occurrence')
     ax.set_xlim(min(edges), max(edges))
 
@@ -159,20 +228,23 @@ def eigenvalue_distribution(EWs, ax=plt.gca(), bins=20, reference_EWs=[],
         ax.plot([reference_EW_max], [1], color='r')
         ax.set_xlim(0, max([max(edges), reference_EW_max]))
 
-    #     # Reference to Random Correlation Matrix
-    #     N = len(EWs)
-    #     rand_matrix = np.random.rand(N, N) * 2. - 1
-    #     corr_matrix = (rand_matrix + rand_matrix.T) / 2.
-    #     surrogate_EWs, __ = np.linalg.eig(corr_matrix)
-    #     # for i in range(N):
-    #     #     corr_matrix[i,i] = 1.
-    #     maxl = max([abs(min(surrogate_EWs)), abs(max(surrogate_EWs))])
-    #     wigner_dist = lambda x: 2. / (np.pi*maxl**2) * np.sqrt(maxl**2-x**2)
-    #     wigner_x = np.linspace(-maxl, maxl, 100, dtype=float)
-    #     wigner_y = [wigner_dist(x) for x in wigner_x]
-    #     ax.plot(wigner_x, wigner_y, color='r')
-    #
-    # nbr_of_sig_ew = len(np.where(EWs > ref_x[-1])[0])
+    if wigner_params is not None:
+        res = 100
+        N = wigner_params['N']
+        B = wigner_params['B']
+        q = B / float(N)
+        assert q >= 1
+        x_min = (1 - np.sqrt(1. / q)) ** 2
+        x_max = (1 + np.sqrt(1. / q)) ** 2
+
+        def wigner_dist(x):
+            return q/(2*np.pi) * np.sqrt((x_max - x)*(x - x_min)) / x
+
+        ev_values = np.linspace(x_min, x_max, res)
+        dx = edges[1]-edges[0]
+        wigner_values = [wigner_dist(ev)*N*dx for ev in ev_values]
+        ax.plot(ev_values, wigner_values, color='k')
+        ax.axvline(x_max + N**(-2/3), color='k', linestyle=':')
 
     return None
 
@@ -199,7 +271,8 @@ def redundancy(EWs, mute=False):
     return phi
 
 
-def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=None, color='r', mute=False):
+def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=None, color='r',
+                       mute=False, relative=False):
     """
 
     :param EWs:
@@ -210,7 +283,10 @@ def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=None, color='r', mute=
     :return:
     """
     EWs = np.sort(EWs)[::-1]
-    total_v = np.sum(abs(EWs))
+    if relative:
+        total_v = np.sum(abs(EWs))
+    else:
+        total_v = 1
 
     if method == 'proportion':
         ### How many EWs can explain (1-alpha)% of the total variance
@@ -268,10 +344,12 @@ def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=None, color='r', mute=
         ax.plot(np.arange(len(EWs)), abs(EWs)/total_v, color=color)
         ax.fill_between(np.arange(len(EWs)), abs(EWs) / total_v, 0,
                         where=mask, color=color, alpha=.4)
+        if pc_count - 1:
+            mask[pc_count-1] = 0
         ax.fill_between(np.arange(len(EWs)), abs(EWs) / total_v, 0,
-                        where=np.logical_not(mask), color=color, alpha=.15)
-        ax.set_xlabel('EW#')
-        ax.set_ylabel('rel. EW')
+                        where=np.logical_not(mask), color=color, alpha=.1)
+        ax.set_xlabel('Eigenvalue #')
+        ax.set_ylabel('rel. eigenvalue')
         ax.set_xlim(0, len(EWs))
         ax.set_ylim(0, np.ceil((max(EWs)/total_v)*10)/10.)
 
