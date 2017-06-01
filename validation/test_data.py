@@ -118,7 +118,6 @@ def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[],
             # np.testing.assert_almost_equal(sum(amp_dist), 1., decimal=7)
             # norm_factor = (1. - corr) / np.sum(amp_dist[:size])
             amp_dist *= (1./sum(amp_dist))
-            print amp_dist
             return CPP(rate=rate, A=amp_dist, t_stop=t_stop)
 
         else:
@@ -167,3 +166,65 @@ def generate_surrogates(spiketrains, surrogate_function=sg.dither_spike_train,
     for st in spiketrains:
         sts_surrogates.append(surrogate_function(st, **args)[0])
     return sts_surrogates
+
+
+def vine(d, cc_matrix):
+    """
+    VINE METHOD to generate random correlation matrices
+    """
+    P = np.zeros((d,d))          # storing partial correlations
+    S = np.eye(d)
+    cc_values = np.triu(cc_matrix,1).flatten()
+    np.random.shuffle(cc_values)
+    for k in range(d):
+        for i in np.arange(k+1, d):
+            P[k,i] = cc_values[k*d + i - 0.5 * (k+1)*(k+2)]
+            p = P[k,i]
+            # converting partial correlation to raw correlation
+            for l in np.arange(k-1,0,-1):
+                p = p * np.sqrt((1.-P[l,i]**2)*(1.-P[l,k]**2)) + P[l,i]*P[l,k]
+            if not np.isfinite(p):
+                p = 0
+            S[k,i] = p
+            S[i,k] = p
+    # permuting the variables to make the distribution permutation-invariant
+    # permutation = np.random.permutation(d)
+    # S = S[permutation][permutation]
+    return S
+
+
+def number_of_sync_spikes(cc, spikenum, B):
+    if not hasattr(spikenum, "__len__"):
+        spikenum = [spikenum, spikenum]
+
+    mean_spikenum = [0, 0]
+    for i, sn in enumerate(spikenum):
+        mean_spikenum[i] = sn / float(B)
+
+    norm_factor = 1.
+    for N, m in zip(spikenum, mean_spikenum):
+        norm_factor *= (N * (1. - 2.*m) + B*m**2)
+
+    async_term = spikenum[0] * mean_spikenum[1] \
+               + spikenum[1] * mean_spikenum[0] \
+               - B * mean_spikenum[0] * mean_spikenum[1]
+
+    sync_term = 1. - 3. * mean_spikenum[0] * mean_spikenum[1]
+
+    return (cc * np.sqrt(norm_factor) + async_term) / sync_term
+
+
+def sync_spike_matrix(cc_mat, spikenums, binnum):
+    N = len(spikenums)
+    SSM = np.eye(N) * spikenums
+
+    for k in range(N):
+        for j in np.arange(k+1, N):
+            nss = number_of_sync_spikes(cc_mat[k, j],
+                                        [spikenums[k], spikenums[j]],
+                                        binnum)
+            nss = np.round(nss)
+            SSM[k,j] = nss
+            SSM[j,k] = nss
+
+    return SSM

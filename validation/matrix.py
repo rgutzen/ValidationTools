@@ -58,7 +58,7 @@ def pc_trafo(matrix, EWs=[], EVs=[]):
 
 
 def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None,
-                sorted=False):
+                sort=False):
     """
     Plot correlation matrix as seaborn.heatmap
 
@@ -69,9 +69,9 @@ def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None,
     :param sorted:
     :return:
     """
-    if sorted:
-        EWs, EVs = eigh(corr_matrix)
-        labels = detect_assemblies(EVs, EWs, detect_by='eigenvalues', sort=True)
+    if sort:
+        EWs, EVs = eigh(matrix)
+        _, labels = detect_assemblies(EVs, EWs, detect_by='eigenvalues', sort=True)
         matrix = matrix[labels, :][:, labels]
 
     if labels is None:
@@ -165,7 +165,7 @@ def eigenvalue_significance(EWs, ax=plt.gca(), bins=50, N=None, B=None,
     wigner_values = [wigner_dist(ev) * N * dx for ev in ev_values]
     axhist.plot(wigner_values, ev_values, color='k',
                 label='Marchenko-Pastur Distribution')
-    axhist.axhline(x_max + N ** (-2 / 3), color='k', linestyle=':',
+    axhist.axhline(x_max + N ** (-2 / 3.), color='k', linestyle=':',
                    label='Tracy-Widom Bound')
 
     handles, labels = axhist.get_legend_handles_labels()

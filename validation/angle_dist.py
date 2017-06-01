@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from quantities import Hz, ms
 from scipy.linalg import eigh, norm
-
+from matplotlib import rc
+rc('text', usetex=True)
 
 test_data_path = 'test_data.py'
 testdata = imp.load_source('*', test_data_path)
@@ -110,20 +111,18 @@ other_angles = np.array([70.30, 69.30, 56.78, 54.09, 52.68, 53.02, 53.44, 52.49,
 other_angles *= pi/180.
 
 sns.set(style='ticks', palette='Set2', context='poster')
+fontsize = 22
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(15,5))
 edges = np.linspace(0, pi/2, 31*pi)
 
+# ax2 = ax.twinx()
+hist, __ = np.histogram(other_angles, bins=edges, density=True)
+ev_ang = ax.bar(edges[:-1], hist, np.diff(edges), color='g', edgecolor='w', label='EV angles')
+
 hist, ___ = np.histogram(generate_rand_angles(N, res), bins=edges, density=True)
 dx = edges[1]-edges[0]
-r_ang = ax.bar(edges[:-1], hist, np.diff(edges), color='0.7', edgecolor='w')
-# ax.plot(edges[:-1]+dx, hist, ls='steps', color='0.3')
-
-
-ax2 = ax.twinx()
-hist, __ = np.histogram(other_angles, bins=edges, density=True)
-ev_ang = ax2.bar(edges[:-1], hist, np.diff(edges), color='g', edgecolor='w', label='EV angles')
-
-plt.legend()
+r_ang = ax.bar(edges[:-1], hist, np.diff(edges), color='0.3', edgecolor='w', alpha=.3)
+ax.plot(edges[:-1]+dx, hist, ls='steps', color='0.3')
 
 # hist, edges = np.histogram(generate_ev_angles(N), bins=40, density=True)
 # ax.bar(edges[:-1], hist, np.diff(edges)*.9, color=sns.color_palette()[2], edgecolor='w')
@@ -134,22 +133,29 @@ for beta, cid in zip(draw_angles, color_id):
     plt2 = ax.axvline(beta, color=sns.color_palette()[cid], linestyle='--', linewidth=4)
     lines += [(plt1, plt2)]
 
-angle_description = [r"$\angle$(" + r"EV$^{CPP}$" + " {}, ".format(i+1)
-                     + r"EV$^{HPP}$" + " {})".format(i+1) for i in range(3)]
-plt.legend(lines + [r_ang, ev_ang], angle_description + ['10^3 Random angles', 'EV angles'], loc='upper left')
 
+angle_description = [r"$\angle(\lambda^{id}_{net1};\lambda^{id}_{net2})$"
+                     .format(id=i+1, net1='{CPP}', net2='{HPP}')
+                     for i in range(3)]
+plt.legend(lines + [ev_ang, r_ang],
+           angle_description +
+           [r'$10^2$ Eigenvalue angles (CPP-HPP)',
+            r'$10^4$ Random angles (HPP-HPP)'],
+           loc='upper left', fontsize=fontsize)
+
+ax.tick_params('y', labelsize=fontsize-4)
+ax.tick_params('x', labelsize=fontsize)
 ax.set_xticks(np.array([0, 0.125, .25, .375, .5])*pi)
-ax.set_xticklabels(['0', '1/8', '1/4', '3/8', '1/2'])
-ax.tick_params('y', colors='.5')
-ax.set_xlabel('Angle in units of pi')
-ax.set_ylabel('Angle Density HPP-HPP', color='0.5', fontweight='bold')
-ax2.set_xticks(np.array([0, 0.125, .25, .375, .5])*pi)
-ax2.set_xticklabels(['0', '1/8', '1/4', '3/8', '1/2'])
-ax2.tick_params('y', colors='g')
-ax2.set_ylabel('Angle Density CPP-HPP', color='g', fontweight='bold')
+ax.set_xticklabels(['', r'$\frac{\pi}{8}$', r'$\frac{\pi}{4}$',
+                    r'$\frac{3}{8}\pi$', r'$\frac{\pi}{2}$'])
+# ax.tick_params('y', colors='.5')
+ax.set_xlabel(r'Plane Angle in $\mathtt{R}_+^{100}$', fontsize=fontsize)
+ax.set_ylabel('Angle Density', fontweight='bold', fontsize=fontsize)
+# ax2.set_xticks(np.array([0, 0.125, .25, .375, .5])*pi)
+# ax2.tick_params('y', colors='g')
+# ax2.set_ylabel('Angle Density', color='g', fontweight='bold')
 
-
-# sns.despine()
+sns.despine()
 
 # hist, edges = np.histogram(projected_rand_angles(N, res), bins=edges, density=True)
 # x_values = edges[:-1]
