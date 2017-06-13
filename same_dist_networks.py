@@ -51,22 +51,28 @@ def vine(d, rand_ccs):
 N = 100
 rate = 10*Hz
 T = 100000*ms
-binsize = 2*ms
+binsize = 2.*ms
+A_size = 5
+sync_prob_assembly = 0.3
 
 spiketrain_list1 = testdata.test_data(size=N,
-                                      corr=[.01,.02],
+                                      corr=[sync_prob_assembly],
                                       t_stop=T,
                                       rate=rate,
-                                      assembly_sizes=[5,5],
+                                      assembly_sizes=[A_size],
                                       method="CPP",
                                       bkgr_corr=0.0,
                                       shuffle=False)
 
+# eqivalent simulation:
+nbr_of_pairs = A_size * (A_size-1) / 2
+pw_synchrony = testdata.transform_sync_prob(sync_prob_assembly, A_size,
+                                            rate, T, T/binsize, A_size_1=2)
 spiketrain_list2 = testdata.test_data(size=N,
-                                      corr=.5,
+                                      corr=[pw_synchrony],
                                       t_stop=T,
                                       rate=rate,
-                                      assembly_sizes=[2,2,2,2,2],
+                                      assembly_sizes=[2]*nbr_of_pairs,
                                       method="CPP",
                                       bkgr_corr=0.0,
                                       shuffle=False)
@@ -177,23 +183,27 @@ print SSM
 art_mat = vine(N, cc_mat1)
 # min_mat, ccs_min = calc_ccs(minHOC_stlist)
 
-fig, ax = plt.subplots(nrows=3, ncols=1)
+fig, ax = plt.subplots(nrows=2, ncols=2)
 fig.tight_layout()
 
-# dist.show(sample_ccs.flatten(), art_mat.flatten(), bins=200, ax=ax[0])
+# dist.show(cc_mat1.flatten(), art_mat.flatten(), bins=200, ax=ax[0])
 
-dist.show(cc_mat1.flatten(), art_mat.flatten(), bins=200, ax=ax[0])
-ax[0].set_ylim(0,2.5)
+dist.show(cc_mat1.flatten(), cc_mat2.flatten(), bins=200, ax=ax[0,0])
+dist.show(cc_mat1.flatten(), art_mat.flatten(), bins=200, ax=ax[1,0])
+ax[0,0].set_ylim(0,2.5)
+ax[1,0].set_ylim(0,2.5)
 
-matstat.plot_matrix(cc_mat1, ax=ax[1], remove_autocorr=True)
+# matstat.plot_matrix(cc_mat1, ax=ax[1], remove_autocorr=True)
+matstat.plot_matrix(cc_mat2, ax=ax[0,1], remove_autocorr=True)
+matstat.plot_matrix(art_mat, ax=ax[1,1], remove_autocorr=True, sort=True)
 
-matstat.plot_matrix(art_mat, ax=ax[2], remove_autocorr=True, sort=True)
 
+# corr_analytical = [testdata.sync_prob_to_corr(sync/10., 5., rate, T, B) for sync in range(10)]
 
-fig, ax = plt.subplots(nrows=2, ncols=1)
-fig.tight_layout()
+# fig, ax = plt.subplots(nrows=2, ncols=1)
+# fig.tight_layout()
 
-vizi.rasterplot(spiketrain_list1, ax=ax[0])
+# vizi.rasterplot(spiketrain_list1, ax=ax[0])
 # vizi.rasterplot(minHOC_stlist, ax=ax[1])
 
 plt.show()

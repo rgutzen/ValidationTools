@@ -165,13 +165,15 @@ def eigenvalue_significance(EWs, ax=plt.gca(), bins=50, N=None, B=None,
     wigner_values = [wigner_dist(ev) * N * dx for ev in ev_values]
     axhist.plot(wigner_values, ev_values, color='k',
                 label='Marchenko-Pastur Distribution')
-    axhist.axhline(x_max + N ** (-2 / 3.), color='k', linestyle=':',
+    tw_bound = x_max + N ** (-2 / 3.)
+    axhist.axhline(tw_bound, color='k', linestyle=':',
                    label='Tracy-Widom Bound')
 
     handles, labels = axhist.get_legend_handles_labels()
     ax.legend(handles, labels, loc='upper left')
 
-    return edges, axhist
+
+    return edges, axhist, tw_bound
 
 
 
@@ -532,7 +534,7 @@ def detect_assemblies(EVs, EWs, detect_by='eigenvalue', mute=False, EW_lim=2,
             for n in n_ids[i]:
                 print "{:2.0f}{}\t".format(n, "" if jupyter else "\t"),
             print "\tNorm"
-            print "Portion:\t",
+            print "Load:\t",
             for n in n_ids[i]:
                 print "{:.2f}\t".format(EVs[i][n]),
             print "\t{:.2f}\n".format(np.linalg.norm(EVs[i][n_ids[i]]))

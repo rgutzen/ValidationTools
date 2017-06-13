@@ -7,6 +7,7 @@ from elephant.spike_train_generation import compound_poisson_process as CPP
 from elephant.spike_train_generation import homogeneous_poisson_process as HPP
 import elephant.spike_train_surrogates as sg
 from scipy.stats import poisson
+import quantities
 import neo
 import random as r
 
@@ -228,3 +229,79 @@ def sync_spike_matrix(cc_mat, spikenums, binnum):
             SSM[j,k] = nss
 
     return SSM
+
+
+def corr_to_sync_prob(cc, A_size, rate, T, nbr_of_bins):
+    if A_size < 2:
+        raise ValueError
+    if cc == 1:
+        return 1
+    m0 = rate * T / float(nbr_of_bins)
+    if type(m0) == quantities.quantity.Quantity:
+        m0 = m0.rescale('dimensionless')
+    n = float(A_size)
+
+    root = np.sqrt(    cc**2  * n**2
+                   - 2*cc**2  * n
+                   +   cc**2
+                   + 4*cc *m0 * n
+                   - 4*cc *m0
+                   - 2*cc     * n**2
+                   + 2*cc     * n
+                   -     4*m0 * n
+                   +     4*m0
+                   +           n**2)
+
+    adding = (- 2*cc*m0*n
+              + 2*cc*m0
+              + cc*n**2
+              - cc*n
+              + 2*m0*n
+              - 2*m0
+              - n**2)
+
+    denominator = 2*(cc - 1.) * m0 * (n - 1.)**2
+
+    sync_prob = (n * root + adding) / denominator
+
+    if type(sync_prob) == quantities.quantity.Quantity:
+        if bool(sync_prob.dimensionality):
+            raise ValueError
+        else:
+            return sync_prob.magnitude
+    else:
+        return sync_prob
+
+
+def sync_prob_to_corr(sync_prob, A_size, rate, T, nbr_of_bins):
+    # mean number of spikes per bin
+    m_0 = rate * T / float(nbr_of_bins)
+    # mean number of spikes per bin within the  assembly
+    m = m_0 * (1. + (A_size - 1.) * sync_prob) / float(A_size)
+    # mean number of synchronous spikes per bin in the assembly
+    m_s = m_0 * sync_prob
+
+    corr = (m_s - m**2) / (m - m**2)
+
+    if type(corr) == quantities.quantity.Quantity:
+        if bool(corr.dimensionality):
+            raise ValueError
+        else:
+            return corr.magnitude
+    else:
+        return corr
+
+
+def transform_sync_prob(sync_prob_0, A_size_0, rate_0, T_0, B_0,
+                        A_size_1=None, rate_1=None,
+                        T_1=None, B_1=None):
+    if A_size_1 is None:
+        A_size_1 = A_size_0
+    if rate_1 is None:
+        rate_1 = rate_0
+    if T_1 is None:
+        T_1 = T_0
+    if B_1 is None:
+        B_1 = B_0
+    corrcoef = sync_prob_to_corr(sync_prob_0, A_size_0, rate_0, T_0, B_0)
+    return corr_to_sync_prob(corrcoef, A_size_1, rate_1, T_1, B_1)
