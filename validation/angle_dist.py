@@ -16,7 +16,7 @@ matrix_analysis_path = 'matrix.py'
 matstat = imp.load_source('*', matrix_analysis_path)
 
 
-def generate_ev_angles(N):
+def generate_ev_angles(N, space_dim=1, abs=True):
     sts1 = testdata.test_data(N, 0, 10000 * ms, 10 * Hz, method="CPP",
                        assembly_sizes=[],
                        bkgr_corr=0., shuffle=False, shuffle_seed=None)
@@ -30,12 +30,28 @@ def generate_ev_angles(N):
     __, EVs1 = eigh(corr_matrix1)
     __, EVs2 = eigh(corr_matrix2)
 
-    EVs1 = np.absolute(EVs1.T[::-1])
-    EVs2 = np.absolute(EVs2.T[::-1])
+    if abs:
+        EVs1 = np.absolute(EVs1.T[::-1])
+        EVs2 = np.absolute(EVs2.T[::-1])
+    else:
+        EVs1 = EVs1.T[::-1]
+        EVs2 = EVs2.T[::-1]
 
-    phi = [np.arccos(np.dot(evs1, evs2)) for evs1, evs2 in zip(EVs1, EVs2)]
-
-    return np.array(phi)
+    if space_dim == 1:
+        M = np.dot(EVs1, EVs2.T)
+        angles = [np.arccos(np.diag(M))]
+    if space_dim == N:
+        M = np.dot(EVs1, EVs2.T)
+        angles = np.arccos(np.linalg.det(M))
+    else:
+        angles = np.zeros(N/space_dim)
+        for i in np.arange(N)[::space_dim]:
+            if i:
+                M = np.dot(EVs1[i-space_dim:i], EVs2[i-space_dim:i].T)
+                # space_angle = np.arccos(np.sqrt(np.linalg.det(np.dot(M, M.T))))
+                space_angle = np.arccos(np.linalg.det(M))
+                angles[i/space_dim-1] = space_angle
+    return np.array(angles)
 
 
 def generate_rand_angles(N, res, abs=True):
@@ -113,56 +129,74 @@ other_angles *= pi/180.
 sns.set(style='ticks', palette='Set2', context='poster')
 fontsize = 22
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(15,5))
-edges = np.linspace(0, pi/2, 31*pi)
+# edges = np.linspace(0, pi/2, 31*pi)
 
-# ax2 = ax.twinx()
-hist, __ = np.histogram(other_angles, bins=edges, density=True)
-ev_ang = ax.bar(edges[:-1], hist, np.diff(edges), color='g', edgecolor='w', label='EV angles')
+# hist, __ = np.histogram(other_angles, bins=edges, density=True)
+# ev_ang = ax.bar(edges[:-1], hist, np.diff(edges), color='g', edgecolor='w', label='EV angles')
 
-hist, ___ = np.histogram(generate_rand_angles(N, res), bins=edges, density=True)
-dx = edges[1]-edges[0]
-r_ang = ax.bar(edges[:-1], hist, np.diff(edges), color='0.3', edgecolor='w', alpha=.3)
-ax.plot(edges[:-1]+dx, hist, ls='steps', color='0.3')
+# hist, ___ = np.histogram(generate_rand_angles(N, res), bins=edges, density=True)
+# dx = edges[1]-edges[0]
+# r_ang = ax.bar(edges[:-1], hist, np.diff(edges), color='0.3', edgecolor='w', alpha=.3)
+# ax.plot(edges[:-1]+dx, hist, ls='steps', color='0.3')
+dim = 1
+ev_angles = np.array([])
+for _ in range(100/(N/dim)):
+    ev_angles = np.append(ev_angles, generate_ev_angles(N, dim, abs=False))
+ev_angles = ev_angles[np.isfinite(ev_angles)]
+print ev_angles
 
-# hist, edges = np.histogram(generate_ev_angles(N), bins=40, density=True)
-# ax.bar(edges[:-1], hist, np.diff(edges)*.9, color=sns.color_palette()[2], edgecolor='w')
+hist, edges = np.histogram(generate_rand_angles(N, res, abs=False), bins=40, density=True)
+ax.bar(edges[:-1], hist, np.diff(edges)*.9, color=sns.color_palette()[1], edgecolor='w', alpha=1)
+
+hist, _____ = np.histogram(ev_angles, bins=edges, density=True)
+ax.bar(edges[:-1], hist, np.diff(edges)*.9, color=sns.color_palette()[0], edgecolor='w', alpha=.6)
 
 lines = []
-for beta, cid in zip(draw_angles, color_id):
-    plt1 = ax.axvline(beta, color=sns.color_palette()[cid+1], linestyle='-', linewidth=4)
-    plt2 = ax.axvline(beta, color=sns.color_palette()[cid], linestyle='--', linewidth=4)
-    lines += [(plt1, plt2)]
+# for beta, cid in zip(draw_angles, color_id):
+#     plt1 = ax.axvline(beta, color=sns.color_palette()[cid+1], linestyle='-', linewidth=4)
+#     plt2 = ax.axvline(beta, color=sns.color_palette()[cid], linestyle='--', linewidth=4)
+#     lines += [(plt1, plt2)]
 
 
-angle_description = [r"$\angle(\lambda^{id}_{net1};\lambda^{id}_{net2})$"
-                     .format(id=i+1, net1='{CPP}', net2='{HPP}')
-                     for i in range(3)]
-plt.legend(lines + [ev_ang, r_ang],
-           angle_description +
-           [r'$10^2$ Eigenvalue angles (CPP-HPP)',
-            r'$10^4$ Random angles (HPP-HPP)'],
-           loc='upper left', fontsize=fontsize)
+# angle_description = [r"$\angle(\lambda^{id}_{net1};\lambda^{id}_{net2})$"
+#                      .format(id=i+1, net1='{CPP}', net2='{HPP}')
+#                      for i in range(3)]
+# plt.legend(lines + [ev_ang, r_ang],
+#            angle_description +
+#            [r'$10^2$ Eigenvalue angles (CPP-HPP)',
+#             r'$10^4$ Random angles (HPP-HPP)'],
+#            loc='upper left', fontsize=fontsize)
 
 ax.tick_params('y', labelsize=fontsize-4)
 ax.tick_params('x', labelsize=fontsize)
-ax.set_xticks(np.array([0, 0.125, .25, .375, .5])*pi)
+ax.set_xticks(np.array([0, 0.125, .25, .375, .5, .625, .75, .875, 1])*pi)
 ax.set_xticklabels(['', r'$\frac{\pi}{8}$', r'$\frac{\pi}{4}$',
-                    r'$\frac{3}{8}\pi$', r'$\frac{\pi}{2}$'])
-# ax.tick_params('y', colors='.5')
-ax.set_xlabel(r'Plane Angle in $\mathtt{R}_+^{100}$', fontsize=fontsize)
+                    r'$\frac{3}{8}\pi$', r'$\frac{\pi}{2}$',
+                    r'$\frac{5}{8}\pi$', r'$\frac{3}{4}\pi$',
+                    r'$\frac{7}{8}\pi$', r'$\pi$'])
+ax.set_xlabel(r'Plane Angle in $\mathtt{R}_+$' + r'$^{{}}$'.format(str(N)), fontsize=fontsize)
 ax.set_ylabel('Angle Density', fontweight='bold', fontsize=fontsize)
-# ax2.set_xticks(np.array([0, 0.125, .25, .375, .5])*pi)
-# ax2.tick_params('y', colors='g')
-# ax2.set_ylabel('Angle Density', color='g', fontweight='bold')
 
 sns.despine()
 
-# hist, edges = np.histogram(projected_rand_angles(N, res), bins=edges, density=True)
-# x_values = edges[:-1]
-# plt.plot(x_values, hist)
+A1 = np.array([0,1,0,1])
+A2 = np.array([0,1,0,0])
+A1 = A1 / np.linalg.norm(A1)
+A2 = A2 / np.linalg.norm(A2)
 
-# angle, f = alt_func(N,res)
-# plt.plot(angle, f, 'r')
+# A3 = np.array([0,0,1,0])
+
+B1 = np.array([0,0,1,1])
+B2 = np.array([0,1,0,1])
+B1 = B1 / np.linalg.norm(B1)
+B2 = B2 / np.linalg.norm(B2)
+
+# B3 = np.array([0,0,1,0])
+
+M = np.dot(np.array([A1,A2]), np.array([B1,B2]).T)
+print M
+space_angle = np.arccos(np.linalg.det(M))
+print space_angle*180./np.pi
 
 plt.show()
 

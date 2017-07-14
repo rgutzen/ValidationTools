@@ -58,7 +58,7 @@ def pc_trafo(matrix, EWs=[], EVs=[]):
 
 
 def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None,
-                sort=False):
+                sort=False, **kwargs):
     """
     Plot correlation matrix as seaborn.heatmap
 
@@ -71,8 +71,8 @@ def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None,
     """
     if sort:
         EWs, EVs = eigh(matrix)
-        _, labels = detect_assemblies(EVs, EWs, detect_by='eigenvalues', sort=True)
-        matrix = matrix[labels, :][:, labels]
+        _, order = detect_assemblies(EVs, EWs, detect_by='eigenvalues', sort=True)
+        matrix = matrix[order, :][:, order]
 
     if labels is None:
         labels = matrix.shape[0]/10
@@ -84,12 +84,9 @@ def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None,
     if remove_autocorr:
         for i in range(len(matrix)):
             matrix[i, i] = 0
-    sns.heatmap(matrix, ax=ax, cbar=True,
-                xticklabels=labels, yticklabels=labels)
-    if remove_autocorr:
-        for i in range(len(matrix)):
-            matrix[i, i] = 1
 
+    sns.heatmap(matrix, ax=ax, cbar=True,
+                xticklabels=labels, yticklabels=labels, **kwargs)
     return None
 
 def estimate_largest_eigenvalue(N, trials, t_stop, rate, bins):
@@ -112,7 +109,7 @@ def eigenvalue_significance(EWs, ax=plt.gca(), bins=50, N=None, B=None,
                             color=sns.color_palette()[0], mute=False):
 
     left, bottom, width, height = ax.get_position()._get_bounds()
-    scaling = .7
+    scaling = .55
     ax.set_position([left, bottom,
                      scaling * width, height])
     axhist = plt.axes([left + scaling * width, bottom,
@@ -274,7 +271,7 @@ def redundancy(EWs, mute=False):
 
 
 def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=None, color='r',
-                       mute=False, relative=False):
+                        mute=False, relative=False):
     """
 
     :param EWs:
@@ -341,15 +338,18 @@ def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=None, color='r',
             current_distance = cut(pc_count)
 
     if ax:
+        def alpha(color_inst, a):
+            return [el + (1. - el) * a for el in color_inst]
+
         mask = np.zeros(len(EWs), np.bool)
         mask[:pc_count] = 1
         ax.plot(np.arange(len(EWs)), abs(EWs)/total_v, color=color)
         ax.fill_between(np.arange(len(EWs)), abs(EWs) / total_v, 0,
-                        where=mask, color=color, alpha=.4)
+                        where=mask, color=alpha(color,.5))
         if pc_count - 1:
             mask[pc_count-1] = 0
         ax.fill_between(np.arange(len(EWs)), abs(EWs) / total_v, 0,
-                        where=np.logical_not(mask), color=color, alpha=.1)
+                        where=np.logical_not(mask), color=alpha(color,.9))
         ax.set_xlabel('Eigenvalue #')
         ax.set_ylabel('rel. eigenvalue')
         ax.set_xlim(0, len(EWs))
@@ -402,7 +402,7 @@ def print_eigenvectors(EVs, EWs=[], pc_count=0,
     return None
 
 
-def EV_angles(EVs1, EVs2, deg=True, mute=False):
+def EV_angles(EVs1, EVs2, deg=True, mute=False, all_to_all=False):
     """
     Calculate the angles between the vectors EVs1_i and EVs2_i and the angle
     between their spanned eigenspaces.
@@ -434,7 +434,7 @@ def EV_angles(EVs1, EVs2, deg=True, mute=False):
     for EVs in [EVs1, EVs2]:
         for EV in EVs:
             if abs(np.linalg.norm(EV) - 1) > 0.0001:
-                print "Warning: Eigenvector norm deviates from 1 ({:.7f})"\
+                print "Warning: Eigenvector norm deviates from 1: ({:.7f})"\
                       .format(np.linalg.norm(EV))
 
     M = np.dot(EVs1, EVs2.T)
@@ -442,7 +442,11 @@ def EV_angles(EVs1, EVs2, deg=True, mute=False):
     if len(M) == 1:
         vector_angles = np.arccos(M[0])
     else:
-        vector_angles = np.arccos(np.diag(M))
+        if all_to_all:
+            vector_angles = np.arccos(M[np.triu_indices(n=len(EVs1), k=0)])
+        else:
+            vector_angles = np.arccos(np.diag(M))
+
     space_angle = np.arccos(np.sqrt(np.linalg.det(np.dot(M, M.T))))
 
     if deg:
@@ -462,6 +466,41 @@ def EV_angles(EVs1, EVs2, deg=True, mute=False):
     # ToDo: Understand the angle between spaces
 
     return vector_angles, space_angle
+
+
+def angle_significance(angles, dim=100, sig_level=.05, res=10**7,
+                       bins=100., abs=True, ax=None):
+    if type(angles) != list:
+        angles = [angles]
+
+    N = int(.5 * (1 + np.sqrt(8 * res + 1)))
+
+    # Generate random angles
+    vectors = np.random.normal(size=(N, dim))
+    if abs:
+        vectors = np.absolute(vectors)
+        max_angle = np.pi/2.
+    else:
+        max_angle = np.pi
+
+    vectorsT = vectors.T / np.linalg.norm(vectors, axis=1)
+    vectors = vectorsT.T
+    dotprods = np.dot(vectors, vectorsT)[np.triu_indices(n=N, m=N, k=1)]
+    rand_angles = np.arccos(dotprods)
+
+    p_values = []
+    for angle in angles:
+        p_values += [len(np.where(rand_angles < angle)[0]) * 2./(N*(N-1))]
+
+    if ax is not None:
+        edges = np.linspace(0, max_angle, bins)
+        hist_rand, _ = np.histogram(rand_angles, bins=edges, density=True)
+        ax.bar(edges[:-1], hist_rand, np.diff(edges) * .9,
+               color=sns.color_palette()[0], edgecolor='w')
+        for angle in angles:
+            ax.axvline(angle)
+
+    return p_values, rand_angles
 
 
 def detect_assemblies(EVs, EWs, detect_by='eigenvalue', mute=False, EW_lim=2,
@@ -530,7 +569,7 @@ def detect_assemblies(EVs, EWs, detect_by='eigenvalue', mute=False, EW_lim=2,
         if not mute and EWs[i] > EW_lim:
             print "\033[4mAssembly {}, eigenvalue {:.2f}, size {}\033[0m"\
                   .format(i+1, EWs[i], len(n_ids[i]))
-            print "Neuron ID:\t",
+            print "Neuron:\t",
             for n in n_ids[i]:
                 print "{:2.0f}{}\t".format(n, "" if jupyter else "\t"),
             print "\tNorm"

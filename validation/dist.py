@@ -13,6 +13,7 @@ sns.set(style='ticks', palette='Set2')
 sns.despine()
 sns.set_color_codes('colorblind')
 
+
 def to_precision(x,p):
     """
     returns a string representation of x formatted with a precision of p
@@ -133,7 +134,8 @@ def effect_size(sample1, sample2, true_var=None, comparison=np.mean,
     return es, ci_bound
 
 
-def KL_test(sample1, sample2, bins=100, ax=None, xlabel='', mute=False):
+def KL_test(sample1, sample2, bins=100, ax=None, xlabel='', mute=False,
+            color=None):
     """
     Kullback-Leibner Divergence D_KL(P||Q)
 
@@ -245,14 +247,17 @@ def KL_test(sample1, sample2, bins=100, ax=None, xlabel='', mute=False):
         Q = np.append(np.append(0, Q), 0)
         filly = np.append(np.append(0., diffy), 0.)
         ax.fill_between(xvalues, filly, 0,  color='0.8')
-        ax.plot(xvalues, P, lw=2, label='P')
-        ax.plot(xvalues, Q, lw=2, label='Q')
+        if color is None:
+            color = [sns.color_palette()[0], sns.color_palette()[1]]
+        ax.plot(xvalues, P, lw=2, label='P', color=color[0])
+        ax.plot(xvalues, Q, lw=2, label='Q', color=color[1])
         ax.set_xlim(xvalues[0], xvalues[-1])
 
     return D_KL, D_KL_as
 
 
-def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter', mute=False):
+def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter', color=None,
+            mute=False):
     """
     Kolmogorov-Smirnov-Distance D_KS
 
@@ -295,7 +300,8 @@ def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter', mute=False):
     if ax:
         ax.set_ylabel('CDF')
         ax.set_xlabel(xlabel)
-        color = sns.color_palette()
+        if color is None:
+            color = [sns.color_palette()[0], sns.color_palette()[1]]
 
         # print cumulative distributions and scatterplot
         for i, A in enumerate([sample1, sample2]):
@@ -304,7 +310,7 @@ def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter', mute=False):
             CDF = (np.arange(len(A)+1)) / float(len(A))
             ax.step(A_sorted, CDF, where='post', color=color[i])
             ax.scatter(A_sorted, [.99-i*.02]*len(A_sorted),
-                       color=color[i], marker='D')
+                       color=color[i], marker='D', linewidth=1)
         # calculate vertical distance
         N = len(sample1) + len(sample2)
         sample = np.zeros((4, N))
@@ -339,7 +345,7 @@ def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter', mute=False):
 
 
 def MWU_test(sample1, sample2, sample_names=None, linewidth=None,
-             excl_nan=True, ax=None, mute=False):
+             excl_nan=True, ax=None, mute=False, color=None):
     """
     Mann-Whitney-U test
 
@@ -406,12 +412,15 @@ def MWU_test(sample1, sample2, sample_names=None, linewidth=None,
         ranks[1][len(sample1):] = [sample_names[1]]*len(sample2)
         ranks[0] = st.rankdata(ranks[0])
 
-        dataframe = pd.DataFrame({'Ranks': ranks[0],
+        dataframe = pd.DataFrame({'Rank': ranks[0],
                                   'Group': ranks[1],
-                                  'Kernel density estimate': np.zeros(N)})
+                                  'Kernel Density Estimate': np.zeros(N)})
 
-        sns.violinplot(data=dataframe, x='Kernel density estimate', y='Ranks',
-                       hue='Group', split=True, palette=sns.color_palette(),
+        if color is None:
+            color = [sns.color_palette()[0], sns.color_palette()[1]]
+
+        sns.violinplot(data=dataframe, x='Kernel Density Estimate', y='Rank',
+                       hue='Group', split=True, palette=color,
                        inner='quartile', cut=0, ax=ax,
                        scale_hue=True, scale='width')
 
