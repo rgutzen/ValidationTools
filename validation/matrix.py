@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Toolbox for analyzing a correlation matrix.
 """
@@ -489,6 +488,7 @@ def angle_significance(angles, dim=100, sig_level=.05, res=10**7,
     rand_angles = np.arccos(dotprods)
 
     p_values = []
+    # ToDo: transform sig_level to angle rather than all angles to pvalues
     for angle in angles:
         p_values += [len(np.where(rand_angles < angle)[0]) * 2./(N*(N-1))]
 
