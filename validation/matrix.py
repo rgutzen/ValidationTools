@@ -412,6 +412,7 @@ def plot_EVs(EVs, ax, color, hatch=None):
                              label=r'$v_{}$'.format(i+1), color=color[i], hatch=hatch[i])
     ax.set_xlim(0,len(EVs.T[0])+1)
     ax.set_ylabel('Vector Load')
+    ax.set_xlabel('Neuron ID')
     handles, labels = ax.get_legend_handles_labels()
     ax.legend(handles[::-1], [r'$v_{}$'.format(j + 1) for j in range(len(color))])
     return None
@@ -531,12 +532,12 @@ def angle_significance(angles, dim=100, s=.0001, sig_level=.01, res=10**7,
     if not mute:
         print "{} / {} angles in {}%-quantile \n"\
               .format(x, N_angle, s*100.)\
-            + "The estimated probability of finding at least this many is {}\n"\
+            + "p = {}\n"\
               .format(p_diff)\
-            + "with a significance level of {} this test indicates {} in the "\
-              .format(sig_level, 'similarity' if p_diff < sig_level
-                            else 'difference')\
-            + "correlation structure. (Based on {} sampled reference angles.)"\
+            + "{} {} {} ==> {} "\
+              .format(sig_level, '<' if sig_level < p_diff else '>', 'p',
+                      'Similar' if p_diff < sig_level else 'Different')\
+            + "(Based on {} sampled reference angles)"\
               .format(N_rand_angles)
 
     if ax is not None:
@@ -547,9 +548,17 @@ def angle_significance(angles, dim=100, s=.0001, sig_level=.01, res=10**7,
         hist_evs, _ = np.histogram(angles, bins=edges, density=True)
         ax.bar(edges[:-1], hist_evs, np.diff(edges) * .9,
                edgecolor=sns.color_palette()[1], fill=False, lw=2)
-        # for angle in angles:
-        #     ax.axvline(angle)
-
+        ax.set_xlim(0, max_angle)
+        ax.set_xticks(np.arange(0, max_angle, .125*np.pi))
+        ticklabels = ['', r'$\frac{\pi}{8}$', r'$\frac{\pi}{4}$',
+                      r'$\frac{3}{8}\pi$', r'$\frac{\pi}{2}$',
+                      r'$\frac{5}{8}\pi$', r'$\frac{3}{4}\pi$',
+                      r'$\frac{7}{8}\pi$', r'$\pi$']
+        ax.set_xticklabels(ticklabels[: int(max_angle/(.125*np.pi) + 1)])
+        ax.set_xlabel(r'Plane Angle in $\mathbf{R}$'
+                      + r'${}$'.format('_+' if abs else '')
+                      + r'$^{}$'.format('{'+str(dim)+'}'))
+        ax.set_ylabel('Angle Density')
     return p_diff, rand_angles
 
 
