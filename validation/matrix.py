@@ -537,7 +537,7 @@ def angle_significance(angles, dim=100, s=.0001, sig_level=.01, res=10**7,
             + "{} {} {} ==> {} "\
               .format(sig_level, '<' if sig_level < p_diff else '>', 'p',
                       'Similar' if p_diff < sig_level else 'Different')\
-            + "(Based on {} sampled reference angles)"\
+            + "\n(Distribution approximated by {} sampled angles)"\
               .format(N_rand_angles)
 
     if ax is not None:
@@ -549,12 +549,12 @@ def angle_significance(angles, dim=100, s=.0001, sig_level=.01, res=10**7,
         ax.bar(edges[:-1], hist_evs, np.diff(edges) * .9,
                edgecolor=sns.color_palette()[1], fill=False, lw=2)
         ax.set_xlim(0, max_angle)
-        ax.set_xticks(np.arange(0, max_angle, .125*np.pi))
+        ax.set_xticks(np.arange(0, max_angle + .125*np.pi, .125*np.pi))
         ticklabels = ['', r'$\frac{\pi}{8}$', r'$\frac{\pi}{4}$',
                       r'$\frac{3}{8}\pi$', r'$\frac{\pi}{2}$',
                       r'$\frac{5}{8}\pi$', r'$\frac{3}{4}\pi$',
                       r'$\frac{7}{8}\pi$', r'$\pi$']
-        ax.set_xticklabels(ticklabels[: int(max_angle/(.125*np.pi) + 1)])
+        ax.set_xticklabels(ticklabels[: 5 if abs else -1])
         ax.set_xlabel(r'Plane Angle in $\mathbf{R}$'
                       + r'${}$'.format('_+' if abs else '')
                       + r'$^{}$'.format('{'+str(dim)+'}'))
