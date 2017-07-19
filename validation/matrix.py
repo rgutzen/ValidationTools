@@ -8,6 +8,7 @@ import scipy.integrate as integrate
 import matplotlib.pyplot as plt
 from matplotlib.ticker import NullFormatter
 from scipy import stats as st
+from scipy.misc import comb
 from quantities import Hz, ms
 from elephant.conversion import BinnedSpikeTrain
 from elephant.spike_train_correlation import corrcoef
@@ -68,23 +69,24 @@ def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None,
     :param sorted:
     :return:
     """
+    pltmatrix = matrix[:][:]
     if sort:
-        EWs, EVs = eigh(matrix)
+        EWs, EVs = eigh(pltmatrix)
         _, order = detect_assemblies(EVs, EWs, detect_by='eigenvalues', sort=True)
-        matrix = matrix[order, :][:, order]
+        pltmatrix = pltmatrix[order, :][:, order]
 
     if labels is None:
         labels = matrix.shape[0]/10
         if labels == 1:
             labels = 2
     else:
-        assert len(labels) == len(matrix)
+        assert len(labels) == len(pltmatrix)
 
     if remove_autocorr:
-        for i in range(len(matrix)):
-            matrix[i, i] = 0
+        for i in range(len(pltmatrix)):
+            pltmatrix[i, i] = 0
 
-    sns.heatmap(matrix, ax=ax, cbar=True,
+    sns.heatmap(pltmatrix, ax=ax, cbar=True,
                 xticklabels=labels, yticklabels=labels, **kwargs)
     return None
 
@@ -165,9 +167,9 @@ def eigenvalue_significance(EWs, ax=plt.gca(), bins=50, N=None, B=None,
     axhist.axhline(tw_bound, color='k', linestyle=':',
                    label='Tracy-Widom Bound')
 
-    handles, labels = axhist.get_legend_handles_labels()
-    ax.legend(handles, labels, loc='upper left')
-
+    axhist.legend()
+    # handles, labels = axhist.get_legend_handles_labels()
+    # ax.legend(handles, labels, loc='upper left')
 
     return edges, axhist, tw_bound
 
@@ -401,6 +403,20 @@ def print_eigenvectors(EVs, EWs=[], pc_count=0,
     return None
 
 
+def plot_EVs(EVs, ax, color, hatch=None):
+    if hatch is None:
+        hatch = [''] * len(color)
+    for i, _ in enumerate(color):
+        i = len(color) - i - 1
+        ax.bar(np.arange(len(EVs.T[0]))+.5, np.absolute(EVs.T[::-1])[i], 1., edgecolor='w',
+                             label=r'$v_{}$'.format(i+1), color=color[i], hatch=hatch[i])
+    ax.set_xlim(0,len(EVs.T[0])+1)
+    ax.set_ylabel('Vector Load')
+    handles, labels = ax.get_legend_handles_labels()
+    ax.legend(handles[::-1], [r'$v_{}$'.format(j + 1) for j in range(len(color))])
+    return None
+
+
 def EV_angles(EVs1, EVs2, deg=True, mute=False, all_to_all=False):
     """
     Calculate the angles between the vectors EVs1_i and EVs2_i and the angle
@@ -442,16 +458,19 @@ def EV_angles(EVs1, EVs2, deg=True, mute=False, all_to_all=False):
         vector_angles = np.arccos(M[0])
     else:
         if all_to_all:
-            vector_angles = np.arccos(M[np.triu_indices(n=len(EVs1), k=0)])
+            vector_angles = np.arccos(M.flatten())
+            # ?
         else:
             vector_angles = np.arccos(np.diag(M))
+
+    vector_angles[np.where(np.isnan(vector_angles))[0]] = 0.
 
     space_angle = np.arccos(np.sqrt(np.linalg.det(np.dot(M, M.T))))
 
     if deg:
         vector_angles *= 180. / np.pi
         space_angle *= 180. / np.pi
-        unit = "°"
+        unit = r"$^\circ$"
     else:
         unit = " rad"
 
@@ -467,40 +486,71 @@ def EV_angles(EVs1, EVs2, deg=True, mute=False, all_to_all=False):
     return vector_angles, space_angle
 
 
-def angle_significance(angles, dim=100, sig_level=.05, res=10**7,
-                       bins=100., abs=True, ax=None):
+def angle_significance(angles, dim=100, s=.0001, sig_level=.01, res=10**7,
+                       rand_angles=None, bins=100., abs=True, ax=None,
+                       mute=False):
     if type(angles) != list:
         angles = [angles]
 
-    N = int(.5 * (1 + np.sqrt(8 * res + 1)))
+    N_angle = len(angles)
 
-    # Generate random angles
-    vectors = np.random.normal(size=(N, dim))
+    if rand_angles is None:
+        # Generate random angles
+        N_rand = int(.5 * (1 + np.sqrt(8 * res + 1)))
+        vectors = np.random.normal(size=(N_rand, dim))
+        if abs:
+            vectors = np.absolute(vectors)
+        vectorsT = vectors.T / np.linalg.norm(vectors, axis=1)
+        vectors = vectorsT.T
+        dotprods = np.dot(vectors, vectorsT)[np.triu_indices(n=N_rand, m=N_rand, k=1)]
+        rand_angles = np.arccos(dotprods)
+        N_rand_angles =  N_rand * (N_rand - 1) / 2.
+    else:
+        N_rand_angles = len(rand_angles)
+
     if abs:
-        vectors = np.absolute(vectors)
-        max_angle = np.pi/2.
+        max_angle = np.pi / 2.
     else:
         max_angle = np.pi
 
-    vectorsT = vectors.T / np.linalg.norm(vectors, axis=1)
-    vectors = vectorsT.T
-    dotprods = np.dot(vectors, vectorsT)[np.triu_indices(n=N, m=N, k=1)]
-    rand_angles = np.arccos(dotprods)
+    threshold_angle = np.sort(rand_angles)[int(N_rand_angles*s)]
+    x = len(np.where(np.array(angles) < threshold_angle)[0])
 
-    p_values = []
-    # ToDo: transform sig_level to angle rather than all angles to pvalues
-    for angle in angles:
-        p_values += [len(np.where(rand_angles < angle)[0]) * 2./(N*(N-1))]
+    # n = int(N_rand_angles*s) + dim # max number of 'small' angles (formally N_angle)
+    n = N_angle
+    comb_prob = np.array([s**j * (1. - s)**(n - j) * comb(n, j)
+                         for j in range(x)])
+
+    comb_prob = comb_prob[np.where(np.isfinite(comb_prob))[0]]
+    if len(comb_prob) < x:
+        print "Warning: The probability could not be adequately calculated! " \
+               "Try reducing the similarity qunatile s. " \
+              "(Encountering {} non-finite numbers)".format(x-len(comb_prob))
+    p_diff = 1. - sum(comb_prob)
+
+    if not mute:
+        print "{} / {} angles in {}%-quantile \n"\
+              .format(x, N_angle, s*100.)\
+            + "The estimated probability of finding at least this many is {}\n"\
+              .format(p_diff)\
+            + "with a significance level of {} this test indicates {} in the "\
+              .format(sig_level, 'similarity' if p_diff < sig_level
+                            else 'difference')\
+            + "correlation structure. (Based on {} sampled reference angles.)"\
+              .format(N_rand_angles)
 
     if ax is not None:
         edges = np.linspace(0, max_angle, bins)
         hist_rand, _ = np.histogram(rand_angles, bins=edges, density=True)
         ax.bar(edges[:-1], hist_rand, np.diff(edges) * .9,
                color=sns.color_palette()[0], edgecolor='w')
-        for angle in angles:
-            ax.axvline(angle)
+        hist_evs, _ = np.histogram(angles, bins=edges, density=True)
+        ax.bar(edges[:-1], hist_evs, np.diff(edges) * .9,
+               edgecolor=sns.color_palette()[1], fill=False, lw=2)
+        # for angle in angles:
+        #     ax.axvline(angle)
 
-    return p_values, rand_angles
+    return p_diff, rand_angles
 
 
 def detect_assemblies(EVs, EWs, detect_by='eigenvalue', mute=False, EW_lim=2,

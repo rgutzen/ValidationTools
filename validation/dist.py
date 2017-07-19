@@ -222,7 +222,7 @@ def KL_test(sample1, sample2, bins=100, ax=None, xlabel='', mute=False,
     D_KL_as = st.entropy(Q_non0, P_non0, base=2)
 
     if not mute:
-        print '\tD_KL(P||Q) = {:.2f}\n\tD_KL(Q||P) = {:.2f}\n' \
+        print '\tD_KL(P||Q) = {:.4f}\n\tD_KL(Q||P) = {:.4f}\n' \
               .format(D_KL, D_KL_as)
 
     if ax:

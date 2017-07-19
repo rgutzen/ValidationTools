@@ -268,7 +268,7 @@ def corr_to_sync_prob(cc, A_size, rate, T, nbr_of_bins):
         if bool(sync_prob.dimensionality):
             raise ValueError
         else:
-            return sync_prob.magnitude
+            return float(sync_prob.magnitude)
     else:
         return sync_prob
 
