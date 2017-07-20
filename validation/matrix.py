@@ -523,13 +523,14 @@ def angle_significance(angles, dim=100, s=.0001, sig_level=.01, res=10**7,
                          for j in range(x)])
 
     comb_prob = comb_prob[np.where(np.isfinite(comb_prob))[0]]
-    if len(comb_prob) < x:
-        print "Warning: The probability could not be adequately calculated! " \
-               "Try reducing the similarity qunatile s. " \
-              "(Encountering {} non-finite numbers)".format(x-len(comb_prob))
     p_diff = 1. - sum(comb_prob)
 
     if not mute:
+        if len(comb_prob) < x:
+            print "Warning: The probability could not be adequately calculated! " \
+                  "Try reducing the similarity quantile s. " \
+                  "(Encountering {} non-finite numbers)".format(
+                x - len(comb_prob))
         print "{} / {} angles in {}%-quantile \n"\
               .format(x, N_angle, s*100.)\
             + "p = {}\n"\
@@ -537,7 +538,7 @@ def angle_significance(angles, dim=100, s=.0001, sig_level=.01, res=10**7,
             + "{} {} {} ==> {} "\
               .format(sig_level, '<' if sig_level < p_diff else '>', 'p',
                       'Similar' if p_diff < sig_level else 'Different')\
-            + "\n(Distribution approximated by {} sampled angles)"\
+            + "\n(Distribution approximated by {:.0f} sampled angles)"\
               .format(N_rand_angles)
 
     if ax is not None:
