@@ -16,8 +16,8 @@ T = 10000*ms
 binsize = 2.*ms
 B = T/binsize
 rate = 10*Hz
-A_size = [5,3,3,3]
-assembly_corr = [0.2, 0.05,0.2,0.2]
+A_size = [5,5]
+assembly_corr = [0.1,0.2]
 sync_prob_assembly = [test_data.corr_to_sync_prob(cc, size, rate, T, B)
                       for cc, size in zip(assembly_corr, A_size)]
 
@@ -55,7 +55,7 @@ __, EVs_1 = np.linalg.eigh(corr_mat)
 corr_mat = matrix.corr_matrix(spiketrains_2)
 __, EVs_2 = np.linalg.eigh(corr_mat)
 
-angles, _ = matrix.EV_angles(EVs_1, EVs_2, deg=False, mute=True,
+angles, _ = matrix.EV_angles(EVs_1, EVs_1, deg=False, mute=True,
                              all_to_all=True)
 
 fig, ax = plt.subplots(1, 1)
