@@ -1,12 +1,9 @@
-from elephant.spike_train_correlation import cch, corrcoef
+from elephant.spike_train_correlation import cch
 from elephant.conversion import BinnedSpikeTrain
 from neo import SpikeTrain
-from quantities import ms, Hz
-from validation import test_data, matrix, dist
+from quantities import ms
 import matplotlib.pyplot as plt
 import seaborn as sns
-from matplotlib.collections import LineCollection
-from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 from simplejson import load as jsonload
 from time import time
@@ -100,18 +97,28 @@ def eval_cch(bsts, threshold=.0, plot=True, title="Set0", save_idx=True,
     return CCH, ax
 
 
-def time_resolved_cc_distribution(binned_spiketrains=None, CCH_matrix=None,
+def time_resolved_cc_distribution(binned_spiketrains=None, CCHs=None,
                                   ax=plt.gca(), bins=100, **kwargs):
+
     if binned_spiketrains is not None:
-        CCH_matrix = _multiple_cch(binned_spiketrains, rescale=True, **kwargs)
-    elif CCH_matrix is None:
+        N = len(binned_spiketrains)
+        B = binned_spiketrains[0].num_bins * 2 - 1
+        CCHs = np.empty(N**2 * B)
+        for i in range(N):
+            for j in np.arange(i + 1, N):
+                idx = int(round((i*(N-.5*(i+1))+j-i-1))*B)
+                CCHs[idx:idx+B] = cch(binned_spiketrains[i],
+                                      binned_spiketrains[j],
+                                      **kwargs)[0].reshape((B,))
+    elif CCHs is None:
         return None
 
-    ct, edges = np.histogram(CCH_matrix.flatten(), bins=bins, density=True)
+    ct, edges = np.histogram(CCHs, bins=bins, density=True)
     dx = np.diff(edges)[0]
     xvalues = edges[:-1] + dx/2.
     ax.plot(xvalues, ct)
     return ax, edges
+
 
 if __name__ == '__main__':
 
@@ -142,7 +149,7 @@ if __name__ == '__main__':
     ## Generalized Correlation distributions
     bsts_lists = [bin_spiketrains(sts, binsize=2*ms) for sts in spiketrains]
     fig, ax = plt.subplots(1, 1)
-    edges = np.linspace(-1, 1, 200)
+    edges = np.linspace(-.25, .25, 200)
     for bsts in bsts_lists:
         time_resolved_cc_distribution(binned_spiketrains=bsts, ax=ax,
                                       bins=edges, cross_corr_coef=True)
