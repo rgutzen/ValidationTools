@@ -8,7 +8,6 @@ import numpy as np
 from simplejson import load as jsonload
 from time import time
 
-
 def _multiple_cch(binned_sts, rescale=False, **kwargs):
     N = len(binned_sts)
     B = binned_sts[0].num_bins*2-1
@@ -149,11 +148,11 @@ if __name__ == '__main__':
     ## Generalized Correlation distributions
     bsts_lists = [bin_spiketrains(sts, binsize=2*ms) for sts in spiketrains]
     fig, ax = plt.subplots(1, 1)
-    edges = np.linspace(-.25, .25, 200)
+    edges = np.linspace(-.25, .25, 300)
     for bsts in bsts_lists:
         time_resolved_cc_distribution(binned_spiketrains=bsts, ax=ax,
                                       bins=edges, cross_corr_coef=True)
 
     print("--- %s seconds ---" % (time() - start_time))
-
+    ax.set_yscale('log')
     plt.show()

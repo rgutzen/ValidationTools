@@ -2,16 +2,16 @@ from validation import matrix, test_data
 import matplotlib.pyplot as plt
 import numpy as np
 from quantities import Hz, ms
-import best
-import best.plot
-from pymc import MCMC
+# import best
+# import best.plot
+# from pymc import MCMC
 from scipy.misc import comb
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib import rc
 rc('text', usetex=True)
 
-N = 100
+N = 3
 T = 10000*ms
 binsize = 2.*ms
 B = T/binsize
@@ -60,7 +60,7 @@ angles, _ = matrix.EV_angles(EVs_1, EVs_1, deg=False, mute=True,
 
 fig, ax = plt.subplots(1, 1)
 pvalue, rangles = matrix.angle_significance(angles.tolist(),
-                                            dim=N, abs=True,
+                                            dim=N, abs=False,
                                             ax=ax, res=10**7,
                                             s=1./N**2, sig_level=0.01,
                                             rand_angles=None)
