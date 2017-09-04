@@ -409,12 +409,13 @@ def plot_EVs(EVs, ax, color, hatch=None, ordered=False):
     if ordered:
         vector_loads = np.sort(np.absolute(EVs.T[::-1]), axis=-1)
         ax.set_xlabel('Neuron Rank')
+        ax.invert_axis()
     else:
         vector_loads = np.absolute(EVs.T[::-1])
         ax.set_xlabel('Neuron ID')
     for i, _ in enumerate(color):
         i = len(color) - i - 1
-        ax.bar(np.arange(len(EVs.T[0]))+.5,vector_loads[i], 1., edgecolor='w',
+        ax.bar(np.arange(len(EVs.T[0]))+.5, vector_loads[i], 1., edgecolor='w',
                              label=r'$v_{}$'.format(i+1), color=color[i], hatch=hatch[i])
     ax.set_xlim(0,len(EVs.T[0])+1)
     ax.set_ylabel('Vector Load')
