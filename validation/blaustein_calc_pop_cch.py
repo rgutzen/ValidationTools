@@ -47,9 +47,10 @@ def _calculate_multi_cch(sts, binsize=2*ms, maxlag=100, set_name=-1, **kwargs):
     if rank == 0:
         print np.shape(pop_cch)
 
-    np.savez('/home/r.gutzen/pop_cch_results/cch_array_set{}_bin{}ms_lag{}ms.npz'
+    np.savez('/home/r.gutzen/pop_cch_results/cch_array_set{}_bin{}ms_lag{}bins.npz'
              .format(set_name, int(binsize.magnitude), maxlag),
-             cch_array=pop_cch, split_pairs=split_pairs, max_cc=pop_max_cc)
+             cch_array=pop_cch, split_pairs=split_pairs, max_cc=pop_max_cc,
+             binsize=binsize.magnitude)
     return None
 
 
@@ -93,6 +94,3 @@ _calculate_multi_cch(spiketrains, binsize=2*ms, maxlag=lag, set_name=task_id)
 m, s = divmod(time() - start_time, 60)
 h, m = divmod(m, 60)
 print 'Computation took %d:%02d:%02d' % (h, m, s)
-
-
-
