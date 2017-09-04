@@ -408,21 +408,22 @@ def plot_EVs(EVs, ax, color, hatch=None, ordered=False):
         hatch = [''] * len(color)
     if ordered:
         vector_loads = np.sort(np.absolute(EVs.T[::-1]), axis=-1)
+        ax.set_xlabel('Neuron Rank')
     else:
         vector_loads = np.absolute(EVs.T[::-1])
+        ax.set_xlabel('Neuron ID')
     for i, _ in enumerate(color):
         i = len(color) - i - 1
         ax.bar(np.arange(len(EVs.T[0]))+.5,vector_loads[i], 1., edgecolor='w',
                              label=r'$v_{}$'.format(i+1), color=color[i], hatch=hatch[i])
     ax.set_xlim(0,len(EVs.T[0])+1)
     ax.set_ylabel('Vector Load')
-    ax.set_xlabel('Neuron ID')
     handles, labels = ax.get_legend_handles_labels()
     ax.legend(handles[::-1], [r'$v_{}$'.format(j + 1) for j in range(len(color))])
     return None
 
 
-def EV_angles(EVs1, EVs2, deg=True, mute=False, all_to_all=False):
+def EV_angles(EVs1_in, EVs2_in, deg=True, mute=False, all_to_all=False):
     """
     Calculate the angles between the vectors EVs1_i and EVs2_i and the angle
     between their spanned eigenspaces.
@@ -438,8 +439,8 @@ def EV_angles(EVs1, EVs2, deg=True, mute=False, all_to_all=False):
     """
 
     # Transform into descending array of the eigenvector arrays
-    EVs1 = np.absolute(EVs1.T[::-1])
-    EVs2 = np.absolute(EVs2.T[::-1])
+    EVs1 = np.absolute(EVs1_in.T[::-1])
+    EVs2 = np.absolute(EVs2_in.T[::-1])
 
     assert len(EVs1) == len(EVs2)
 
@@ -458,6 +459,7 @@ def EV_angles(EVs1, EVs2, deg=True, mute=False, all_to_all=False):
                       .format(np.linalg.norm(EV))
 
     M = np.dot(EVs1, EVs2.T)
+    M[np.argwhere(M > 1)] = 1.
 
     if len(M) == 1:
         vector_angles = np.arccos(M[0])
@@ -495,7 +497,7 @@ def angle_significance(angles, dim=100, s=.0001, sig_level=.01, res=10**7,
                        rand_angles=None, bins=100., abs=True, ax=None,
                        mute=False):
     if type(angles) != list:
-        angles = [angles]
+        angles = angles.tolist()
 
     N_angle = len(angles)
 
@@ -550,9 +552,9 @@ def angle_significance(angles, dim=100, s=.0001, sig_level=.01, res=10**7,
         hist_rand, _ = np.histogram(rand_angles, bins=edges, density=True)
         ax.bar(edges[:-1], hist_rand, np.diff(edges) * .9,
                color=sns.color_palette()[0], edgecolor='w')
-        # hist_evs, _ = np.histogram(angles, bins=edges, density=True)
-        # ax.bar(edges[:-1], hist_evs, np.diff(edges) * .9,
-        #        edgecolor=sns.color_palette()[1], fill=False, lw=2)
+        hist_evs, _ = np.histogram(angles, bins=edges, density=True)
+        ax.bar(edges[:-1], hist_evs, np.diff(edges) * .9,
+               edgecolor=sns.color_palette()[1], fill=False, lw=2)
         ax.set_xlim(0, max_angle)
         ax.set_xticks(np.arange(0, max_angle + .125*np.pi, .125*np.pi))
         ticklabels = ['', r'$\frac{\pi}{8}$', r'$\frac{\pi}{4}$',
