@@ -9,19 +9,20 @@ from time import time
 from matrix import plot_matrix
 
 
-def load(filename, rescale=False, return_pairs=True):
+def load(filename, rescale=False, return_pairs=True, array_name='cch_array',
+         pairs_name='split_pairs'):
     file = np.load(filename)
     if return_pairs:
         if rescale:
-            return np.squeeze(file['cch_array']) / file['max_cc'][0], \
-                   file['split_pairs']
+            return np.squeeze(file[array_name]) / file['max_cc'][0], \
+                   file[pairs_name]
         else:
-            return np.squeeze(file['cch_array']), file['split_pairs']
+            return np.squeeze(file[array_name]), file[pairs_name]
     else:
         if rescale:
-            return np.squeeze(file['cch_array'])/file['max_cc'][0]
+            return np.squeeze(file[array_name])/file['max_cc'][0]
         else:
-            return np.squeeze(file['cch_array'])
+            return np.squeeze(file[array_name])
 
 
 def summed_pop_cch(cch_array, plot=False, ax=None, symetric=True):
@@ -109,63 +110,63 @@ def _alpha(color_inst, a):
     return [el + (1.-el)*a for el in np.array(color_inst)]
 
 
-def cch_space(color_array, pair_ids, binsize=2*ms, threshold=.0, plot=True,
-             save=True, save_id=0, **kwargs):
-    # Rewrite for new processed data input from blaustein
-    ccharray = np.squeeze(cch_array)
-    N = len(ccharray)
-    B = len(ccharray[0])
-    if plot:
-        fig = plt.figure()
-        palette = sns.color_palette('coolwarm')[::]
-        ax = fig.gca(projection='3d')
-        ax.set_xlabel('Neuron #1')
-        ax.set_xlim3d(0, N)
-        ax.set_ylabel('Tau')
-        ax.set_ylim3d(0, B)
-        ax.set_zlabel('Neuron #2')
-        ax.set_zlim3d(0, N)
-    else:
-        ax = None
-    tau = np.arange(B) * float(binsize)
-    sig_cc = []
-    for count, (i,j) in enumerate(pair_ids):
-        for ti in range(B-2):
-            cc = (ccharray[count,ti] + 1) / 2.
-            if cc < 0:
-                print "({} {}): Index Error {} -> 0".format(i,j,cc)
-                cc = 0.
-            elif cc > 1:
-                print "({} {}): Index Error {} -> 1".format(i,j,cc)
-                cc = 1.
-            if cc > threshold:
-                sig_cc += [(i,j)]
-                if plot:
-                    color_i = int(np.ceil(cc*len(palette))-1)
-                    color = _alpha(palette[color_i], 1.-cc)
-                    ax.plot([j,j], tau[ti:ti+2], [cc + i]*2, c=color)
-    print "=> {} entries above threshold".format(len(sig_cc))
-    if save:
-        idfile = open('sig_cc_idx_.txt'.format(save_id), 'w')
-        for item in sig_cc:
-            idfile.write("{} \n".format(item))
-        idfile.close()
-    return sig_cc, ax
+def cch_space(color_array, pair_tau_ids, B, N,
+              palette=sns.cubehelix_palette(10, start=.3, rot=.6),
+              binsize=2*ms, alpha=False, **kwargs):
+    # color_array is an sparse int array of the thresholded cchs
+    # transformed to [0..9] -> 0 is transparent, 1-9 is used for indexing the
+    # color palette. Since the color_cch is rescaled there is exactly one
+    # element with value 10, which always projected to k
+    colorarray = np.squeeze(color_array)
+    palette = palette + [[0,0,0]] # single max value is black
+
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    ax.set_xlabel('Neuron #1')
+    ax.set_xlim3d(0, N)
+    ax.set_ylabel('Tau [ms]')
+    ax.set_ylim3d(-B/2*float(binsize), B/2*float(binsize))
+    ax.set_zlabel('Neuron #2')
+    ax.set_zlim3d(0, N)
+
+    tau = (np.arange(B) - B/2) * float(binsize)
+    for count, (i,j,t) in enumerate(pair_tau_ids):
+        if alpha:
+            color = _alpha(palette[colorarray[count]], 1.-colorarray[count]/10.)
+        else:
+            color = palette[colorarray[count]]
+        if t < 1:
+            t = 1
+            print 'border value shifted'
+        elif t == B-1:
+            t = B-2
+            print 'border value shifted'
+        ax.plot([j,j], tau[t-1:t+1], [i,i], c=color, **kwargs)
+        # expects the outer most values for tau not to be significant
+    return ax
 
 
 if __name__ == '__main__':
-    path = '/home/robin/Projects/pop_cch_results/'
-    filename = 'cch_array_set{}_bin2ms_lag100bins.npz'.format(1)
-
     start_time = time()
 
-    ccharray, pairs = load(path+filename, rescale=False, return_pairs=True)
+    path = '/home/robin/Projects/pop_cch_results/'
 
-    # cch_space(ccharray, pairs, plot=True, threshold=0.15)
+    for i in range(2):
+        colorfilename = 'color_array_set{}_th{}.npz'.format(i,0.5)
+
+        color_array, pair_tau_ids = load(path+colorfilename,
+                                         array_name='color_array',
+                                         pairs_name='pair_tau_ids')
+
+        ax = cch_space(color_array, pair_tau_ids, B=201, N=250)
+        ax.set_title('set {}'.format(i))
+    # filename = 'cch_array_set{}_bin2ms_lag100bins.npz'.format(1)
+
+    # ccharray, pairs = load(path+filename, rescale=False, return_pairs=True)
 
     # summed_pop_cch(ccharray, plot=True, symetric=True)
 
-    generalized_cc_dist(ccharray, plot=True)
+    # generalized_cc_dist(ccharray, plot=True)
 
     # generalized_cc_matrix(ccharray, pairs, plot=True, time_reduction='lag 0',
     #                       sort=True)
