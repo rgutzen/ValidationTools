@@ -1,5 +1,6 @@
 from quantities import ms
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 from mpl_toolkits.mplot3d import Axes3D
 import seaborn as sns
 import numpy as np
@@ -110,7 +111,7 @@ def _alpha(color_inst, a):
     return [el + (1.-el)*a for el in np.array(color_inst)]
 
 
-def cch_space(color_array, pair_tau_ids, B, N,
+def cch_space(color_array, pair_tau_ids, N, B,
               palette=sns.cubehelix_palette(10, start=.3, rot=.6),
               binsize=2*ms, alpha=False, **kwargs):
     # color_array is an sparse int array of the thresholded cchs
@@ -143,7 +144,8 @@ def cch_space(color_array, pair_tau_ids, B, N,
             print 'border value shifted'
         ax.plot([j,j], tau[t-1:t+1], [i,i], c=color, **kwargs)
         # expects the outer most values for tau not to be significant
-    return ax
+
+    return ax, palette
 
 
 if __name__ == '__main__':
@@ -158,8 +160,14 @@ if __name__ == '__main__':
                                          array_name='color_array',
                                          pairs_name='pair_tau_ids')
 
-        ax = cch_space(color_array, pair_tau_ids, B=201, N=250)
+        ax, palette = cch_space(color_array, pair_tau_ids, B=201, N=250)
         ax.set_title('set {}'.format(i))
+
+    fig, cax = plt.subplots()
+    cmap = mpl.colors.ListedColormap(palette)
+    cb = mpl.colorbar.ColorbarBase(cax, cmap=cmap)
+    fig.show()
+
     # filename = 'cch_array_set{}_bin2ms_lag100bins.npz'.format(1)
 
     # ccharray, pairs = load(path+filename, rescale=False, return_pairs=True)
