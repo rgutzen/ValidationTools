@@ -7,7 +7,7 @@ import numpy as np
 import sys
 from time import time
 # from mpi4py import MPI
-from matrix import plot_matrix
+# from matrix import plot_matrix
 
 
 def load(filename, rescale=False, return_pairs=True, array_name='cch_array',
@@ -74,10 +74,10 @@ def generalized_cc_matrix(cch_array, pair_ids, time_reduction='sum',
     for count, (i,j) in enumerate(pair_ids):
         cc_mat[i,j] = cc_array[count]
         cc_mat[j,i] = cc_array[count]
-    if plot:
-        if ax is None:
-            fig, ax = plt.subplots()
-        plot_matrix(cc_mat, ax=ax, **kwargs)
+    # if plot:
+    #     if ax is None:
+    #         fig, ax = plt.subplots()
+    #     plot_matrix(cc_mat, ax=ax, **kwargs)
     return cc_mat
 
 
