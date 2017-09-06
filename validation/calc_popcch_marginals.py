@@ -26,7 +26,8 @@ def load(filename, rescale=False, return_pairs=True, array_name='cch_array',
             return np.squeeze(file[array_name])
 
 
-def summed_pop_cch(cch_array, plot=False, ax=None, symetric=True):
+def summed_pop_cch(cch_array, plot=False, ax=None, symetric=True, binsize=None,
+                   **kwargs):
     N = len(np.squeeze(cch_array))
     popcch = np.sum(np.squeeze(cch_array), axis=0)
     popcch /= float(N)
@@ -34,10 +35,18 @@ def summed_pop_cch(cch_array, plot=False, ax=None, symetric=True):
         popcch = popcch + popcch[::-1]
         popcch /= 2.
     B = len(popcch)
+    w = B/2
+    if binsize is not None
+        w = w * float(binsize)
     if plot:
         if ax is None:
             fig, ax = plt.subplots()
-        ax.bar(np.linspace(-B/2,B/2,B), popcch)
+        ax.bar(np.linspace(-w,w,2*w+1), popcch, **kwargs)
+        ax.xlim((-w,w))
+        if binsize is None:
+            ax.set_xlabel(r'$\tau$ [bins]')
+        else:
+            ax.set_xlabel(r'$\tau$ [ms]')
     return popcch
 
 
@@ -74,10 +83,10 @@ def generalized_cc_matrix(cch_array, pair_ids, time_reduction='sum',
     for count, (i,j) in enumerate(pair_ids):
         cc_mat[i,j] = cc_array[count]
         cc_mat[j,i] = cc_array[count]
-    # if plot:
-    #     if ax is None:
-    #         fig, ax = plt.subplots()
-    #     plot_matrix(cc_mat, ax=ax, **kwargs)
+    if plot:
+        if ax is None:
+            fig, ax = plt.subplots()
+        plot_matrix(cc_mat, ax=ax, **kwargs)
     return cc_mat
 
 
@@ -144,7 +153,6 @@ def cch_space(color_array, pair_tau_ids, N, B,
             print 'border value shifted'
         ax.plot([j,j], tau[t-1:t+1], [i,i], c=color, **kwargs)
         # expects the outer most values for tau not to be significant
-
     return ax, palette
 
 
@@ -162,6 +170,7 @@ if __name__ == '__main__':
 
         ax, palette = cch_space(color_array, pair_tau_ids, B=201, N=250)
         ax.set_title('set {}'.format(i))
+
 
     fig, cax = plt.subplots()
     cmap = mpl.colors.ListedColormap(palette)

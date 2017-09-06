@@ -88,6 +88,8 @@ def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None,
 
     sns.heatmap(pltmatrix, ax=ax, cbar=True,
                 xticklabels=labels, yticklabels=labels, **kwargs)
+    if sort:
+        return order
     return None
 
 def estimate_largest_eigenvalue(N, trials, t_stop, rate, bins):
