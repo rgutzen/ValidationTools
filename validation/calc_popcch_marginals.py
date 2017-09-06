@@ -42,7 +42,7 @@ def summed_pop_cch(cch_array, plot=False, ax=None, symetric=True, binsize=None,
         if ax is None:
             fig, ax = plt.subplots()
         ax.bar(np.linspace(-w,w,2*w+1), popcch, **kwargs)
-        ax.xlim((-w,w))
+        ax.set_xlim((-w,w))
         if binsize is None:
             ax.set_xlabel(r'$\tau$ [bins]')
         else:
