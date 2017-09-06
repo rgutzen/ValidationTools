@@ -36,7 +36,7 @@ def summed_pop_cch(cch_array, plot=False, ax=None, symetric=True, binsize=None,
         popcch /= 2.
     B = len(popcch)
     w = B/2
-    if binsize is not None
+    if binsize is not None:
         w = w * float(binsize)
     if plot:
         if ax is None:
