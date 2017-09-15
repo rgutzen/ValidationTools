@@ -2,6 +2,7 @@ from quantities import ms
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.ticker import NullFormatter
 import seaborn as sns
 import numpy as np
 from copy import copy
@@ -27,10 +28,12 @@ def load(filename, rescale=False, return_pairs=True, array_name='cch_array',
             return np.squeeze(file[array_name])
 
 
-def summed_pop_cch(cch_array, plot=False, ax=None, binsize=None,
-                   hist_filter=None, filter_to_binary=False, **pltargs):
+def summed_pop_cch(cch_array, plot=False, ax=None, binsize=None, symmetric=True,
+                   hist_filter=None, filter_to_binary=False, average=False,
+                   **pltargs):
     ccharray = copy(np.squeeze(cch_array))
     N = len(ccharray)
+    print ccharray.shape
     if hist_filter is not None:
         if hist_filter == 'max':
             max_array = np.amax(ccharray, axis=1)
@@ -49,30 +52,128 @@ def summed_pop_cch(cch_array, plot=False, ax=None, binsize=None,
                 for i, cch in enumerate(ccharray):
                     ccharray[i] = np.where(cch < th, 0, cch)
     popcch = np.sum(ccharray, axis=0)
-    popcch /= float(N)
-    popcch = popcch + popcch[::-1]
-    popcch /= 2.
+    if average:
+        nonzeros = np.sum(ccharray.astype(bool).astype(float), axis=0)
+        popcch = popcch / nonzeros
+    popcch = np.where(np.isfinite(popcch), popcch, 0)
+    if symmetric:
+        popcch = popcch + popcch[::-1]
+        popcch /= 2.
     B = len(popcch)
     w = B/2
-    if binsize is not None:
+    if binsize is None:
+        binsize = 1
+    else:
         w = w * float(binsize)
     if plot:
         if ax is None:
             fig, ax = plt.subplots()
-        ax.bar(np.linspace(-w,w,B/2*2+1), popcch, **pltargs)
+        if 'width' not in pltargs:
+            pltargs['width'] = 0.9
+        if 'edgecolor' not in pltargs:
+            pltargs['edgecolor'] = 'w'
+        pltargs['width'] *= float(binsize)
+        ax.bar(np.linspace(-w,w,B/2*2+1)-float(binsize)/2., popcch, **pltargs)
         ax.set_ylabel('average cross correlation')
         ax.set_xlim((-w,w))
         if binsize is None:
-            ax.set_xlabel('time lag [bins]')
+            ax.set_xlabel('Time lag [bins]')
         else:
-            ax.set_xlabel('time lag [ms]')
+            ax.set_xlabel('Time lag [ms]')
     return popcch
 
 
-def generalized_cc_dist(cch_array, bins=500, plot=False, ax=None, hist_filter=None,
-                        **pltargs):
+def generalized_cc_dist(cch_array, bins=500, plot=False, ax=None,
+                        hist_filter=None, **pltargs):
     ccharray = copy(np.squeeze(cch_array))
-    if hist_filter is not None:
+    if hist_filter is None:
+        ccharray = ccharray.flatten()
+    else:
+        if hist_filter == 'max':
+            max_array = np.amax(ccharray, axis=1)
+            for i, cch in enumerate(ccharray):
+                ccharray[i] = np.where(cch < max_array[i], 0, max_array[i])
+            ccharray = ccharray.flatten()
+            ccharray = ccharray[np.where(ccharray)[0]]
+        if hist_filter[:9] == 'threshold':
+            th = float(hist_filter[9:])
+            for i, cch in enumerate(ccharray):
+                ccharray[i] = np.where(cch < th, 0, cch)
+            ccharray = ccharray.flatten()
+            ccharray = ccharray[np.where(ccharray)[0]]
+    hist, edges = np.histogram(ccharray.flatten(), bins=bins, density=True)
+    if plot:
+        if ax is None:
+            fig, ax = plt.subplots()
+        dx = np.diff(edges)[0]
+        xvalues = edges[:-1] + dx / 2.
+        ax.plot(xvalues, hist, **pltargs)
+        ax.set_xlabel('Generalized Correlation Coefficient')
+    return hist, edges
+
+
+def pop_cc_hist_dist(cch_array, ax=None, binsize=None, bins=500,
+                    hist_filter=None, filter_to_binary=False,
+                    **pltargs):
+    if ax is None:
+        fig, ax = plt.subplots()
+    left, bottom, width, height = ax.get_position()._get_bounds()
+    scaling = .75
+    ax.set_position([left, bottom,
+                     scaling * width, height])
+    axdist = plt.axes([left + scaling * width, bottom,
+                       (1 - scaling) * width, height])
+    axdist.yaxis.tick_right()
+    axdist.get_xaxis().tick_bottom()
+    axdist.yaxis.set_label_position("right")
+    axdist.spines["left"].set_visible(False)
+    axdist.spines["top"].set_visible(False)
+
+    barpltargs = copy(pltargs)
+    if 'width' not in barpltargs:
+        barpltargs['width'] = 0.95
+    if hist_filter is None:
+        symmetric = True
+    else:
+        symmetric = False
+    summed_pop_cch(cch_array, plot=True, ax=ax, binsize=binsize, symmetric=symmetric,
+                   hist_filter=hist_filter, filter_to_binary=filter_to_binary,
+                   average=True, **barpltargs)
+
+    ax.spines["left"].set_visible(False)
+    ax.spines["top"].set_visible(False)
+    ax.set_ylabel('')
+    ax.yaxis.set_ticks_position('none')
+    ax.get_xaxis().tick_bottom()
+    ax.yaxis.set_major_formatter(NullFormatter())
+
+    hist, edges = generalized_cc_dist(cch_array, bins=bins, plot=False,
+                        hist_filter=hist_filter, **pltargs)
+    dx = np.diff(edges)[0]
+    xvalues = edges[:-1] + dx / 2.
+    axdist.plot(hist, xvalues, **pltargs)
+    axdist.set_ylim([min(cch_array.flatten()), max(cch_array.flatten())])
+    axdist.set_xlabel('Density')
+    ymin = min([axdist.get_ylim()[0], 0])
+    axdist.set_ylim((ymin, axdist.get_ylim()[1]))
+    ax.set_ylim((ymin, axdist.get_ylim()[1]))
+    ax.plot(ax.get_xlim(),[0,0], color='0.5', lw=.5)
+    axdist.plot(axdist.get_xlim(),[0,0], color='0.5', lw=.5)
+
+    return ax, axdist
+
+
+def tau_cc_cluster(cch_array, hist_filter=None, binsize=None, kind='hex', **kwargs):
+    ccharray = copy(np.squeeze(cch_array))
+    N = len(ccharray)
+    B = len(ccharray[0])
+    if binsize is None:
+        binsize = 1
+    w = B/2 * float(binsize)
+    tau = np.array(list(np.linspace(-w, w, B/2 * 2 + 1)) * N)
+    if hist_filter is None:
+        ccharray = ccharray.flatten()
+    else:
         if hist_filter == 'max':
             max_array = np.amax(ccharray, axis=1)
             for i, cch in enumerate(ccharray):
@@ -81,15 +182,11 @@ def generalized_cc_dist(cch_array, bins=500, plot=False, ax=None, hist_filter=No
             th = float(hist_filter[9:])
             for i, cch in enumerate(ccharray):
                 ccharray[i] = np.where(cch < th, 0, cch)
-    hist, edges = np.histogram(ccharray.flatten(), bins=bins, density=True)
-    if plot:
-        if ax is None:
-            fig, ax = plt.subplots()
-        dx = np.diff(edges)[0]
-        xvalues = edges[:-1] + dx / 2.
-        ax.plot(xvalues, hist, **pltargs)
-        ax.xlabel('Generalized Correlation Coefficient')
-    return hist, edges
+        ccharray = ccharray.flatten()
+        tau = tau[np.where(ccharray)[0]]
+        ccharray = ccharray[np.where(ccharray)[0]]
+    grid = sns.jointplot(tau, ccharray, kind=kind, xlim=(-w,w), **kwargs)
+    return grid
 
 
 def generalized_cc_matrix(cch_array, pair_ids, time_reduction='sum',
@@ -188,6 +285,8 @@ def cch_space(color_array, pair_tau_ids, N, B,
 
 
 if __name__ == '__main__':
+    sns.set(style='ticks', palette='Set2')
+    sns.set_color_codes('colorblind')
     start_time = time()
 
     path = '/home/robin/Projects/pop_cch_results/'
@@ -212,8 +311,16 @@ if __name__ == '__main__':
 
     ccharray, pairs = load(path+filename, rescale=False, return_pairs=True)
 
-    summed_pop_cch(ccharray, plot=True,
-                   hist_filter='threshold 0.15', filter_to_binary=True, color='r')
+    # summed_pop_cch(ccharray, plot=True,
+    #                hist_filter='threshold 0.15', filter_to_binary=True, color='r')
+
+    # pop_cc_hist_dist(ccharray, ax=None, binsize=2, bins=500,
+    #                  hist_filter='threshold 0.13',
+    #                  filter_to_binary=False,
+    #                  color='b')
+
+    tau_cc_cluster(ccharray, hist_filter='threshold 0.15', kind='scatter',
+                   marginal_kws=dict(bins=200), color='b')
 
     # generalized_cc_dist(ccharray, plot=True)
 
