@@ -75,7 +75,7 @@ def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None,
         _, order = detect_assemblies(EVs, EWs, detect_by='eigenvalues', sort=True)
         pltmatrix = pltmatrix[order, :][:, order]
 
-    if cluster:
+    # if cluster:
         # scipy cluster
 
     if labels is None:
