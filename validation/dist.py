@@ -256,8 +256,8 @@ def KL_test(sample1, sample2, bins=100, ax=None, xlabel='', mute=False,
     return D_KL, D_KL_as
 
 
-def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter', color=None,
-            mute=False):
+def KS_test(data_sample_1, data_sample_2, ax=None, palette=None, mute=False,
+            include_scatterplot=False):
     """
     Kolmogorov-Smirnov-Distance D_KS
 
@@ -279,60 +279,68 @@ def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter', color=None,
     :param ax: matplotlib.axis
         An visual representation of the distributions and their divergence is
         given onto the matplotlib axis when provided.
-    :param xlabel: string
-        Label string for plot
     :return:
         D_Ks
         p-value
     """
-    # filtering out nans
-    sample1 = np.array(sample1)[np.isfinite(sample1)]
-    sample2 = np.array(sample2)[np.isfinite(sample2)]
+    # Filtering out nans and infs
+    init_length = [len(smpl) for smpl in [data_sample_1, data_sample_2]]
+    sample1 = np.array(data_sample_1)[np.isfinite(data_sample_1)]
+    sample2 = np.array(data_sample_2)[np.isfinite(data_sample_2)]
 
+    if init_length[0]-len(sample1) or init_length[1]-len(sample2):
+        print "Warning: {} non-finite elements of the given data samples " \
+              "were filtered." \
+              .format(sum(init_length)-sum([len(s) for s in [sample1, sample2]]))
+
+    # Performing the KS-Test
     D_KS, pvalue = st.ks_2samp(sample1, sample2)
     if not mute:
         print "\n\033[4mKolmogorov-Smirnov-Distance\033[0m" \
-            + "\n\tlength 1 = {} \t length 2 = {}" \
+            + "\n\tdatasizes: {} \t {}" \
               .format(len(sample1), len(sample2)) \
             + "\n\tD_KS = {:.2f} \t p value = {}\n" \
               .format(D_KS, to_precision(pvalue, 2))
 
+    # Plotting a representation of the test
     if ax:
         ax.set_ylabel('CDF')
-        ax.set_xlabel(xlabel)
-        if color is None:
-            color = [sns.color_palette()[0], sns.color_palette()[1]]
+        ax.set_xlabel('Measured Parameter')
+        if palette is None:
+            palette = [sns.color_palette()[0], sns.color_palette()[1]]
 
-        # print cumulative distributions and scatterplot
-        for i, A in enumerate([sample1, sample2]):
-            A_sorted = np.sort(A)
-            A_sorted = np.append(A_sorted[0], A_sorted)
-            CDF = (np.arange(len(A)+1)) / float(len(A))
-            ax.step(A_sorted, CDF, where='post', color=color[i])
-            ax.scatter(A_sorted, [.99-i*.02]*len(A_sorted),
-                       color=color[i], marker='D', linewidth=1)
+        # plot cumulative distributions and scatterplot
+        for i, sample in enumerate([sample1, sample2]):
+            sorted_sample = np.sort(sample)
+            sorted_sample = np.append(sorted_sample[0], sorted_sample)
+            CDF = (np.arange(len(sample)+1)) / float(len(sample))
+            ax.step(sorted_sample, CDF, where='post', color=palette[i])
+            if include_scatterplot:
+                ax.scatter(sorted_sample, [.99-i*.02]*len(sorted_sample),
+                           color=palette[i], marker='D', linewidth=1)
+
         # calculate vertical distance
         N = len(sample1) + len(sample2)
-        sample = np.zeros((4, N))
-        sample[0] = np.append(sample1, sample2)
-        sample[1] = np.append(np.ones(len(sample1)), np.zeros(len(sample2)))
-        sample[2] = np.append(np.zeros(len(sample1)), np.ones(len(sample2)))
-        sort_idx = np.argsort(sample[0])
-        sample[0] = sample[0][sort_idx]
-        sample[1] = np.cumsum(sample[1][sort_idx]) / float(len(sample1))
-        sample[2] = np.cumsum(sample[2][sort_idx]) / float(len(sample2))
-        distance = sample[1] - sample[2]
+        cdf_array = np.zeros((4, N))
+        cdf_array[0] = np.append(sample1, sample2)
+        cdf_array[1] = np.append(np.ones(len(sample1)), np.zeros(len(sample2)))
+        cdf_array[2] = np.append(np.zeros(len(sample1)), np.ones(len(sample2)))
+        sort_idx = np.argsort(cdf_array[0])
+        cdf_array[0] = cdf_array[0][sort_idx]
+        cdf_array[1] = np.cumsum(cdf_array[1][sort_idx]) / float(len(sample1))
+        cdf_array[2] = np.cumsum(cdf_array[2][sort_idx]) / float(len(sample2))
+        distance = cdf_array[1] - cdf_array[2]
         distance_plus = [d if d >= 0 else 0 for d in distance]
         distance_minus = [-d if d <= 0 else 0 for d in distance]
 
         # plot distance
-        ax.plot(sample[0], distance_plus, color=color[0], alpha=.5)
-        ax.fill_between(sample[0], distance_plus, 0, color=color[0], alpha=.5)
-        ax.plot(sample[0], distance_minus, color=color[0], alpha=.5)
-        ax.fill_between(sample[0], distance_minus, 0, color=color[1], alpha=.5)
+        ax.plot(cdf_array[0], distance_plus, color=palette[0], alpha=.5)
+        ax.fill_between(cdf_array[0], distance_plus, 0, color=palette[0], alpha=.5)
+        ax.plot(cdf_array[0], distance_minus, color=palette[0], alpha=.5)
+        ax.fill_between(cdf_array[0], distance_minus, 0, color=palette[1], alpha=.5)
 
         # plot max distance marker
-        ax.axvline(sample[0][np.argmax(abs(distance))],
+        ax.axvline(cdf_array[0][np.argmax(abs(distance))],
                    color='.8', linestyle='--', linewidth=1.7)
 
         xlim_lower = min(min(sample1), min(sample2))
@@ -341,6 +349,7 @@ def KS_test(sample1, sample2, ax=None, xlabel='Measured Parameter', color=None,
         xlim_upper += .03*(xlim_upper-xlim_lower)
         ax.set_xlim(xlim_lower, xlim_upper)
         ax.set_ylim(0, 1)
+
     return D_KS, pvalue
 
 

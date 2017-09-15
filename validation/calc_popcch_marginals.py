@@ -26,14 +26,31 @@ def load(filename, rescale=False, return_pairs=True, array_name='cch_array',
             return np.squeeze(file[array_name])
 
 
-def summed_pop_cch(cch_array, plot=False, ax=None, symetric=True, binsize=None,
-                   **kwargs):
+def summed_pop_cch(cch_array, plot=False, ax=None, binsize=None, filter=None,
+                   filter_to_binary=False, **kwargs):
     N = len(np.squeeze(cch_array))
-    popcch = np.sum(np.squeeze(cch_array), axis=0)
+    ccharray = np.squeeze(cch_array)
+    if filter is not None:
+        if filter == 'max':
+            max_array = np.amax(ccharray, axis=1)
+            if filter_to_binary:
+                for i, cch in enumerate(ccharray):
+                    ccharray[i] = np.where(cch < max_array[i], 0, 1)
+            else:
+                for i, cch in enumerate(ccharray):
+                    ccharray[i] = np.where(cch < max_array[i], 0, max_array[i])
+        if filter[:9] == 'threshold':
+            th = float(filter[9:])
+            if filter_to_binary:
+                for i, cch in enumerate(ccharray):
+                    ccharray[i] = np.where(cch < th, 0, 1 )
+            else:
+                for i, cch in enumerate(ccharray):
+                    ccharray[i] = np.where(cch < th, 0,  cch)
+    popcch = np.sum(ccharray, axis=0)
     popcch /= float(N)
-    if symetric:
-        popcch = popcch + popcch[::-1]
-        popcch /= 2.
+    popcch = popcch + popcch[::-1]
+    popcch /= 2.
     B = len(popcch)
     w = B/2
     if binsize is not None:
@@ -44,9 +61,9 @@ def summed_pop_cch(cch_array, plot=False, ax=None, symetric=True, binsize=None,
         ax.bar(np.linspace(-w,w,2*w+1), popcch, **kwargs)
         ax.set_xlim((-w,w))
         if binsize is None:
-            ax.set_xlabel(r'$\tau$ [bins]')
+            ax.set_xlabel('tau [bins]')
         else:
-            ax.set_xlabel(r'$\tau$ [ms]')
+            ax.set_xlabel('tau [ms]')
     return popcch
 
 
