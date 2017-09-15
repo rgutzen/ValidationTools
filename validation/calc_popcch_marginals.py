@@ -4,6 +4,7 @@ import matplotlib as mpl
 from mpl_toolkits.mplot3d import Axes3D
 import seaborn as sns
 import numpy as np
+from copy import copy
 import sys
 from time import time
 # from mpi4py import MPI
@@ -28,7 +29,7 @@ def load(filename, rescale=False, return_pairs=True, array_name='cch_array',
 
 def summed_pop_cch(cch_array, plot=False, ax=None, binsize=None,
                    hist_filter=None, filter_to_binary=False, **pltargs):
-    ccharray = np.squeeze(cch_array)
+    ccharray = copy(np.squeeze(cch_array))
     N = len(ccharray)
     if hist_filter is not None:
         if hist_filter == 'max':
@@ -43,10 +44,10 @@ def summed_pop_cch(cch_array, plot=False, ax=None, binsize=None,
             th = float(hist_filter[9:])
             if filter_to_binary:
                 for i, cch in enumerate(ccharray):
-                    ccharray[i] = np.where(cch < th, 0, 1 )
+                    ccharray[i] = np.where(cch < th, 0, 1)
             else:
                 for i, cch in enumerate(ccharray):
-                    ccharray[i] = np.where(cch < th, 0,  cch)
+                    ccharray[i] = np.where(cch < th, 0, cch)
     popcch = np.sum(ccharray, axis=0)
     popcch /= float(N)
     popcch = popcch + popcch[::-1]
@@ -58,7 +59,7 @@ def summed_pop_cch(cch_array, plot=False, ax=None, binsize=None,
     if plot:
         if ax is None:
             fig, ax = plt.subplots()
-        ax.bar(np.linspace(-w,w,2*w+1), popcch, **pltargs)
+        ax.bar(np.linspace(-w,w,B/2*2+1), popcch, **pltargs)
         ax.set_ylabel('average cross correlation')
         ax.set_xlim((-w,w))
         if binsize is None:
@@ -70,7 +71,7 @@ def summed_pop_cch(cch_array, plot=False, ax=None, binsize=None,
 
 def generalized_cc_dist(cch_array, bins=500, plot=False, ax=None, hist_filter=None,
                         **pltargs):
-    ccharray = np.squeeze(cch_array)
+    ccharray = copy(np.squeeze(cch_array))
     if hist_filter is not None:
         if hist_filter == 'max':
             max_array = np.amax(ccharray, axis=1)
