@@ -26,12 +26,12 @@ def load(filename, rescale=False, return_pairs=True, array_name='cch_array',
             return np.squeeze(file[array_name])
 
 
-def summed_pop_cch(cch_array, plot=False, ax=None, binsize=None, filter=None,
-                   filter_to_binary=False, **kwargs):
-    N = len(np.squeeze(cch_array))
+def summed_pop_cch(cch_array, plot=False, ax=None, binsize=None,
+                   hist_filter=None, filter_to_binary=False, **pltargs):
     ccharray = np.squeeze(cch_array)
-    if filter is not None:
-        if filter == 'max':
+    N = len(ccharray)
+    if hist_filter is not None:
+        if hist_filter == 'max':
             max_array = np.amax(ccharray, axis=1)
             if filter_to_binary:
                 for i, cch in enumerate(ccharray):
@@ -39,8 +39,8 @@ def summed_pop_cch(cch_array, plot=False, ax=None, binsize=None, filter=None,
             else:
                 for i, cch in enumerate(ccharray):
                     ccharray[i] = np.where(cch < max_array[i], 0, max_array[i])
-        if filter[:9] == 'threshold':
-            th = float(filter[9:])
+        if hist_filter[:9] == 'threshold':
+            th = float(hist_filter[9:])
             if filter_to_binary:
                 for i, cch in enumerate(ccharray):
                     ccharray[i] = np.where(cch < th, 0, 1 )
@@ -58,23 +58,36 @@ def summed_pop_cch(cch_array, plot=False, ax=None, binsize=None, filter=None,
     if plot:
         if ax is None:
             fig, ax = plt.subplots()
-        ax.bar(np.linspace(-w,w,2*w+1), popcch, **kwargs)
+        ax.bar(np.linspace(-w,w,2*w+1), popcch, **pltargs)
+        ax.set_ylabel('average cross correlation')
         ax.set_xlim((-w,w))
         if binsize is None:
-            ax.set_xlabel('tau [bins]')
+            ax.set_xlabel('time lag [bins]')
         else:
-            ax.set_xlabel('tau [ms]')
+            ax.set_xlabel('time lag [ms]')
     return popcch
 
 
-def generalized_cc_dist(cch_array, bins=500, plot=False, ax=None):
-    hist, edges = np.histogram(cch_array.flatten(), bins=bins, density=True)
+def generalized_cc_dist(cch_array, bins=500, plot=False, ax=None, hist_filter=None,
+                        **pltargs):
+    ccharray = np.squeeze(cch_array)
+    if hist_filter is not None:
+        if hist_filter == 'max':
+            max_array = np.amax(ccharray, axis=1)
+            for i, cch in enumerate(ccharray):
+                ccharray[i] = np.where(cch < max_array[i], 0, max_array[i])
+        if hist_filter[:9] == 'threshold':
+            th = float(hist_filter[9:])
+            for i, cch in enumerate(ccharray):
+                ccharray[i] = np.where(cch < th, 0, cch)
+    hist, edges = np.histogram(ccharray.flatten(), bins=bins, density=True)
     if plot:
         if ax is None:
             fig, ax = plt.subplots()
         dx = np.diff(edges)[0]
         xvalues = edges[:-1] + dx / 2.
-        ax.plot(xvalues, hist)
+        ax.plot(xvalues, hist, **pltargs)
+        ax.xlabel('Generalized Correlation Coefficient')
     return hist, edges
 
 
@@ -178,27 +191,28 @@ if __name__ == '__main__':
 
     path = '/home/robin/Projects/pop_cch_results/'
 
-    for i in range(2):
-        colorfilename = 'color_array_set{}_th{}.npz'.format(i,0.5)
+    # for i in range(2):
+    #     colorfilename = 'color_array_set{}_th{}.npz'.format(i,0.5)
+    #
+    #     color_array, pair_tau_ids = load(path+colorfilename,
+    #                                      array_name='color_array',
+    #                                      pairs_name='pair_tau_ids')
+    #
+    #     ax, palette = cch_space(color_array, pair_tau_ids, B=201, N=250)
+    #     ax.set_title('set {}'.format(i))
 
-        color_array, pair_tau_ids = load(path+colorfilename,
-                                         array_name='color_array',
-                                         pairs_name='pair_tau_ids')
 
-        ax, palette = cch_space(color_array, pair_tau_ids, B=201, N=250)
-        ax.set_title('set {}'.format(i))
+    # fig, cax = plt.subplots()
+    # cmap = mpl.colors.ListedColormap(palette)
+    # cb = mpl.colorbar.ColorbarBase(cax, cmap=cmap)
+    # fig.show()
 
+    filename = 'cch_array_set{}_bin2ms_lag100bins.npz'.format(0)
 
-    fig, cax = plt.subplots()
-    cmap = mpl.colors.ListedColormap(palette)
-    cb = mpl.colorbar.ColorbarBase(cax, cmap=cmap)
-    fig.show()
+    ccharray, pairs = load(path+filename, rescale=False, return_pairs=True)
 
-    # filename = 'cch_array_set{}_bin2ms_lag100bins.npz'.format(1)
-
-    # ccharray, pairs = load(path+filename, rescale=False, return_pairs=True)
-
-    # summed_pop_cch(ccharray, plot=True, symetric=True)
+    summed_pop_cch(ccharray, plot=True,
+                   hist_filter='threshold 0.15', filter_to_binary=True, color='r')
 
     # generalized_cc_dist(ccharray, plot=True)
 

@@ -58,7 +58,7 @@ def pc_trafo(matrix, EWs=[], EVs=[]):
 
 
 def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None,
-                sort=False, **kwargs):
+                sort=False, cluster=False, **kwargs):
     """
     Plot correlation matrix as seaborn.heatmap
 
@@ -74,6 +74,9 @@ def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None,
         EWs, EVs = eigh(pltmatrix)
         _, order = detect_assemblies(EVs, EWs, detect_by='eigenvalues', sort=True)
         pltmatrix = pltmatrix[order, :][:, order]
+
+    if cluster:
+        # scipy cluster
 
     if labels is None:
         labels = matrix.shape[0]/10
