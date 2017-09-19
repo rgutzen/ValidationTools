@@ -9,7 +9,7 @@ from copy import copy
 import sys
 from time import time
 # from mpi4py import MPI
-from matrix import plot_matrix
+# from matrix import plot_matrix
 
 
 def load(filename, rescale=False, return_pairs=True, array_name='cch_array',
@@ -329,8 +329,8 @@ if __name__ == '__main__':
     #                  filter_to_binary=False,
     #                  color='b')
 
-    tau_cc_cluster(ccharray, hist_filter='max', kind='scatter',
-                   marginal_kws=dict(bins=200), color='b')
+    # tau_cc_cluster(ccharray, hist_filter='max', kind='scatter',
+    #                marginal_kws=dict(bins=200), color='b')
 
     # generalized_cc_dist(ccharray, plot=True)
 
