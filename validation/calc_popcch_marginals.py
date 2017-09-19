@@ -9,7 +9,7 @@ from copy import copy
 import sys
 from time import time
 # from mpi4py import MPI
-# from matrix import plot_matrix
+from matrix import plot_matrix
 
 
 def load(filename, rescale=False, return_pairs=True, array_name='cch_array',
@@ -186,14 +186,19 @@ def tau_cc_cluster(cch_array, hist_filter=None, binsize=None, kind='hex', **kwar
         tau = tau[np.where(ccharray)[0]]
         ccharray = ccharray[np.where(ccharray)[0]]
     grid = sns.jointplot(tau, ccharray, kind=kind, xlim=(-w,w), **kwargs)
+    if hist_filter[:9] == 'threshold':
+        ax = plt.gca()
+        ax.text(-1.2, .9, 'Threshold = {}'.format(th), transform=ax.transAxes)
     return grid
 
 
 def generalized_cc_matrix(cch_array, pair_ids, time_reduction='sum',
-                          plot=False, ax=None, **kwargs):
+                          plot=False, ax=None, rescale=False, **kwargs):
     B = len(np.squeeze(cch_array)[0])
     if time_reduction == 'sum':
         cc_array = np.sum(np.squeeze(cch_array), axis=1)
+        if rescale:
+            cc_array = cc_array / float(B)
     if time_reduction == 'max':
         cc_array = np.amax(np.squeeze(cch_array), axis=1)
     if time_reduction[:3] == 'lag':
@@ -201,8 +206,13 @@ def generalized_cc_matrix(cch_array, pair_ids, time_reduction='sum',
         cc_array = np.squeeze(cch_array)[:, B/2 + lag]
     if time_reduction[:9] == 'threshold':
         th = float(time_reduction[10:])
-        th_cch_array = np.array([a[a>th]-th for a in np.squeeze(cch_array)])
-        cc_array = np.array([np.sum(cch) for cch in th_cch_array])
+        th_cch_array = np.array([a[a>th] for a in np.squeeze(cch_array)])
+        if rescale:
+            cc_array = np.array([np.sum(cch)/float(len(cch)) if len(cch)
+                                 else np.sum(cch)
+                                 for cch in th_cch_array])
+        else:
+            cc_array = np.array([np.sum(cch) for cch in th_cch_array])
     N = len(cc_array)
     dim = .5*(1 + np.sqrt(8.*N + 1))
     assert not dim - int(dim)
@@ -315,17 +325,21 @@ if __name__ == '__main__':
     #                hist_filter='threshold 0.15', filter_to_binary=True, color='r')
 
     # pop_cc_hist_dist(ccharray, ax=None, binsize=2, bins=500,
-    #                  hist_filter='threshold 0.13',
+    #                  hist_filter='threshold 0.05',
     #                  filter_to_binary=False,
     #                  color='b')
 
-    tau_cc_cluster(ccharray, hist_filter='threshold 0.15', kind='scatter',
+    tau_cc_cluster(ccharray, hist_filter='max', kind='scatter',
                    marginal_kws=dict(bins=200), color='b')
 
     # generalized_cc_dist(ccharray, plot=True)
 
-    # generalized_cc_matrix(ccharray, pairs, plot=True, time_reduction='lag 0',
-    #                       sort=True)
+    # ccmat = generalized_cc_matrix(ccharray, pairs, plot=True, time_reduction='lag 0',
+    #                       sort=False, cluster=True, remove_autocorr=True, rescale=True)
+    #
+    # sns.clustermap(ccmat, method='ward')
+
+    # sns.clustermap(ccmat, metric='euclidean')
 
     # temporal_spread(ccharray, pairs, plot=True)
 

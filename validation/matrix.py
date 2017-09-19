@@ -9,7 +9,11 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import NullFormatter
 from scipy import stats as st
 from scipy.misc import comb
+from scipy.cluster.hierarchy import linkage, fcluster, dendrogram
+# from fastcluster import linkage
+from scipy.spatial.distance import squareform
 from quantities import Hz, ms
+from copy import copy
 from elephant.conversion import BinnedSpikeTrain
 from elephant.spike_train_correlation import corrcoef
 from elephant.spike_train_generation import homogeneous_poisson_process as HPP
@@ -58,7 +62,8 @@ def pc_trafo(matrix, EWs=[], EVs=[]):
 
 
 def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None,
-                sort=False, cluster=False, **kwargs):
+                sort=False, cluster=False, linkmethod='ward', dendrogram_args={},
+                **kwargs):
     """
     Plot correlation matrix as seaborn.heatmap
 
@@ -69,14 +74,19 @@ def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None,
     :param sorted:
     :return:
     """
-    pltmatrix = matrix[:][:]
+    pltmatrix = copy(matrix)
     if sort:
         EWs, EVs = eigh(pltmatrix)
         _, order = detect_assemblies(EVs, EWs, detect_by='eigenvalues', sort=True)
         pltmatrix = pltmatrix[order, :][:, order]
 
-    # if cluster:
-        # scipy cluster
+    if cluster:
+        np.fill_diagonal(pltmatrix, 1)
+        # print np.isfinite(pltmatrix).all()
+        linkagematrix = linkage(squareform(1 - pltmatrix), method=linkmethod)
+        dendro = dendrogram(linkagematrix, no_plot=True, **dendrogram_args)
+        order = dendro['leaves']
+        pltmatrix = pltmatrix[order, :][:, order]
 
     if labels is None:
         labels = matrix.shape[0]/10
@@ -86,8 +96,7 @@ def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None,
         assert len(labels) == len(pltmatrix)
 
     if remove_autocorr:
-        for i in range(len(pltmatrix)):
-            pltmatrix[i, i] = 0
+        np.fill_diagonal(pltmatrix, 0)
 
     sns.heatmap(pltmatrix, ax=ax, cbar=True,
                 xticklabels=labels, yticklabels=labels, **kwargs)
