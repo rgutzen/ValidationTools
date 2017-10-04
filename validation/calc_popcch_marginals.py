@@ -33,7 +33,6 @@ def summed_pop_cch(cch_array, plot=False, ax=None, binsize=None, symmetric=True,
                    **pltargs):
     ccharray = copy(np.squeeze(cch_array))
     N = len(ccharray)
-    print ccharray.shape
     if hist_filter is not None:
         if hist_filter == 'max':
             max_array = np.amax(ccharray, axis=1)
@@ -59,15 +58,18 @@ def summed_pop_cch(cch_array, plot=False, ax=None, binsize=None, symmetric=True,
     if symmetric:
         popcch = popcch + popcch[::-1]
         popcch /= 2.
-    B = len(popcch)
-    w = B/2
-    if binsize is None:
-        binsize = 1
-    else:
-        w = w * float(binsize)
+
     if plot:
         if ax is None:
             fig, ax = plt.subplots()
+        B = len(popcch)
+        w = B / 2
+        if binsize is None:
+            binsize = 1
+            ax.set_xlabel('Time lag [bins]')
+        else:
+            w = w * float(binsize)
+            ax.set_xlabel('Time lag [ms]')
         if 'width' not in pltargs:
             pltargs['width'] = 0.9
         if 'edgecolor' not in pltargs:
@@ -76,10 +78,6 @@ def summed_pop_cch(cch_array, plot=False, ax=None, binsize=None, symmetric=True,
         ax.bar(np.linspace(-w,w,B/2*2+1)-float(binsize)/2., popcch, **pltargs)
         ax.set_ylabel('average cross correlation')
         ax.set_xlim((-w,w))
-        if binsize is None:
-            ax.set_xlabel('Time lag [bins]')
-        else:
-            ax.set_xlabel('Time lag [ms]')
     return popcch
 
 
@@ -186,7 +184,7 @@ def tau_cc_cluster(cch_array, hist_filter=None, binsize=None, kind='hex', **kwar
         tau = tau[np.where(ccharray)[0]]
         ccharray = ccharray[np.where(ccharray)[0]]
     grid = sns.jointplot(tau, ccharray, kind=kind, xlim=(-w,w), **kwargs)
-    if hist_filter[:9] == 'threshold':
+    if hist_filter is not None and hist_filter[:9] == 'threshold':
         ax = plt.gca()
         ax.text(-1.2, .9, 'Threshold = {}'.format(th), transform=ax.transAxes)
     return grid
@@ -311,7 +309,6 @@ if __name__ == '__main__':
     #     ax, palette = cch_space(color_array, pair_tau_ids, B=201, N=250)
     #     ax.set_title('set {}'.format(i))
 
-
     # fig, cax = plt.subplots()
     # cmap = mpl.colors.ListedColormap(palette)
     # cb = mpl.colorbar.ColorbarBase(cax, cmap=cmap)
@@ -321,15 +318,15 @@ if __name__ == '__main__':
 
     ccharray, pairs = load(path+filename, rescale=False, return_pairs=True)
 
-    # summed_pop_cch(ccharray, plot=True,
-    #                hist_filter='threshold 0.15', filter_to_binary=True, color='r')
+    summed_pop_cch(ccharray[:10], plot=True,
+                   hist_filter='sum', filter_to_binary=False, color='r')
 
     # pop_cc_hist_dist(ccharray, ax=None, binsize=2, bins=500,
     #                  hist_filter='threshold 0.05',
     #                  filter_to_binary=False,
     #                  color='b')
 
-    # tau_cc_cluster(ccharray, hist_filter='max', kind='scatter',
+    # tau_cc_cluster(ccharray, hist_filter=None, kind='scatter',
     #                marginal_kws=dict(bins=200), color='b')
 
     # generalized_cc_dist(ccharray, plot=True)
@@ -337,7 +334,7 @@ if __name__ == '__main__':
     # ccmat = generalized_cc_matrix(ccharray, pairs, plot=True, time_reduction='lag 0',
     #                       sort=False, cluster=True, remove_autocorr=True, rescale=True)
     #
-    # sns.clustermap(ccmat, method='ward')
+    # sns.clustermap(ccmat, row_linkage=lmat, col_linkage=lmat, method='ward')
 
     # sns.clustermap(ccmat, metric='euclidean')
 

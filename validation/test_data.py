@@ -23,9 +23,9 @@ def load_data(path, file_name_list, N):
     :param N:
         Number of returned spiketrains. When less are found in the file empty
         spiketrains are added; when more are found only the first N are
-        returned
+        returned.
     :return:
-        N   List of N tuples of neo.Spiketrains
+        N   List of N tuples of neo.SpikeTrains
     """
     # Load NEST or SpiNNaker data using NeoHdf5IO
     spike_train_list = []
@@ -61,7 +61,7 @@ def load_data(path, file_name_list, N):
 
 
 def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[],
-              bkgr_corr=0., shuffle=True, shuffle_seed=None):
+              bkgr_corr=0., shuffle=True, shuffle_seed=None, **kwargs):
     """
     Function to generate list of spiketrains with subsets of correlated
     assemblies.
@@ -100,30 +100,6 @@ def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[],
         spiketrains
     """
 
-    def _generate_assembly(size, corr, bkgr_corr, method, rate, t_stop):
-        if method == 'SIP':
-            # "$corr of the spikes are correlated"
-            return SIP(rate=rate, rate_c=corr * rate, n=size, t_stop=t_stop,
-                       coincidences='stochastic')
-        elif method == 'MIP':
-            # do sth
-            return None
-        elif method == 'CPP':
-            # "$corr of the neurons are pairwise correlated"
-            # amp_dist = poisson(1).pmf(np.arange(size+1))
-            amp_dist = np.zeros(size + 1)
-            amp_dist[1] = 1 - corr - bkgr_corr
-            amp_dist[2] = bkgr_corr
-            amp_dist[size] = corr
-            # amp_dist[:size] = [1./(m.e*m.factorial(k)) for k in range(size)]
-            # np.testing.assert_almost_equal(sum(amp_dist), 1., decimal=7)
-            # norm_factor = (1. - corr) / np.sum(amp_dist[:size])
-            amp_dist *= (1./sum(amp_dist))
-            return CPP(rate=rate, A=amp_dist, t_stop=t_stop)
-
-        else:
-            raise NameError("Method name not known!")
-
     spiketrains = [None] * size
 
     if not type(corr) == list:
@@ -136,7 +112,7 @@ def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[],
         generated_sts = int(np.sum(assembly_sizes[:i]))
         spiketrains[generated_sts:generated_sts+a_size]\
             = _generate_assembly(a_size, corr[i], bkgr_corr,
-                                 method, rate, t_stop)
+                                 method, rate, t_stop, **kwargs)
 
     if bkgr_corr > 0:
         bkgr_size = size-sum(assembly_sizes)+1
@@ -159,6 +135,45 @@ def test_data(size, corr, t_stop, rate, method="CPP", assembly_sizes=[],
             r.Random(shuffle_seed).shuffle(spiketrains)
 
     return spiketrains
+
+def _generate_assembly(size, corr, bkgr_corr, method, rate, t_stop,
+                       pattern_range=100, **kwargs):
+    if method == 'SIP':
+        # "$corr of the spikes are correlated"
+        return SIP(rate=rate, rate_c=corr * rate, n=size, t_stop=t_stop,
+                   coincidences='stochastic')
+    elif method == 'MIP':
+        # do sth
+        return None
+    elif method == 'polychrony':
+        spiketrains = [[]] * size
+        pattern_rate = corr * rate
+        background_rate = rate - pattern_rate
+        pattern = HPP(rate=pattern_rate, t_stop=t_stop)
+        for i in range(size):
+            shift = np.random.random(1) * 2 * pattern_range - pattern_range
+            times = np.array(pattern.tolist()) + shift
+            times = times[np.where(times > 0)[0]]
+            times = times[np.where(times < t_stop)[0]]
+            background = HPP(rate=background_rate, t_stop=t_stop)
+            times = np.sort(np.append(times, background.tolist()))
+            spiketrains[i] = neo.SpikeTrain(times=times, units='ms',
+                                            t_stop=t_stop)
+        return spiketrains
+    elif method == 'CPP':
+        # "$corr of the neurons are pairwise correlated"
+        # amp_dist = poisson(1).pmf(np.arange(size+1))
+        amp_dist = np.zeros(size + 1)
+        amp_dist[1] = 1 - corr - bkgr_corr
+        amp_dist[2] = bkgr_corr
+        amp_dist[size] = corr
+        # amp_dist[:size] = [1./(m.e*m.factorial(k)) for k in range(size)]
+        # np.testing.assert_almost_equal(sum(amp_dist), 1., decimal=7)
+        # norm_factor = (1. - corr) / np.sum(amp_dist[:size])
+        amp_dist *= (1. / sum(amp_dist))
+        return CPP(rate=rate, A=amp_dist, t_stop=t_stop)
+    else:
+        raise NameError("Method name not known!")
 
 
 def generate_surrogates(spiketrains, surrogate_function=sg.dither_spike_train,
