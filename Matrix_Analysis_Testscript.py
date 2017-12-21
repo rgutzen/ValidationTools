@@ -31,7 +31,6 @@ def load_data(path, file_name_list, N):
         spike_train_list.append(spiketrains)
     return spike_train_list
 
-
 COLLAB_PATH = '/home/robin/Projects/ValidationTools'
 COLLAB_PATH_NEST = COLLAB_PATH + "/sim_data/NEST_data"
 COLLAB_PATH_SPINNAKER = COLLAB_PATH + "/sim_data/SpiNNaker_data"
@@ -48,13 +47,11 @@ testdata = imp.load_source('*', test_data_path)
 viziphant_path = '../INM6/Tasks/viziphant/plots/generic.py'
 vizi = imp.load_source('*', viziphant_path)
 
-gdfio_path = '../INM6/Tasks/UP-Tasks/Elephant/gdf2NeoH5_task/gdfio.py'
-gdfio = imp.load_source('*', gdfio_path)
-
 # ToDo: method takes also list of method strings
 # ToDo: What relative size of assemblies can still be detected?
 # ToDo: Background vs Assembly correlation
 # ToDo: Write Annotations
+
 
 def analyze_distributions(sample1, sample2):
     # Create Figure
@@ -165,6 +162,8 @@ print np.sum(np.abs(centered_load))/len(loads)
 
 # print np.sort(np.abs(EVs1[0]))[:2:-1]
 # print norm(np.sort(np.abs(EVs1[0]))[:2:-1])
+
+# Validation Methods for Neural Network Simulations
 
 # Generate second dataset
 # spiketrain_list2 = testdata.test_data(size=N, corr=.0, t_stop=500*ms,
