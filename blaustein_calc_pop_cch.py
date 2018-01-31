@@ -1,4 +1,5 @@
 from elephant.spike_train_correlation import cch
+from elephant.statistics import mean_firing_rate
 from elephant.conversion import BinnedSpikeTrain
 from neo import SpikeTrain
 from quantities import ms
@@ -39,7 +40,7 @@ def _calculate_multi_cch(sts, binsize=2*ms, maxlag=100, set_name=-1,
     cch_array = np.zeros((pair_per_node, B))
     max_cc = 0
     for count, (i,j) in enumerate(split_pairs):
-        binned_sts = bin_spiketrains([sts[i], sts[j]], binsize=2*ms)
+        binned_sts = bin_spiketrains([sts[i], sts[j]], binsize=binsize)
         cch_array[count] = np.squeeze(cch(binned_sts[0],
                                           binned_sts[1],
                                           window=[-maxlag, maxlag],
@@ -76,27 +77,43 @@ def dict_to_neo(spiketraindict, t_stop=10000 * ms):
                            t_stop=t_stop, idx=idx_str)]
     return sts
 
-# ----- MAIN -----
+def filter_exc(spiktrains, threshold=0.02):
+    exc_spiketrains = []
+    for st in spiktrains:
+        if mean_firing_rate(st) < threshold:
+            exc_spiketrains = exc_spiketrains + [st]
+    return exc_spiketrains
 
-# start_time = time()
-#
-# argin = sys.argv
-# try:
-#     task_id = int(argin[-1])
-# except ValueError:
-#     task_id = 0
-# lag = 100
-#
-# print 'set: {}\nlag: {}'.format(task_id, lag)
-#
-# f = open('/home/r.gutzen/Projects/pop_cch/polychrony_data/polychronousspiekdata_new.txt', 'r')
-# spikedata = jsonload(f)
-# f.close()
-#
-# spiketrains = dict_to_neo(spikedata[task_id])
-#
-# _calculate_multi_cch(spiketrains, binsize=2*ms, maxlag=lag, set_name=task_id)
-#
-# m, s = divmod(time() - start_time, 60)
-# h, m = divmod(m, 60)
-# print 'Computation took %d:%02d:%02d' % (h, m, s)
+
+if __name__ == '__main__':
+
+    start_time = time()
+
+    argin = sys.argv
+    try:
+        task_id = int(argin[-1])
+    except ValueError:
+        task_id = 0
+
+    lag = 100
+
+    print 'set: {}\nlag: {}'.format(task_id, lag)
+
+    # f = open('/home/r.gutzen/Projects/pop_cch/polychrony_data/polychronousspiekdata_new.txt', 'r')
+    # spikedata = jsonload(f)
+    # f.close()
+    #
+    # spiketrains = dict_to_neo(spikedata[task_id])
+
+    print 'filter excitatory units'
+    spiketrains = filter_exc(spiketrains)
+    set_name = '{}_exc'.format(task_id)
+
+    # else:
+    #     set_name = task_id
+
+    _calculate_multi_cch(spiketrains, binsize=2*ms, maxlag=lag, set_name=set_name)
+
+    m, s = divmod(time() - start_time, 60)
+    h, m = divmod(m, 60)
+    print 'Computation took %d:%02d:%02d' % (h, m, s)

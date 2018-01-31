@@ -104,17 +104,17 @@ def projected_rand_angles(N, res):
     return theta
 
 def alt_func(N,res):
-    angle = np.array([pi/(2*res) * (i+1) for i in range(res)])
+    angles = np.array([pi/(2*res) * (i+1) for i in range(res)])
     f = np.array([2/pi for i in range(res)])
     f = np.convolve(f, f, mode="full")[res - 1:]
     f = f / sum(f) * res * 2 / pi
     for n in range(N-2):
         n += 2
-        f_n = np.array([np.sin(2*p)**(n-2) for p in angle])
+        f_n = np.array([np.sin(2*p)**(n-2) for p in angles])
         f_n = f_n/sum(f_n) * res * 2/pi
         f = np.convolve(f, f_n, mode="full")[::2]
         f = f/sum(f) * res * 2/pi
-    return angle, f
+    return angles, f
 
 N = 100
 res = 10000

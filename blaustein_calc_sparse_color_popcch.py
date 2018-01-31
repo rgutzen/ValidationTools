@@ -6,22 +6,37 @@ from time import time
 from mpi4py import MPI
 
 
-def load(filename, rescale=False, return_pairs=True):
+def load(filename, rescale=False, return_pairs=True, returns=None):
     file = np.load(filename)
     if return_pairs:
         if rescale:
-            return np.squeeze(file['cch_array']) / file['max_cc'][0], \
-                   file['split_pairs']
+            if returns is not None:
+                return np.squeeze(file['cch_array']) / file['max_cc'][0], \
+                       file['split_pairs'], file[returns]
+            else:
+                return np.squeeze(file['cch_array']) / file['max_cc'][0], \
+                       file['split_pairs']
         else:
-            return np.squeeze(file['cch_array']), file['split_pairs']
+            if returns is not None:
+                return np.squeeze(file['cch_array']), file['split_pairs'], \
+                       file[returns]
+            else:
+                return np.squeeze(file['cch_array']), file['split_pairs']
     else:
         if rescale:
-            return np.squeeze(file['cch_array']) / file['max_cc'][0]
+            if returns is not None:
+                return np.squeeze(file['cch_array']) / file['max_cc'][0], \
+                       file[returns]
+            else:
+                return np.squeeze(file['cch_array']) / file['max_cc'][0]
         else:
-            return np.squeeze(file['cch_array'])
+            if returns is not None:
+                return np.squeeze(file['cch_array']), file[returns]
+            else:
+                return np.squeeze(file['cch_array'])
 
 
-def cch_space(squeezed_cch_array, threshold=.5, save_id=0, **kwargs):
+def cch_space(squeezed_cch_array, threshold=.5, save_id=0, max_cc=None, **kwargs):
     # save as array with only >threshold value
     # and a second array with their (i,j,t)
     N = len(squeezed_cch_array)
@@ -65,7 +80,7 @@ def cch_space(squeezed_cch_array, threshold=.5, save_id=0, **kwargs):
     np.savez('/home/r.gutzen/pop_cch_results/color_array_set{}_th{}.npz'
              .format(save_id, threshold),
              color_array=color_array, pair_tau_ids=pair_tau_ids,
-             threshold=threshold, B=B, N=N)
+             threshold=threshold, B=B, N=dim, max_cc=max_cc, rescaled=True)
     return None
 
 
@@ -87,9 +102,12 @@ except IndexError:
 path = '/home/r.gutzen/pop_cch_results/'
 filename = 'cch_array_set{}_bin2ms_lag100bins.npz'.format(task_id)
 
-ccharray = load(path+filename, rescale=True, return_pairs=False)
+ccharray, max_cc = load(path+filename, rescale=True, return_pairs=False,
+                        returns='max_cc')
 
-cch_space(abs(np.squeeze(ccharray)), threshold=threshold, save_id=task_id)
+
+cch_space(abs(np.squeeze(ccharray)), threshold=threshold, save_id=task_id,
+          max_cc=max_cc)
 
 m, s = divmod(time() - start_time, 60)
 h, m = divmod(m, 60)

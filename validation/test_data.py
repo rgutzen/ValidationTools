@@ -151,7 +151,7 @@ def _generate_assembly(size, corr, bkgr_corr, method, rate, t_stop,
         background_rate = rate - pattern_rate
         pattern = HPP(rate=pattern_rate, t_stop=t_stop)
         for i in range(size):
-            shift = np.random.random(1) * 2 * pattern_range - pattern_range
+            shift = np.random.rand() * 2 * pattern_range - pattern_range
             times = np.array(pattern.tolist()) + shift
             times = times[np.where(times > 0)[0]]
             times = times[np.where(times < t_stop)[0]]

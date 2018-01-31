@@ -76,7 +76,10 @@ def summed_pop_cch(cch_array, plot=False, ax=None, binsize=None, symmetric=True,
             pltargs['edgecolor'] = 'w'
         pltargs['width'] *= float(binsize)
         ax.bar(np.linspace(-w,w,B/2*2+1)-float(binsize)/2., popcch, **pltargs)
-        ax.set_ylabel('average cross correlation')
+        if average:
+            ax.set_ylabel('Average Cross Correlation')
+        else:
+            ax.set_ylabel('Summed Cross Correlation')
         ax.set_xlim((-w,w))
     return popcch
 

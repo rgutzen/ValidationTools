@@ -7,13 +7,17 @@ from scipy.linalg import eigh
 import scipy.integrate as integrate
 import matplotlib.pyplot as plt
 from matplotlib.ticker import NullFormatter
+import matplotlib.colors as colors
+import matplotlib.mlab as mlab
 from scipy import stats as st
 from scipy.misc import comb
 from scipy.cluster.hierarchy import linkage, fcluster, dendrogram
+from scipy.special import binom
 # from fastcluster import linkage
 from scipy.spatial.distance import squareform
 from quantities import Hz, ms
 from copy import copy
+from scipy.integrate import quad
 from elephant.conversion import BinnedSpikeTrain
 from elephant.spike_train_correlation import corrcoef
 from elephant.spike_train_generation import homogeneous_poisson_process as HPP
@@ -102,7 +106,9 @@ def plot_matrix(matrix, ax=plt.gca(), remove_autocorr=False, labels=None,
                 xticklabels=labels, yticklabels=labels, **kwargs)
     if sort:
         return order
-    return linkagematrix
+    if cluster:
+        return linkagematrix
+
 
 def estimate_largest_eigenvalue(N, trials, t_stop, rate, bins):
     lmax = np.zeros(trials)
@@ -354,6 +360,9 @@ def eigenvalue_spectra(EWs, method='SCREE', alpha=.05, ax=None, color='r',
 
     if ax:
         def alpha(color_inst, a):
+            if type(color_inst) == str:
+                if color_inst[0] == '#':
+                    color_inst = colors.hex2color(color_inst)
             return [el + (1. - el) * a for el in color_inst]
 
         mask = np.zeros(len(EWs), np.bool)
@@ -417,24 +426,60 @@ def print_eigenvectors(EVs, EWs=[], pc_count=0,
     return None
 
 
-def plot_EVs(EVs, ax, color, hatch=None, ordered=False):
+def plot_EVs(EVs, ax, color, hatch=None, ordered=False, abs=False,
+             binsize=.025, scaling=.85):
+    left, bottom, width, height = ax.get_position()._get_bounds()
+    ax.set_position([left, bottom,
+                     scaling * width, height])
+    axhist = plt.axes([left + scaling * width, bottom,
+                       (1-scaling) * width, height])
+
+    if abs:
+        EVs = np.absolute(EVs)
     if hatch is None:
         hatch = [''] * len(color)
     if ordered:
-        vector_loads = np.sort(np.absolute(EVs.T[::-1]), axis=-1)
+        vector_loads = np.sort(EVs.T[::-1], axis=-1)
         ax.set_xlabel('Neuron Rank')
         ax.invert_axis()
     else:
-        vector_loads = np.absolute(EVs.T[::-1])
-        ax.set_xlabel('Neuron ID')
+        vector_loads = EVs.T[::-1]
+        ax.set_xlabel('Neuron')
+
+    max_load = np.max(vector_loads[:len(color)])
+    min_load = np.min(vector_loads[:len(color)])
+    bin_num = (max_load - min_load) / binsize
+    edges = np.linspace(min_load, max_load, bin_num)
     for i, _ in enumerate(color):
         i = len(color) - i - 1
         ax.bar(np.arange(len(EVs.T[0]))+.5, vector_loads[i], 1., edgecolor='w',
                              label=r'$v_{}$'.format(i+1), color=color[i], hatch=hatch[i])
+
+        load_hist, _ = np.histogram(vector_loads[i], bins=edges, density=True)
+        dx = edges[1] - edges[0]
+        xvalues = edges[:-1] + dx/2.
+        xvalues = np.append(np.append(xvalues[0]-dx, xvalues), xvalues[-1]+dx)
+        load_hist = np.append(np.append(0, load_hist), 0)
+        if hatch[i] == '//':
+            ls = '--'
+        else:
+            ls = '-'
+        axhist.plot(load_hist, xvalues, color=color[i], linestyle=ls)
+
+    xvalues = np.linspace(-max_load, max_load, 100)
+    normal_dist = mlab.normpdf(xvalues, 0, 1./np.sqrt(len(EVs)))
+    axhist.plot(normal_dist, xvalues, color='k', linestyle=':', lw=2)
+
+    sns.despine(ax=ax)
+    axhist.axis('off')
+    axhist.set_ylim(ax.get_ylim())
     ax.set_xlim(0,len(EVs.T[0])+1)
     ax.set_ylabel('Vector Load')
     handles, labels = ax.get_legend_handles_labels()
-    ax.legend(handles[::-1], [r'$v_{}$'.format(j + 1) for j in range(len(color))])
+    plt.rcParams['legend.fontsize'] = plt.rcParams['axes.labelsize']+1
+    ax.legend(handles[::-1],
+              [r'$v_{}$'.format(j + 1) for j in range(len(color))],
+              loc='best')
     return None
 
 
@@ -582,6 +627,39 @@ def angle_significance(angles, dim=100, s=.0001, sig_level=.01, res=10**7,
                       + r'$^{}$'.format('{'+str(dim)+'}'))
         ax.set_ylabel('Angle Density')
     return p_diff, rand_angles
+
+
+def reorder_matrix(EVs, EWs, alpha=0.001):
+    def twox_gaussian(x, mu, sig):
+        return 2. * 1./(np.sqrt(2*np.pi)*sig) * \
+               np.exp(-np.power(x - mu, 2.) / (2. * np.power(sig, 2.)))
+    def binom_p(j, th, N):
+        p_th_inf, err = quad(twox_gaussian, th, np.inf, args=(0,1./np.sqrt(N)))
+        p_0_th, err  = quad(twox_gaussian, 0, th, args=(0,1./np.sqrt(N)))
+        return binom(N, j) * p_th_inf**j * p_0_th**(N-j)
+
+    N = len(EWs)
+    EVs = np.absolute(EVs.T[::-1])
+    sort_ids = []
+
+    ew_sorting = np.argsort(EWs)[::-1]
+    EWs = EWs[ew_sorting]
+    EVs = EVs[ew_sorting]
+
+    # significant vector loads for all eigenvectors
+    for ev in EVs:
+        for count, neuron_id in enumerate(np.argsort(ev)[::-1]):
+            if neuron_id not in sort_ids \
+                    and binom_p(count+1, ev[neuron_id], N) < alpha:
+                sort_ids += [neuron_id]
+            else:
+                break
+    # largest vector loads in the remaining neurons of all vectors
+    for id in np.argsort(np.concatenate(EVs))[::-1]:
+        neuron_id = id % N
+        if neuron_id not in sort_ids:
+            sort_ids += [neuron_id]
+    return sort_ids
 
 
 def detect_assemblies(EVs, EWs, detect_by='eigenvalue', mute=False, EW_lim=2,
