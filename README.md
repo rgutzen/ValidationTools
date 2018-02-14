@@ -3,9 +3,14 @@ Development of statistical tests and tools for comparison of neural activity dat
 
 Based on Elephant and neo.
 
-| | |
-|---|---|
-|test|test|
+| | | 
+| --- | --- |
+|Simulation time             |60 x 60 x 5 + 120 s|
+|STDP on                     | true|
+|GENERATE_FROM_EXTERNAL_DATA |false|
+|USE_EXTERNAL_STIMULUS       |false|
+|STATIC_WEIGHTS              |false|
+
 
 #### ToDo
 
